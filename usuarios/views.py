@@ -40,7 +40,7 @@ def votante_home(request, usuario):
 
 # Pagina del home  para usuario Superior
 def superior_home(request, usuario):
-    return render(request ,  'superior.html', {'usuario': usuario})
+    return render(request , 'superior.html', {'usuario': usuario})
 
 
 #Pagina de login
@@ -67,7 +67,7 @@ def login_view(request):
                    mensaje = "Datos erróneos. Por favor, inténtelo otra vez.    "
     else:
         form = FormularioLogin()
-    return render(request, 'login.html', {'mensaje': mensaje, 'form': form})
+    return render(request, 'login.html', {'mensaje': mensaje, 'form': form })
 
 #Vista de registro de usuarios
 def registro_usuario(request):
@@ -77,7 +77,6 @@ def registro_usuario(request):
         if form.is_valid():
             cedula_usuario = form.cleaned_data["cedula_usuario"]
             persona = PERSONA.objects.filter(cedula=cedula_usuario)
-            print(persona)
             if not persona:
                 nombre_usuario = form.cleaned_data["nombre_usuario"]
                 apellido_usuario = form.cleaned_data["apellido_usuario"]
@@ -106,16 +105,16 @@ def registro_usuario(request):
                 usuario.set_password(password)
                 usuario.observacion =  "Creando USUARIO " + str(cedula_usuario)
 
-                send_mail('Envío de correo electronico', correo, 'sivoreunivalle@gmail.com', [correo], fail_silently=False)
-                #email = EmailMessage('Envío de contrasena Acceso SIVORE', 'contrasena: '+password , to=[correo])
-                #email.send()
+                # Enviando contraseña al correo electronico registrado.
+                mensaje = "Señor(a) ", usuario.persona.nombre , "\nSu usuario de acceso es: ", usuario.username , "\n Contraseña: ", password
+                send_mail('Envío de contraseña de acceso', mensaje, 'sivoreunivalle@gmail.com', [correo], fail_silently=False)
 
                 try:
                     usuario.save()
                 except Exception as e:
                     print(e)
 
-                # Enviando contraseña al correo electronico registrado.
+
                 form = FormularioRegistroUsuario()
                 mensaje = "El usuario se guardo correctamente, la contraseña se envío al correo " + correo
             else:
@@ -134,6 +133,8 @@ def registro_usuario(request):
 
     return render(request, 'registro_usuario.html',{'mensaje': mensaje, 'form': form})
 
+# Vista para listar usuarios
 def listar_usuario(request):
-    return render(request, 'listar.html')
+    usuarios = USUARIO.objects.all()
+    return render(request, 'listar.html', {'usuarios': usuarios})
 
