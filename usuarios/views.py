@@ -70,6 +70,7 @@ def login_view(request):
     return render(request, 'login.html', {'mensaje': mensaje, 'form': form })
 
 #Vista de registro de usuarios
+@login_required()
 def registro_usuario(request):
     mensaje = ""
     if request.method == 'POST':
@@ -134,7 +135,20 @@ def registro_usuario(request):
     return render(request, 'registro_usuario.html',{'mensaje': mensaje, 'form': form})
 
 # Vista para listar usuarios
+@login_required()
 def listar_usuario(request):
     usuarios = USUARIO.objects.all()
     return render(request, 'listar.html', {'usuarios': usuarios})
 
+#Registro usuarios
+@login_required()
+def editar_usuario(request, username=None):
+    print(username)
+    if username is None:
+        return render(request, 'administrador.html')
+    else:
+        usuario = USUARIO.objects.get(username=username)
+        form = FormularioRegistroUsuario()
+        form.initial = {'cedula_usuario': usuario.username, 'nombre_usuario': usuario.persona.nombre , 'apellido_usuario': usuario.persona.apellidos ,
+                        'rol': usuario.rol.nombre , 'email': usuario.persona.correo }
+    return render(request, 'editar_usuario.html', {'form': form})
