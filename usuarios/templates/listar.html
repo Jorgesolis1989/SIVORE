@@ -3,47 +3,43 @@
 {% block content %}
     <h1 class="page-header text-overflow">Consulta, edición y eliminación de usuarios</h1>
 <div class="panel">
-                <div class="panel panel-colorful panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Listar usuarios</h3>
-                         </div>
-                <div id="demo-custom-toolbar" class="table-toolbar-left">
-                    <!--<button id="demo-dt-delete-btn" class="btn btn-danger btn-labeled fa fa-times">Eliminar</button>-->
+    <div class="panel panel-colorful panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Listar usuarios</h3>
+        </div>
+    </div>
 
-                </div>
+    <div id="demo-custom-toolbar" class="table-toolbar-left">
+        <button id="demo-btn-addrow" class="btn btn-mint btn-labeled fa fa-plus" ><a href="{% url 'registro_usuario' %}" class="btn btn-mint">Crear usuario</a></button>
+        <!--<button id="demo-dt-delete-btn" class="btn btn-danger btn-labeled fa fa-times">Eliminar</button>-->
+    </div>
 
-                    </div>
-	<a href="{% url 'registro_usuario' %}" class="btn btn-primary">  <button id="demo-btn-addrow" class="btn btn-mint btn-labeled fa fa-plus" >Crear usuario</button>
-                 </a>
-                <div class="panel-body">
-                    <table id="demo-dt-selection" class="table table-striped table-bordered" cellspacing="0" width="100%">
-                        <thead>
-                            <tr>
-                                <th>Cedula</th>
-                                <th>Nombre</th>
-                                <th class="min-tablet">Correo Electronico</th>
-                                <th class="min-tablet">Rol</th>
-                                <th class="min-desktop">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-
-
-                            {% for usuario in usuarios %}
-                                <tr>
-                                    <td>{{ usuario.persona.cedula }}</td>
-                                    <td>{{ usuario.persona.nombre }} {{ usuario.persona.apellidos }}</td>
-                                    <td>{{ usuario.persona.correo }}</td>
-                                    <td>{{ usuario.rol.nombre }}</td>
-                                    <td>
-                                        <a class="btn btn-xs btn-default add-tooltip" data-toggle="tooltip" href="#" data-original-title="Edit" data-container="body"><i class="fa fa-pencil"></i></a>
-                                        <a class="btn btn-xs btn-danger add-tooltip"  data-toggle="tooltip" href="#" data-original-title="Delete" data-container="body"><i class="fa fa-times"></i></a>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+    <div class="panel-body">
+        <table id="demo-dt-delete" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>Cédula</th>
+                    <th>Nombres</th>
+                    <th class="min-tablet">Correo Electrónico</th>
+                    <th class="min-tablet">Rol</th>
+                    <th class="min-desktop">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for usuario in usuarios %}
+                    <tr>
+                        <td>{{ usuario.persona.cedula }}</td>
+                        <td>{{ usuario.persona.nombre }} {{ usuario.persona.apellidos }}</td>
+                        <td>{{ usuario.persona.correo }}</td>
+                        <td>{{ usuario.rol.nombre }}</td>
+                        <td>
+                            <a class="btn btn-xs btn-default add-tooltip" data-toggle="tooltip" href="#" data-original-title="Edit" data-container="body"><i class="fa fa-pencil"></i></a>
+                            <a class="btn btn-xs btn-danger add-tooltip"  data-toggle="tooltip" href="#" data-original-title="Delete" data-container="body"><i class="fa fa-times"></i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}
