@@ -54,7 +54,7 @@ MIDDLEWARE_CLASSES = (
 
 )
 
-AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend' ,  )
+AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend' , "usuarios.backends.BackendUsuarios"  )
 
 ROOT_URLCONF = 'SIVORE.urls'
 

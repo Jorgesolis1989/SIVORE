@@ -1,5 +1,5 @@
 from django import forms
-from usuarios.models import  PERSONA
+from usuarios.models import Usuario
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 
@@ -45,9 +45,9 @@ class FormularioRegistroUsuario(forms.Form):
     def usuario_existe(self):
         diccionario_limpio = self.cleaned_data
         cedula = diccionario_limpio.get('cedula_usuario')
-        persona = PERSONA.objects.get(cedula=cedula)
+        usuario = Usuario.objects.get(username=cedula)
 
-        if not persona is None:
+        if not usuario is None:
             raise self.ValidationError("El usuario ya existe")
         return cedula
 
