@@ -28,12 +28,13 @@
             <tbody>
                 {% for usuario in usuarios %}
                     <tr>
-                        <td>{{ usuario.persona.cedula }}</td>
-                        <td>{{ usuario.persona.nombre }} {{ usuario.persona.apellidos }}</td>
-                        <td>{{ usuario.persona.correo }}</td>
-                        <td>{{ usuario.rol.nombre }}</td>
+                        <td>{{ usuario.username }}</td>
+                        <td>{{ usuario.first_name }} {{ usuario.last_name }}</td>
+                        <td>{{ usuario.email }}</td>
+
+                        <td>{{ usuario.user_permissions.get.codename }}</td>
                         <td>
-                            <a class="btn btn-xs btn-default add-tooltip" data-toggle="tooltip" href="/usuarios/editar/{{ usuario.persona.cedula }}" data-original-title="Edit" data-container="body"><i class="fa fa-pencil"></i></a>
+                            <a class="btn btn-xs btn-default add-tooltip" data-toggle="tooltip" href="/usuarios/editar/{{ usuario.username }}" data-original-title="Edit" data-container="body"><i class="fa fa-pencil"></i></a>
                             <a class="btn btn-xs btn-danger add-tooltip"  data-toggle="tooltip" href="#" data-original-title="Delete" data-container="body"><i class="fa fa-times"></i></a>
                         </td>
                     </tr>
