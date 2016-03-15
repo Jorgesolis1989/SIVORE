@@ -33,8 +33,8 @@ class FormularioRegistroUsuario(forms.Form):
     apellido_usuario = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí el apellido  del usuario', 'required':'true'}))
 
-    CHOICES = choices=[('Administrador','Administrador'), ('Votante','Votante'), ('Superior','Superior') ]
-    rol = forms.ChoiceField(widget=forms.RadioSelect(attrs={'class': 'form-radio form-icon'}) , choices=CHOICES)
+    CHOICES = [('Administrador','Administrador'), ('Votante','Votante'), ('Superior','Superior') ]
+    rol = forms.ChoiceField(widget=forms.RadioSelect()   , choices=CHOICES)
 
     esta_activo = forms.BooleanField(
         widget=forms.CheckboxInput(attrs={'class': 'form-checkbox form-icon'}))
