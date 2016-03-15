@@ -1,11 +1,11 @@
 {% extends "base-admin.html" %}
 {% block title %}Crear usuario{% endblock title %}
 {% block content %}
-    <h1 class="page-header text-overflow">Registro de usuarios</h1>
+    <!--<h1 class="page-header text-overflow">Registro de usuarios</h1>-->
 <!--<div class="panel">-->
         <div class="panel panel-colorful panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title">Datos de un usuario</h3>
+                <h3 class="panel-title">Registro de usuario</h3>
             </div>
         </div>
         <!--<div class="panel-body">-->
@@ -103,21 +103,20 @@
                     <!--<h4 class="mar-btm text-thin">Cargar usuarios</h4>-->
                     <hr>
                     <div class="panel">
-                        <div class="panel-heading">
+                        <!--<div class="panel-heading">
                             <h3 class="panel-title">Subir archivo</h3>
                         </div>
+                        -->
                         <div class="panel-body">
-
-                            <!--Dropzonejs-->
                             <!--===================================================-->
-                            <form id="demo-dropzone" action="" class="dropzone">
+                            <form id="demo-dropzone" action="#" class="dropzone">
                                 <div class="dz-default dz-message">
                                     <div class="dz-icon icon-wrap icon-circle icon-wrap-md">
                                         <i class="fa fa-cloud-upload fa-3x"></i>
                                     </div>
                                     <div>
-                                        <p class="dz-text">Drop files to upload</p>
-                                        <p class="text-muted">or click to pick manually</p>
+                                        <p class="dz-text">Arrastar archivo para cargar</p>
+                                        <p class="text-muted">o hacer clic manualmente</p>
                                     </div>
                                 </div>
                                 <div class="fallback">
@@ -126,7 +125,6 @@
                             </form>
                             <!--===================================================-->
                             <!-- End Dropzonejs -->
-
                         </div>
                     </div>
                 </div>
