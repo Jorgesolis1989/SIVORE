@@ -257,7 +257,7 @@
 								<span class="pull-right">
 									<img class="img-circle img-user media-object" src="{% static 'img/av1.png' %}" alt="Profile Picture">
 								</span>
-								<div class="username hidden-xs">Usuario </div>
+								<div class="username hidden-xs">{{ request.user.get_full_name }} </div>
 							</a>
 
 

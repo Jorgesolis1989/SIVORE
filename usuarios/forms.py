@@ -51,4 +51,26 @@ class FormularioRegistroUsuario(forms.Form):
             raise self.ValidationError("El usuario ya existe")
         return cedula
 
+class FormularioEditarUsuario(forms.Form):
+
+    cedula_usuario = forms.IntegerField(
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí la cedula de usuario', 'min':'1' , 'required':'true'}))
+
+    nombre_usuario = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí el nombre del usuario', 'required':'true'}))
+
+    apellido_usuario = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí el apellido  del usuario', 'required':'true'}))
+
+    CHOICES = [('Administrador','Administrador'), ('Votante','Votante'), ('Superior','Superior') ]
+    rol = forms.ChoiceField(widget=forms.RadioSelect()   , choices=CHOICES)
+
+    esta_activo = forms.BooleanField(
+        widget=forms.CheckboxInput(attrs={'class': 'form-checkbox form-icon'}))
+
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí su correo electronico', 'required':'true'}))
+
+
+
 

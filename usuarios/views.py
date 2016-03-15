@@ -17,7 +17,7 @@ from django.core.mail import EmailMessage
 from django.shortcuts import render
 from usuarios.models import Usuario
 from usuarios.forms import FormularioLogin
-from usuarios.forms import FormularioRegistroUsuario
+from usuarios.forms import FormularioRegistroUsuario , FormularioEditarUsuario
 from usuarios.backends import BackendUsuarios
 
 #Método auxiliar para encontrar la vista del usuario
@@ -80,7 +80,7 @@ def registro_usuario(request):
     if request.method == 'POST':
         form = FormularioRegistroUsuario(request.POST)
 
-        #Si el formulario es valido y tiene datos, limpielo
+        #Si el formulario es valido y tiene datos
         if form.is_valid():
             #Capture la cedula del usuario
             cedula_usuario = form.cleaned_data["cedula_usuario"]
@@ -143,14 +143,38 @@ def listar_usuario(request):
 #Edicion usuarios
 @permission_required("usuarios.Administrador" , login_url="/")
 def editar_usuario(request, username=None):
-    if username is None:
-        return render(request, 'administrador.html')
+
+
+    usuario = Usuario.objects.get(cedula_usuario=username)
+    if request.method == 'POST':
+        form = FormularioEditarUsuario(request.POST)
+
+        #Si el formulario es valido y tiene datos
+        if form.is_valid():
+            #Capture la cedula del usuario
+            usuario.first_name = form.cleaned_data["nombre_usuario"]
+            usuario.last_name = form.cleaned_data["apellido_usuario"]
+            usuario.email = form.cleaned_data["email"]
+            usuario.is_active = form.cleaned_data["esta_activo"]
+            permission =   Permission.objects.get(codename=form.cleaned_data["rol"])
+            usuario.user_permissions.clear()
+            usuario.user_permissions.add(permission)
+
+             #Actualiza  el usuario en la BD si hay excepcion
+            try:
+                usuario.save()
+            except Exception as e:
+                print(e)
+
+            #Consultando el usuario en la base de datos.
+            return listar_usuario(request)
     else:
-        usuario = Usuario.objects.get(cedula_usuario=username)
-        form = FormularioRegistroUsuario()
-        permissions = Permission.objects.filter(user=usuario)
-        print("a","b")
-        print("permiso de usuario:",permissions[0].codename)
-        form.initial = {'cedula_usuario': usuario.cedula_usuario, 'nombre_usuario': usuario.first_name , 'apellido_usuario': usuario.last_name ,
-                        'rol': permissions[0].codename , 'email': usuario.email }
-    return render(request, 'editar_usuario.html', {'form': form})
+        if username is None:
+            return render(request, 'administrador.html')
+        else:
+            form = FormularioEditarUsuario()
+            permissions = Permission.objects.filter(user=usuario)
+
+            form.initial = {'cedula_usuario': usuario.cedula_usuario, 'nombre_usuario': usuario.first_name , 'apellido_usuario': usuario.last_name ,
+                            'rol': permissions[0].codename , 'email': usuario.email , 'esta_activo': usuario.is_active  }
+        return render(request, 'editar_usuario.html', {'form': form})
