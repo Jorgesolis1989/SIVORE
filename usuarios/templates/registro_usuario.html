@@ -1,92 +1,138 @@
 {% extends "base-admin.html" %}
 {% block title %}Crear usuario{% endblock title %}
 {% block content %}
-    <h1 class="page-header text-overflow">Creación usuario</h1>
-<div class="panel">
+    <!--<h1 class="page-header text-overflow">Registro de usuarios</h1>-->
+<!--<div class="panel">-->
         <div class="panel panel-colorful panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title">Datos de un usuario</h3>
+                <h3 class="panel-title">Registro de usuario</h3>
             </div>
         </div>
-        <div class="panel-body">
-            <form id="demo-bvd-notempty" method="post" action="" class="form-horizontal">
-                {% csrf_token %}
-                <div class="panel-body">
-                <fieldset>
-                    <div class="form-group">
-                    <label class="col-lg-3 control-label">Cedula Usuario</label>
-                        <div class="col-lg-7">
-                        {{ form.cedula_usuario }}
-                        </div>
-                    </div>
-                </fieldset>
+        <!--<div class="panel-body">-->
+        <!-- section tab crear usuario-->
+        <div class="tab-base">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#demo-bsc-tab-1" data-toggle="tab"><i class="fa"></i> Crear usuario</a></li>
+                <li><a href="#demo-bsc-tab-2" data-toggle="tab"><i class="fa"></i>Cargar archivo con usuarios</a></li>
+            </ul>
 
-            <fieldset>
-                <div class="form-group">
-                <label class="col-lg-3 control-label">Nombres</label>
-                    <div class="col-lg-7">
-                        {{ form.nombre_usuario }}
-                    </div>
-                </div>
-            </fieldset>
+            <!-- Tabs Content -->
+            <form id="demo-bv-bsc-tabs" class="form-horizontal" action="" method="post">
+                <div class="tab-content">
+                    <div class="tab-pane pad-btm fade in active" id="demo-bsc-tab-1">
+                        <!--<h4 class="text-thin mar-btm">First Tab</h4>-->
+                        <hr>
+                        {% csrf_token %}
+                    <div class="panel-body">
+                    <fieldset>
+                        <div class="form-group">
+                        <label class="col-lg-3 control-label">Cédula</label>
+                            <div class="col-lg-7">
+                            {{ form.cedula_usuario }}
+                            </div>
+                        </div>
+                    </fieldset>
 
                     <fieldset>
-            <div class="form-group">
-                <label class="col-lg-3 control-label">Apellidos</label>
-                    <div class="col-lg-7">
-                           {{ form.apellido_usuario}}
-                    </div>
-            </div>
+                        <div class="form-group">
+                        <label class="col-lg-3 control-label">Nombres</label>
+                            <div class="col-lg-7">
+                                {{ form.nombre_usuario }}
+                            </div>
+                        </div>
+                    </fieldset>
+                        <fieldset>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">Apellidos</label>
+                                <div class="col-lg-7">
+                                       {{ form.apellido_usuario}}
+                                </div>
+                        </div>
 
-            <!-- Rol y opciones-->
-            <div class="form-group">
-                <label class="col-lg-3 control-label">Rol</label>
-                    <div class="col-lg-7">
-                        <div class="radio ">
-                            {% for radio in form.rol %}
-                                <label class="form-radio form-icon">
-                                    {{ radio.tag }}
-                                </label>
-                                   {{ radio.choice_label}}
-                            {% endfor %}
+                <!-- Rol y opciones-->
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">Rol</label>
+                        <div class="col-lg-7">
+                            <div class="radio ">
+                                {% for radio in form.rol %}
+                                    <label class="form-radio form-icon">
+                                        {{ radio.tag }}
+                                    </label>
+                                       {{ radio.choice_label}}
+                                {% endfor %}
+                            </div>
+                        </div>
+                </div>
+
+                <div class="form-group">
+                <div class="col-lg-7 col-lg-offset-3">
+                <div class="checkbox">
+                    <label class="form-checkbox form-icon">
+                      {{form.esta_activo }}
+                    </label>
+                    Activo
+                </div>
+                </div>
+                </div>
+                </fieldset>
+                <!--===================================================-->
+
+                <!--REGULAR EXPRESSION BASED VALIDATORS-->
+                <!--===================================================-->
+                    <fieldset>
+                        <div class="form-group">
+                        <label class="col-lg-3 control-label">Correo electrónico</label>
+                        <div class="col-lg-7">
+                        {{ form.email }}
+                        </div>
+                        </div>
+                    </fieldset>
+                <!--===================================================-->
+                {{ mensaje }} {{ form.error_messages }}
+                </div>
+                    <div class="panel-footer">
+                        <div class="row">
+                            <div class="col-sm-7 col-sm-offset-3">
+                            <button class="btn btn-primary btn-labeled fa fa-send fa-lg" type="submit">Crear</button>
+                            </div>
                         </div>
                     </div>
-            </div>
-
-            <div class="form-group">
-            <div class="col-lg-7 col-lg-offset-3">
-            <div class="checkbox">
-                <label class="form-checkbox form-icon">
-                  {{form.esta_activo }}
-                </label>
-                Activo
-            </div>
-            </div>
-            </div>
-            </fieldset>
-            <!--===================================================-->
-
-            <!--REGULAR EXPRESSION BASED VALIDATORS-->
-            <!--===================================================-->
-                <fieldset>
-                    <div class="form-group">
-                    <label class="col-lg-3 control-label">Correo electrónico</label>
-                    <div class="col-lg-7">
-                    {{ form.email }}
                     </div>
-                    </div>
-                </fieldset>
-            <!--===================================================-->
-            {{ mensaje }} {{ form.error_messages }}
-            </div>
-                <div class="panel-footer">
-                    <div class="row">
-                        <div class="col-sm-7 col-sm-offset-3">
-                        <button class="btn btn-primary btn-labeled fa fa-send fa-lg" type="submit">Crear</button>
+                    <div class="tab-pane fade" id="demo-bsc-tab-2">
+                    <!--<h4 class="mar-btm text-thin">Cargar usuarios</h4>-->
+                    <hr>
+                    <div class="panel">
+                        <!--<div class="panel-heading">
+                            <h3 class="panel-title">Subir archivo</h3>
+                        </div>
+                        -->
+                        <div class="panel-body">
+                            <!--===================================================-->
+                            <form id="demo-dropzone" action="#" class="dropzone">
+                                <div class="dz-default dz-message">
+                                    <div class="dz-icon icon-wrap icon-circle icon-wrap-md">
+                                        <i class="fa fa-cloud-upload fa-3x"></i>
+                                    </div>
+                                    <div>
+                                        <p class="dz-text">Arrastar archivo para cargar</p>
+                                        <p class="text-muted">o hacer clic manualmente</p>
+                                    </div>
+                                </div>
+                                <div class="fallback">
+                                    <input name="file" type="file" multiple />
+                                </div>
+                            </form>
+                            <!--===================================================-->
+                            <!-- End Dropzonejs -->
                         </div>
                     </div>
                 </div>
-                </form>
+                </div>
+
+            </form>
         </div>
-</div>
+        <!-- end section tab cargar usuario-->
+       <!-- </div>-->
+<!--</div>-->
 {% endblock %}
