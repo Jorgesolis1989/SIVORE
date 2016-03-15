@@ -143,12 +143,14 @@ def listar_usuario(request):
 #Edicion usuarios
 @permission_required("usuarios.Administrador" , login_url="/")
 def editar_usuario(request, username=None):
-    print(username)
     if username is None:
         return render(request, 'administrador.html')
     else:
-        usuario = Usuario.objects.get(username=username)
+        usuario = Usuario.objects.get(cedula_usuario=username)
         form = FormularioRegistroUsuario()
+        permissions = Permission.objects.filter(user=usuario)
+        print("a","b")
+        print("permiso de usuario:",permissions[0].codename)
         form.initial = {'cedula_usuario': usuario.cedula_usuario, 'nombre_usuario': usuario.first_name , 'apellido_usuario': usuario.last_name ,
-                        'rol': "Administrador" , 'email': usuario.email }
+                        'rol': permissions[0].codename , 'email': usuario.email }
     return render(request, 'editar_usuario.html', {'form': form})
