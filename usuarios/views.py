@@ -143,12 +143,9 @@ def listar_usuario(request):
 #Edicion usuarios
 @permission_required("usuarios.Administrador" , login_url="/")
 def editar_usuario(request, username=None):
-
-
     usuario = Usuario.objects.get(cedula_usuario=username)
     if request.method == 'POST':
         form = FormularioEditarUsuario(request.POST)
-
         #Si el formulario es valido y tiene datos
         if form.is_valid():
             #Capture la cedula del usuario
@@ -156,7 +153,7 @@ def editar_usuario(request, username=None):
             usuario.last_name = form.cleaned_data["apellido_usuario"]
             usuario.email = form.cleaned_data["email"]
             usuario.is_active = form.cleaned_data["esta_activo"]
-            permission =   Permission.objects.get(codename=form.cleaned_data["rol"])
+            permission =Permission.objects.get(codename=form.cleaned_data["rol"])
             usuario.user_permissions.clear()
             usuario.user_permissions.add(permission)
 
