@@ -33,21 +33,16 @@
 	// Require Bootbox
 	// http://bootboxjs.com/
 	// =================================================================
-	$('#demo-bootbox-confirm').on('click', function(){
-		bootbox.confirm("Are you sure?", function(result) {
+	$('.demo-bootbox-confirm').on('click', function(){
+		var id = $(this).attr('id')
+		bootbox.confirm("Esta seguro que desea eliminar el usuario?", function(result) {
 			if (result) {
+				document.formDelete.action = "/usuarios/eliminar/"+id
+				document.formDelete.submit()
 				$.niftyNoty({
 					type: 'success',
 					icon : 'fa fa-check',
 					message : 'User confirmed dialog',
-					container : 'floating',
-					timer : 3000
-				});
-			}else{
-				$.niftyNoty({
-					type: 'danger',
-					icon : 'fa fa-minus',
-					message : 'User declined dialog.',
 					container : 'floating',
 					timer : 3000
 				});

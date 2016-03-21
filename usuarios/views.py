@@ -175,3 +175,14 @@ def editar_usuario(request, username=None):
             form.initial = {'cedula_usuario': usuario.cedula_usuario, 'nombre_usuario': usuario.first_name , 'apellido_usuario': usuario.last_name ,
                             'rol': permissions[0].codename , 'email': usuario.email , 'esta_activo': usuario.is_active  }
         return render(request, 'editar_usuario.html', {'form': form})
+
+@permission_required("usuarios.Administrador", login_url="/")
+def eliminar_usuario(request, username=None):
+    if request.method == 'POST':
+        usuario=Usuario.objects.get(cedula_usuario=username)
+        print('POST',"ENTRO AQUI")
+        try:
+            usuario.delete()
+        except Exception as e:
+            print(e)
+    return listar_usuario(request)
