@@ -54,13 +54,13 @@ MIDDLEWARE_CLASSES = (
 
 )
 
-AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend' ,  )
+AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',"usuarios.backends.BackendUsuarios")
 
 ROOT_URLCONF = 'SIVORE.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates' ,
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR,'templates'),
                  os.path.join(BASE_DIR,'usuarios/templates')],
 
@@ -77,9 +77,9 @@ TEMPLATES = [
 ]
 
 
-TEMPLATE_DIRS = ( 
-    '/home/SIVORE/usuarios/templates', 
-) 
+TEMPLATE_DIRS = (
+    '/home/SIVORE/usuarios/templates',
+)
 
 
 WSGI_APPLICATION = 'SIVORE.wsgi.application'

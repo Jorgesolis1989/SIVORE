@@ -359,7 +359,7 @@
 									<!--Menu list item Usuario-->
 									<li>
 										<a href="/">
-											<i class="fa fa-th"></i>
+											<i class="fa fa-users"></i>
 											<span class="menu-title">
 												<strong>Usuarios</strong>
 											</span>
@@ -376,8 +376,8 @@
 
 									<!--Menu list item Corporación-->
 									<li>
-										<a href="#">
-											<i class="fa fa-flask"></i>
+										<a href="/">
+											<i class="fa fa-sitemap"></i>
 											<span class="menu-title">
 												<strong>Corporación</strong>
 												<!--<span class="pull-right badge badge-warning">9</span>-->
@@ -385,12 +385,9 @@
 											<i class="arrow"></i>
 										</a>
 
-									<ul class="collapse">
-											<li><a href="#">Crear corporación</a></li>
-											<li><a href="#">Listar corporación</a></li>
-											<li><a href="#">Editar corporación</a></li>
-											<li><a href="#">Eliminar corporación</a></li>
-
+									    <ul class="collapse">
+                                            <li><a href="{% url 'registro_corporacion' %}">Crear corporación</a></li>
+											<li><a href="{% url 'listar_corporacion' %}">Listar corporaciones</a></li>
 										</ul>
 									</li>
 									<!--end Menu list item Corporación-->
@@ -398,7 +395,7 @@
 									<!--Menu list item votantes-->
 									<li>
 										<a href="#">
-											<i class="fa fa-flask"></i>
+											<i class="fa fa-users"></i>
 											<span class="menu-title">
 												<strong>Votantes</strong>
 												<!--<span class="pull-right badge badge-warning">9</span>-->
@@ -437,7 +434,7 @@
 									<!--Menu list item planchas-->
 									<li>
 										<a href="#">
-											<i class="fa fa-flask"></i>
+											<i class="fa fa-list-alt"></i>
 											<span class="menu-title">
 												<strong>Planchas</strong>
 												<!--<span class="pull-right badge badge-warning">9</span>-->
@@ -508,7 +505,7 @@
 									<!--Menu list item Resultado final-->
 									<li>
 										<a href="#">
-											<i class="fa fa-line-chart"></i>
+											<i class="fa fa-file"></i>
 											<span class="menu-title">
 												Resultado final
 												<i class="arrow"></i>
