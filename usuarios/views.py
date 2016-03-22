@@ -77,13 +77,14 @@ def login_view(request):
 @permission_required("usuarios.Administrador" , login_url="/")
 def registro_usuario(request):
     mensaje = ""
+    llamarMensaje = ""
     if request.method == 'POST':
         form = FormularioRegistroUsuario(request.POST)
 
         #Si el formulario es valido y tiene datos
         if form.is_valid():
 
-            llamarMensaje = ""
+
 
             #Capture la cedula del usuario
             cedula_usuario = form.cleaned_data["cedula_usuario"]
@@ -118,12 +119,12 @@ def registro_usuario(request):
 
                 form = FormularioRegistroUsuario()
                 mensaje = "El usuario se guardo correctamente, la contraseña se envío al correo " + usuario.email
-                llamarMensaje = "exito"
+                llamarMensaje = "exito_usuario"
 
             else:
                 form = FormularioRegistroUsuario()
                 mensaje = "El usuario " + str(cedula_usuario)  + " ya esta registrado"
-                llamarMensaje = "fracaso"
+                llamarMensaje = "fracaso_usuario"
 
 
             return render_to_response('registro_usuario.html', {'mensaje': mensaje, 'form': form , 'llamarMensaje': llamarMensaje}, context_instance=RequestContext(request))
@@ -144,7 +145,7 @@ def listar_usuario(request):
     usuarios = Usuario.objects.all()
     llamarMensaje = request.session.pop('llamarMensaje', None)
     mensaje = request.session.pop('mensaje', None)
-    print(llamarMensaje , mensaje)
+
     return render(request, 'listar.html', {'usuarios': usuarios ,'llamarMensaje': llamarMensaje ,'mensaje': mensaje} )
 
 #Edicion usuarios
@@ -171,7 +172,7 @@ def editar_usuario(request, username=None):
                 print(e)
 
             #redireccionando a la vista
-            llamarMensaje = "edito"
+            llamarMensaje = "edito_usuario"
             mensaje = "Se editó el usuario " +  str(usuario.cedula_usuario) +" sactisfactoriamente"
             request.session['llamarMensaje'] = llamarMensaje
             request.session['mensaje'] = mensaje
@@ -198,7 +199,7 @@ def eliminar_usuario(request, username=None):
             print(e)
 
         #redireccionando a la vista
-        llamarMensaje = "elimino"
+        llamarMensaje = "elimino_usuario"
         mensaje = "Se eliminó el usuario " +  str(username) +" sactisfactoriamente"
         request.session['llamarMensaje'] = llamarMensaje
         request.session['mensaje'] = mensaje

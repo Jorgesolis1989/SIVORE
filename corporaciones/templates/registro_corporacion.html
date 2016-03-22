@@ -44,7 +44,6 @@
 
                 </fieldset>
                 <!--===================================================-->
-                {{ mensaje }} {{ form.error_messages }}
                 </div>
                     <div class="panel-footer">
                         <div class="row">
@@ -57,4 +56,10 @@
             </form>
         </div>
 </div>
+    <script>
+    window.onload = function() {
+    llamarMensajes( '{{ llamarMensaje }}' , '{{ mensaje }}');
+    };
+    </script>
+
 {% endblock %}

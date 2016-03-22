@@ -1,5 +1,5 @@
 from django.shortcuts import render_to_response
-from django.shortcuts import render
+from django.shortcuts import render ,redirect
 from django.template.context import RequestContext
 from corporaciones.models import Corporacion
 from django.contrib.auth.decorators import permission_required
@@ -34,12 +34,14 @@ def registro_corporacion(request):
                     print(e)
 
                 form = FormularioRegistroCorporacion()
-                mensaje = "La corporación se guardo correctamente"
+                llamarMensaje = "exito_corporacion"
+                mensaje = "La corporación "+ str(id_corporation)  +" se guardo correctamente"
             else:
                 form = FormularioRegistroCorporacion()
+                llamarMensaje = "fracaso_corporacion"
                 mensaje = "La corporación " + str(id_corporation)  + " ya esta registrada"
 
-            return render_to_response('registro_corporacion.html', {'mensaje': mensaje, 'form': form}, context_instance=RequestContext(request))
+            return render_to_response('registro_corporacion.html', {'mensaje': mensaje, 'form': form , "llamarMensaje": llamarMensaje}, context_instance=RequestContext(request))
         else:
             form = FormularioRegistroCorporacion()
             data = {
@@ -54,8 +56,11 @@ def registro_corporacion(request):
 # Vista para listar corporaciones
 @permission_required("usuarios.Administrador", login_url="/")
 def listar_corporacion(request):
+
+    llamarMensaje = request.session.pop('llamarMensaje', None)
+    mensaje = request.session.pop('mensaje', None)
     corporaciones = Corporacion.objects.all()
-    return render(request, 'listar_corporaciones.html', {'corporaciones': corporaciones})
+    return render(request, 'listar_corporaciones.html', {'corporaciones': corporaciones , 'llamarMensaje': llamarMensaje,'mensaje':mensaje })
 
 #Edicion usuarios
 @permission_required("usuarios.Administrador" , login_url="/")
@@ -77,7 +82,12 @@ def editar_corporacion(request, id_corporation=None):
                 print(e)
 
             #Consultando la corporacion en la base de datos.
-            return listar_corporacion(request)
+            llamarMensaje = "edito_corporacion"
+            mensaje = "Se editó la corporacion " +  str(corporacion.id_corporation) +" sactisfactoriamente"
+            request.session['llamarMensaje'] = llamarMensaje
+            request.session['mensaje'] = mensaje
+
+            return redirect("listar_corporacion")
     else:
         if id_corporation is None:
             return render(request, 'administrador.html')
@@ -96,4 +106,9 @@ def eliminar_corporacion(request, id_corporation=None):
             corporacion.delete()
         except Exception as e:
             print(e)
-    return listar_corporacion(request)
+    llamarMensaje = "elimino_corporacion"
+    mensaje = "Se eliminó la corporacion " +  str(corporacion.id_corporation) +" sactisfactoriamente"
+    request.session['llamarMensaje'] = llamarMensaje
+    request.session['mensaje'] = mensaje
+
+    return redirect("listar_corporacion")
