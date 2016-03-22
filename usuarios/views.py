@@ -10,7 +10,7 @@ from django.core.urlresolvers import reverse_lazy
 import hashlib
 from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response , redirect
 from django.template.context import RequestContext
 from django.core.mail import EmailMessage
 
@@ -82,6 +82,9 @@ def registro_usuario(request):
 
         #Si el formulario es valido y tiene datos
         if form.is_valid():
+
+            llamarMensaje = ""
+
             #Capture la cedula del usuario
             cedula_usuario = form.cleaned_data["cedula_usuario"]
 
@@ -101,9 +104,6 @@ def registro_usuario(request):
                 password = User.objects.make_random_password()
                 usuario.set_password(password)
 
-                #usuario.user_permissions.add(form.cleaned_data["rol"])
-                print(password)
-
                 # Enviando contraseña al correo electronico registrado.
                 mensaje = "Señor(a) ", usuario.first_name , "\nSu usuario de acceso es: ", usuario.cedula_usuario , "\n Contraseña: ", usuario.password
                 #send_mail('Envío de contraseña de acceso a SIVORE', mensaje, 'sivoreunivalle@gmail.com', [usuario.email], fail_silently=False)
@@ -118,11 +118,15 @@ def registro_usuario(request):
 
                 form = FormularioRegistroUsuario()
                 mensaje = "El usuario se guardo correctamente, la contraseña se envío al correo " + usuario.email
+                llamarMensaje = "exito"
+
             else:
                 form = FormularioRegistroUsuario()
                 mensaje = "El usuario " + str(cedula_usuario)  + " ya esta registrado"
+                llamarMensaje = "fracaso"
 
-            return render_to_response('registro_usuario.html', {'mensaje': mensaje, 'form': form}, context_instance=RequestContext(request))
+
+            return render_to_response('registro_usuario.html', {'mensaje': mensaje, 'form': form , 'llamarMensaje': llamarMensaje}, context_instance=RequestContext(request))
         else:
             form = FormularioRegistroUsuario()
             data = {
@@ -132,13 +136,16 @@ def registro_usuario(request):
     else:
         form = FormularioRegistroUsuario()
 
-    return render(request, 'registro_usuario.html',{'mensaje': mensaje, 'form': form})
+    return render(request, 'registro_usuario.html',{'mensaje': mensaje, 'form': form })
 
 # Vista para listar usuarios
 @permission_required("usuarios.Administrador" , login_url="/")
 def listar_usuario(request):
     usuarios = Usuario.objects.all()
-    return render(request, 'listar.html', {'usuarios': usuarios})
+    llamarMensaje = request.session.pop('llamarMensaje', None)
+    mensaje = request.session.pop('mensaje', None)
+    print(llamarMensaje , mensaje)
+    return render(request, 'listar.html', {'usuarios': usuarios ,'llamarMensaje': llamarMensaje ,'mensaje': mensaje} )
 
 #Edicion usuarios
 @permission_required("usuarios.Administrador" , login_url="/")
@@ -163,8 +170,12 @@ def editar_usuario(request, username=None):
             except Exception as e:
                 print(e)
 
-            #Consultando el usuario en la base de datos.
-            return listar_usuario(request)
+            #redireccionando a la vista
+            llamarMensaje = "edito"
+            mensaje = "Se editó el usuario " +  str(usuario.cedula_usuario) +" sactisfactoriamente"
+            request.session['llamarMensaje'] = llamarMensaje
+            request.session['mensaje'] = mensaje
+            return redirect("listar_usuario")
     else:
         if username is None:
             return render(request, 'administrador.html')
@@ -185,4 +196,10 @@ def eliminar_usuario(request, username=None):
             usuario.delete()
         except Exception as e:
             print(e)
-    return listar_usuario(request)
+
+        #redireccionando a la vista
+        llamarMensaje = "elimino"
+        mensaje = "Se eliminó el usuario " +  str(username) +" sactisfactoriamente"
+        request.session['llamarMensaje'] = llamarMensaje
+        request.session['mensaje'] = mensaje
+        return redirect("listar_usuario")

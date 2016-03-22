@@ -33,6 +33,9 @@ $(document).ready(function() {
 	],
 	alertContent = $('#demo-preview-alert-1').find('.alert').html(),
 	autoClose = true;
+
+
+
 	$('#demo-alert-close-1').on('nifty.ch.checked', function(){
 		autoClose = true;
 	});

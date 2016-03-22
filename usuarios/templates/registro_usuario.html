@@ -1,9 +1,10 @@
 {% extends "base-admin.html" %}
+
 {% block title %}Crear usuario{% endblock title %}
 {% block content %}
     <!--<h1 class="page-header text-overflow">Registro de usuarios</h1>-->
 <!--<div class="panel">-->
-        <div class="panel panel-colorful panel-primary">
+        <div id=content2 class="panel panel-colorful panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title">Registro de usuario</h3>
             </div>
@@ -89,7 +90,7 @@
                         </div>
                     </fieldset>
                 <!--===================================================-->
-                {{ mensaje }} {{ form.error_messages }}
+                {{ form.error_messages }}
                 </div>
                     <div class="panel-footer">
                         <div class="row">
@@ -132,6 +133,14 @@
 
             </form>
         </div>
+
+    <script>
+    window.onload = function() {
+    llamarMensajes( '{{ llamarMensaje }}' , '{{ mensaje }}');
+};
+
+</script>
+
         <!-- end section tab cargar usuario-->
        <!-- </div>-->
 <!--</div>-->

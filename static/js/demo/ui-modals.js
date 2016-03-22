@@ -39,13 +39,6 @@
 			if (result) {
 				document.formDelete.action = "/usuarios/eliminar/"+id
 				document.formDelete.submit()
-				$.niftyNoty({
-					type: 'success',
-					icon : 'fa fa-check',
-					message : 'User confirmed dialog',
-					container : 'floating',
-					timer : 3000
-				});
 			}
 		});
 	});
