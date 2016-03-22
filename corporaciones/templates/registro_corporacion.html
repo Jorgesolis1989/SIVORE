@@ -1,0 +1,60 @@
+{% extends "base-admin.html" %}
+{% block title %}Crear corporación{% endblock title %}
+{% block content %}
+    <!--<h1 class="page-header text-overflow">Corporación</h1>-->
+<div class="panel">
+        <div class="panel panel-colorful panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Registro corporación</h3>
+            </div>
+        </div>
+        <div class="panel-body">
+            <!--<ul class="nav nav-tabs">
+                <li class="active"><a href="#demo-bsc-tab-1" data-toggle="tab"><i class="fa"></i> Crear corporación</a></li>
+            </ul>-->
+            <form id="demo-bv-bsc-tabs" class="form-horizontal" action="" method="post">
+                    <div class="tab-pane pad-btm fade in active" id="demo-bsc-tab-1">
+                        <hr>
+                        {% csrf_token %}
+                    <div class="panel-body">
+                    <fieldset>
+                        <div class="form-group">
+                        <label class="col-lg-3 control-label">Número de la Corporación</label>
+                            <div class="col-lg-7">
+                            {{ form.id_corporation }}
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <div class="form-group">
+                        <label class="col-lg-3 control-label">Nombre Corporación</label>
+                            <div class="col-lg-7">
+                                {{ form.name_corporation}}
+                            </div>
+                        </div>
+                    </fieldset>
+                        <fieldset>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">Número de la Facultad</label>
+                                <div class="col-lg-7">
+                                       {{ form.id_facultad}}
+                                </div>
+                        </div>
+
+                </fieldset>
+                <!--===================================================-->
+                {{ mensaje }} {{ form.error_messages }}
+                </div>
+                    <div class="panel-footer">
+                        <div class="row">
+                            <div class="col-sm-7 col-sm-offset-3">
+                            <button class="btn btn-primary btn-labeled fa fa-send fa-lg" type="submit">Crear</button>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+            </form>
+        </div>
+</div>
+{% endblock %}

@@ -17,7 +17,7 @@ from django.core.mail import EmailMessage
 from django.shortcuts import render
 from usuarios.models import Usuario
 from usuarios.forms import FormularioLogin
-from usuarios.forms import FormularioRegistroUsuario , FormularioEditarUsuario
+from usuarios.forms import FormularioRegistroUsuario, FormularioEditarUsuario
 from usuarios.backends import BackendUsuarios
 
 #Método auxiliar para encontrar la vista del usuario

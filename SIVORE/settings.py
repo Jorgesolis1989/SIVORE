@@ -40,6 +40,7 @@ INSTALLED_APPS = {
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'usuarios',
+    'corporaciones',
 }
 
 MIDDLEWARE_CLASSES = (
@@ -54,7 +55,7 @@ MIDDLEWARE_CLASSES = (
 
 )
 
-AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend' , "usuarios.backends.BackendUsuarios"  )
+AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend', "usuarios.backends.BackendUsuarios")
 
 ROOT_URLCONF = 'SIVORE.urls'
 
@@ -62,7 +63,8 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates' ,
         'DIRS': [os.path.join(BASE_DIR,'templates'),
-                 os.path.join(BASE_DIR,'/home/SIVORE/usuarios/templates')],
+                 os.path.join(BASE_DIR,'usuarios/templates'),
+                 os.path.join(BASE_DIR,'corporaciones/templates')],
 
         'APP_DIRS': True,
         'OPTIONS': {

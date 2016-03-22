@@ -1,0 +1,51 @@
+{% extends "base-admin.html" %}
+{% block title %}Editar corporación{% endblock title %}
+{% block content %}
+    <!--<h1 class="page-header text-overflow"></h1>-->
+<div class="panel">
+        <div class="panel panel-colorful panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Datos de una corporación</h3>
+            </div>
+        </div>
+        <div class="panel-body">
+            <form id="demo-bvd-notempty" method="post" action="" class="form-horizontal">
+                {% csrf_token %}
+                <div class="panel-body">
+                <fieldset>
+                    <div class="form-group">
+                    <label class="col-lg-3 control-label">Número de corporación</label>
+                        <div class="col-lg-7">
+                        {{ form.id_corporation }}
+                        </div>
+                    </div>
+                </fieldset>
+
+            <fieldset>
+                <div class="form-group">
+                <label class="col-lg-3 control-label">Nombre corporación</label>
+                    <div class="col-lg-7">
+                        {{ form.name_corporation }}
+                    </div>
+                </div>
+            </fieldset>
+
+                    <fieldset>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Número de Facultad</label>
+                    <div class="col-lg-7">
+                           {{ form.id_facultad}}
+                    </div>
+            </div>
+            </fieldset>
+            {{ mensaje }} {{ form.error_messages }}
+            </div>
+                <div class="tab-footer clearfix">
+                    <div class="col-lg-7 col-lg-offset-3">
+                        <button type="submit" class="btn btn-primary btn-labeled fa fa-check fa-lg">Actualizar</button>
+                    </div>
+                </div>
+                </form>
+        </div>
+</div>
+{% endblock %}

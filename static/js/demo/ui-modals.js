@@ -28,17 +28,40 @@
 
 
 
-	// BOOTBOX - CONFIRM MODAL
+	// BOOTBOX - CONFIRM MODAL - PARA ELIMINAR USUARIOS
 	// =================================================================
 	// Require Bootbox
 	// http://bootboxjs.com/
 	// =================================================================
 	$('.demo-bootbox-confirm').on('click', function(){
 		var id = $(this).attr('id')
-		bootbox.confirm("Esta seguro que desea eliminar el usuario?", function(result) {
+		bootbox.confirm("Esta seguro que desea eliminar el usuario con cédula "+id+" ?", function(result) {
 			if (result) {
 				document.formDelete.action = "/usuarios/eliminar/"+id
 				document.formDelete.submit()
+			}
+		});
+	});
+
+
+	 // BOOTBOX - CONFIRM MODAL - PARA ELIMINAR CORPORACIONES
+	// =================================================================
+	// Require Bootbox
+	// http://bootboxjs.com/
+	// =================================================================
+	$('.demo-bootbox-confirm-corp').on('click', function(){
+		var id = $(this).attr('id')
+		bootbox.confirm("Esta seguro que desea eliminar la corporación número "+id +" ?", function(result) {
+			if (result) {
+				document.formDelete.action = "/corporaciones/eliminar/"+id
+				document.formDelete.submit()
+				$.niftyNoty({
+					type: 'success',
+					icon : 'fa fa-check',
+					message : 'User confirmed dialog',
+					container : 'floating',
+					timer : 3000
+				});
 			}
 		});
 	});
