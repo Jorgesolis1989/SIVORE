@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Usuario(User):
-	cedula_usuario = models.IntegerField(null=False, unique=True, primary_key=True)
+	cedula_usuario = models.BigIntegerField(null=False, unique=True, primary_key=True)
 
 	class Meta:
 		ordering = ["first_name"]
@@ -17,3 +17,5 @@ class Usuario(User):
 
 	#added = models.DateTimeField(auto_now_add=True ,  default=timezone.now)
 	#updated = models.DateTimeField(auto_now=True , default=timezone.now )
+
+

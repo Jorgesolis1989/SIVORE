@@ -1,10 +1,6 @@
 from django import forms
 from usuarios.models import Usuario
-from django.contrib.auth.models import User
-from django.forms import ModelForm
-
-"""
-Este formulario se encuentran los datos para logueo del usuario
+"""Este formulario se encuentran los datos para logueo del usuario
 """
 class FormularioLogin(forms.Form):
     username = forms.IntegerField(
@@ -25,13 +21,13 @@ Este formulario se encuentran los datos para registrar el  usuario
 class FormularioRegistroUsuario(forms.Form):
 
     cedula_usuario = forms.IntegerField(
-        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí la cedula de usuario', 'min':'1' , 'required':'true'}))
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí la cedula de usuario', 'min':'1' }))
 
     nombre_usuario = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí el nombre del usuario', 'required':'true'}))
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí el nombre del usuario'}))
 
     apellido_usuario = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí el apellido  del usuario', 'required':'true'}))
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí el apellido  del usuario'}))
 
     CHOICES = [('Administrador','Administrador'), ('Votante','Votante'), ('Superior','Superior') ]
     rol = forms.ChoiceField(widget=forms.RadioSelect()   , choices=CHOICES)
@@ -40,7 +36,7 @@ class FormularioRegistroUsuario(forms.Form):
         widget=forms.CheckboxInput(attrs={'class': 'form-checkbox form-icon'}))
 
     email = forms.EmailField(
-        widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí su correo electronico', 'required':'true'}))
+        widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí su correo electronico'}))
 
     def usuario_existe(self):
         diccionario_limpio = self.cleaned_data
@@ -54,13 +50,13 @@ class FormularioRegistroUsuario(forms.Form):
 class FormularioEditarUsuario(forms.Form):
 
     cedula_usuario = forms.IntegerField(
-        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí la cedula de usuario', 'min':'1' , 'required':'true'}))
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí la cedula de usuario', 'min':'1'}))
 
     nombre_usuario = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí el nombre del usuario', 'required':'true'}))
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí el nombre del usuario'}))
 
     apellido_usuario = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí el apellido  del usuario', 'required':'true'}))
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí el apellido  del usuario'}))
 
     CHOICES = [('Administrador','Administrador'), ('Votante','Votante'), ('Superior','Superior') ]
     rol = forms.ChoiceField(widget=forms.RadioSelect()   , choices=CHOICES)
@@ -69,8 +65,10 @@ class FormularioEditarUsuario(forms.Form):
         widget=forms.CheckboxInput(attrs={'class': 'form-checkbox form-icon'}))
 
     email = forms.EmailField(
-        widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí su correo electronico', 'required':'true'}))
+        widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí su correo electronico'}))
 
 
+class FormularioCargar(forms.Form):
+    file = forms.FileField(label='Seleccionar un archivo')
 
 

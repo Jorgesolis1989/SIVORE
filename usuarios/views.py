@@ -13,11 +13,13 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response , redirect
 from django.template.context import RequestContext
 from django.core.mail import EmailMessage
+import csv
+from io import StringIO
 
 from django.shortcuts import render
 from usuarios.models import Usuario
 from usuarios.forms import FormularioLogin
-from usuarios.forms import FormularioRegistroUsuario, FormularioEditarUsuario
+from usuarios.forms import FormularioRegistroUsuario, FormularioEditarUsuario, FormularioCargar
 from usuarios.backends import BackendUsuarios
 
 #Método auxiliar para encontrar la vista del usuario
@@ -78,13 +80,13 @@ def login_view(request):
 def registro_usuario(request):
     mensaje = ""
     llamarMensaje = ""
-    if request.method == 'POST':
+    #Verificación para crear un solo usuario
+    if request.method == 'POST' and "btncreate" in request.POST:
         form = FormularioRegistroUsuario(request.POST)
+        form2 = FormularioCargar()
 
         #Si el formulario es valido y tiene datos
         if form.is_valid():
-
-
 
             #Capture la cedula del usuario
             cedula_usuario = form.cleaned_data["cedula_usuario"]
@@ -115,29 +117,88 @@ def registro_usuario(request):
                 except Exception as e:
                     print(e)
 
+                print(form.cleaned_data["rol"])
                 usuario.user_permissions.add(Permission.objects.get(codename=form.cleaned_data["rol"]))
 
                 form = FormularioRegistroUsuario()
                 mensaje = "El usuario se guardo correctamente, la contraseña se envío al correo " + usuario.email
                 llamarMensaje = "exito_usuario"
 
+            # Si el usuario ya existe en la BD
             else:
                 form = FormularioRegistroUsuario()
                 mensaje = "El usuario " + str(cedula_usuario)  + " ya esta registrado"
                 llamarMensaje = "fracaso_usuario"
 
+            return render(request , 'registro_usuario.html', {'mensaje': mensaje, 'form': form , 'form2':form2, 'llamarMensaje': llamarMensaje})
 
-            return render_to_response('registro_usuario.html', {'mensaje': mensaje, 'form': form , 'llamarMensaje': llamarMensaje}, context_instance=RequestContext(request))
+        #si no es valido el formulario crear
         else:
             form = FormularioRegistroUsuario()
             data = {
                 'form': form,
+                'form2':form2,
             }
-            return render_to_response('registro_usuario.html', data, context_instance=RequestContext(request))
+            return render(request, 'registro_usuario.html', data)
+
+    #Verificación para cargar usuarios
+    elif request.method == 'POST' and "btnload" in request.POST:
+        form = FormularioRegistroUsuario()
+        form2 = FormularioCargar(request.POST, request.FILES)
+        #Si el formulario es valido y tiene datos
+        if form2.is_valid():
+            csvf = StringIO(request.FILES['file'].read().decode())
+            reader = csv.reader(csvf, delimiter=',')
+            print(reader)
+            counter=0
+            for row in reader:
+                if (counter > 0):
+                    #Consultando el usuario en la base de datos.
+                    usuario = Usuario.objects.filter(cedula_usuario=row[0])
+                    print("Buscando usuario" + row[0])
+
+                    if not usuario:
+                        usuario = Usuario()
+                        usuario.cedula_usuario = row[0]
+                        usuario.first_name = row[1]
+                        usuario.last_name = row[2]
+                        usuario.email = row[3]
+                        usuario.username = row[0]
+                        usuario.is_active = True
+                        #generando el password aleatorio.
+                        password = User.objects.make_random_password()
+                        usuario.set_password(password)
+
+                        # Enviando contraseña al correo electronico registrado.
+                        mensaje = "Señor(a) ", usuario.first_name , "\nSu usuario de acceso es: ", usuario.cedula_usuario , "\n Contraseña: ", usuario.password
+                        print(mensaje)
+                        #send_mail('Envío de contraseña de acceso a SIVORE', mensaje, 'sivoreunivalle@gmail.com', [usuario.email], fail_silently=False)
+
+                        #Crea el usuario en la BD s i hay excepcion
+                        try:
+                            usuario.save()
+                            counter += 1
+                            print("Cree a "+ usuario.first_name)
+                        except Exception as e:
+                            print(e)
+                        usuario.user_permissions.add(Permission.objects.get(codename='Votante'))
+                    else:
+                        usuario.is_active = True
+                else:
+                    counter += 1
+
+            mensaje = "Se registraron exitosamente " + str(counter - 1) + " votantes en el sistemas"
+            llamarMensaje = "exito_usuario"
+
+        else:
+            print("invalido form2")
+        return render_to_response('registro_usuario.html', {'mensaje': mensaje, 'form': form , 'form2':form2, 'llamarMensaje': llamarMensaje}, context_instance=RequestContext(request))
+
+    #Ninguno de los dos formularios crear  ni cargar Method GET
     else:
         form = FormularioRegistroUsuario()
-
-    return render(request, 'registro_usuario.html',{'mensaje': mensaje, 'form': form })
+        form2 = FormularioCargar()
+        return render_to_response('registro_usuario.html',{'mensaje': mensaje, 'form': form , 'form2':form2, 'llamarMensaje': llamarMensaje}, context_instance=RequestContext(request))
 
 # Vista para listar usuarios
 @permission_required("usuarios.Administrador" , login_url="/")
@@ -204,3 +265,4 @@ def eliminar_usuario(request, username=None):
         request.session['llamarMensaje'] = llamarMensaje
         request.session['mensaje'] = mensaje
         return redirect("listar_usuario")
+
