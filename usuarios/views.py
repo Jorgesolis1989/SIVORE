@@ -142,7 +142,7 @@ def registro_usuario(request):
             }
             return render(request, 'registro_usuario.html', data)
 
-    #Verificación para cargar usuarios
+    #Verificación para cargar usuarios votantes
     elif request.method == 'POST' and "btnload" in request.POST:
         form = FormularioRegistroUsuario()
         form2 = FormularioCargar(request.POST, request.FILES)
@@ -155,7 +155,7 @@ def registro_usuario(request):
             for row in reader:
                 if (counter > 0):
                     #Consultando el usuario en la base de datos.
-                    usuario = Usuario.objects.filter(cedula_usuario=row[0])
+                    usuario = Usuario.objects.get(cedula_usuario=row[0])
                     print("Buscando usuario" + row[0])
 
                     if not usuario:
@@ -175,16 +175,16 @@ def registro_usuario(request):
                         print(mensaje)
                         #send_mail('Envío de contraseña de acceso a SIVORE', mensaje, 'sivoreunivalle@gmail.com', [usuario.email], fail_silently=False)
 
-                        #Crea el usuario en la BD s i hay excepcion
-                        try:
-                            usuario.save()
-                            counter += 1
-                            print("Cree a "+ usuario.first_name)
-                        except Exception as e:
-                            print(e)
-                        usuario.user_permissions.add(Permission.objects.get(codename='Votante'))
                     else:
                         usuario.is_active = True
+                    #Crea el usuario en la BD s i hay excepcion
+                    try:
+                        usuario.save()
+                        counter += 1
+                        print("Cree a " + usuario.first_name)
+                    except Exception as e:
+                        print(e)
+                    usuario.user_permissions.add(Permission.objects.get(codename='Votante'))
                 else:
                     counter += 1
 
