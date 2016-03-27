@@ -1,7 +1,6 @@
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth.views import logout
-from corporaciones import views
 from usuarios import views
 
 
@@ -14,4 +13,5 @@ urlpatterns = [
 	url(r'^logout', logout,  {'next_page': '/'} , name='logout'),
 	url(r'^usuarios/', include('usuarios.urls')),
 	url(r'^corporaciones/', include('corporaciones.urls')),
+	url(r'^candidatos/', include('candidatos.urls')),
 ]
