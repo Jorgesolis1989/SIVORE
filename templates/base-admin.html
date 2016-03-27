@@ -405,7 +405,7 @@
 
 									<ul class="collapse">
 											<li><a href="#">Crear votantes</a></li>
-
+                                            <li><a href="{% url 'listar_usuario' %}">Listar votantes</a></li>
 										</ul>
 									</li>
 									<!--end Menu list item votantes-->
@@ -422,10 +422,8 @@
 										</a>
 
 									<ul class="collapse">
-											<li><a href="#">Crear candidatos</a></li>
+											<li><a href="{% url 'registro_candidato' %}">Crear candidatos</a></li>
 											<li><a href="#">Listar candidatos</a></li>
-											<li><a href="#">Editar candidatos</a></li>
-											<li><a href="#">Eliminar candidatos</a></li>
 
 										</ul>
 									</li>
@@ -446,7 +444,6 @@
 											<li><a href="#">Crear planchas</a></li>
 											<li><a href="#">Listar planchas</a></li>
 											<li><a href="#">Editar planchas</a></li>
-											<li><a href="#">Eliminar planchas</a></li>
 
 										</ul>
 									</li>
@@ -469,7 +466,7 @@
 										<!--Submenu-->
 										<ul class="collapse">
 											<li><a href="#">Crear jornada</a></li>
-											<li><a href="#">Consultar jornada</a></li>
+											<li><a href="#">Listar jornadas</a></li>
 											<li><a href="#">Editar jornada</a></li>
 											<li><a href="#">Eliminar jornada</a></li>
 
@@ -880,7 +877,6 @@
             <div class="hide-fixed pull-right pad-rgt">Actualmente v1.0</div>
 
 
-
             <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
             <!-- Remove the class name "show-fixed" and "hide-fixed" to make the content always appears. -->
             <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -957,7 +953,6 @@
 	<script src="{% static 'plugins/datatables/media/js/dataTables.bootstrap.js'%}"></script>
 	<script src="{% static 'plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js'%}"></script>
 
-
     <!--DataTables Sample [ SAMPLE ]-->
     <script src="{% static 'js/demo/tables-datatables.js'%}"></script>
 
@@ -985,9 +980,20 @@
     <!--Alerts [ SAMPLE ]-->
     <script src="{% static 'js/demo/ui-alerts.js'%}"></script>
 
-
     <script src="{% static 'js/demo/llamarMensajes.js'%}"></script>
 
+    <script src="{% static 'js/demo/show-fileds-votantes.js'%}"></script>
 
+    <!--Bootstrap Wizard [ OPTIONAL ]-->
+    <script src="{% static 'plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js'%}"></script>
+
+    <!--Bootstrap Validator [ OPTIONAL ]-->
+    <script src="{% static 'plugins/bootstrap-validator/bootstrapValidator.min.js'%}"></script>
+
+    <!--Demo script [ DEMONSTRATION ]-->
+    <script src="{% static 'js/demo/nifty-demo.min.js'%}"></script>
+
+    <!--Form Wizard [ SAMPLE ]-->
+    <script src="{% static 'js/demo/form-wizard.js'%}"></script>
 </body>
 </html>

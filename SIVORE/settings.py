@@ -41,6 +41,7 @@ INSTALLED_APPS = {
     'django.contrib.staticfiles',
     'usuarios',
     'corporaciones',
+    'candidatos',
 }
 
 MIDDLEWARE_CLASSES = (
@@ -64,7 +65,8 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates' ,
         'DIRS': [os.path.join(BASE_DIR,'templates'),
                  os.path.join(BASE_DIR,'usuarios/templates'),
-                 os.path.join(BASE_DIR,'corporaciones/templates')],
+                 os.path.join(BASE_DIR,'corporaciones/templates'),
+                 os.path.join(BASE_DIR,'candidatos/templates')],
 
         'APP_DIRS': True,
         'OPTIONS': {

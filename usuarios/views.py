@@ -1,26 +1,14 @@
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import Permission
-from django.views.decorators.csrf import requires_csrf_token
-from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import permission_required
-#from  usuarios.forms import FormularioLogin
-from django.core.urlresolvers import reverse_lazy
-import hashlib
-from django.core.mail import send_mail
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render_to_response , redirect
+from django.shortcuts import render_to_response, redirect, render
 from django.template.context import RequestContext
-from django.core.mail import EmailMessage
 import csv
 from io import StringIO
-
-from django.shortcuts import render
 from usuarios.models import Usuario
 from usuarios.forms import FormularioLogin
 from usuarios.forms import FormularioRegistroUsuario, FormularioEditarUsuario, FormularioCargar
-from usuarios.backends import BackendUsuarios
 
 #Método auxiliar para encontrar la vista del usuario
 def retornar_vista(request , usuario):
@@ -131,6 +119,7 @@ def registro_usuario(request):
                 mensaje = "El usuario " + str(cedula_usuario)  + " ya esta registrado"
                 llamarMensaje = "fracaso_usuario"
 
+
             return render(request , 'registro_usuario.html', {'mensaje': mensaje, 'form': form , 'form2':form2, 'llamarMensaje': llamarMensaje})
 
         #si no es valido el formulario crear
@@ -204,6 +193,7 @@ def registro_usuario(request):
     else:
         form = FormularioRegistroUsuario()
         form2 = FormularioCargar()
+        print(form)
         return render_to_response('registro_usuario.html',{'mensaje': mensaje, 'form': form , 'form2':form2, 'llamarMensaje': llamarMensaje}, context_instance=RequestContext(request))
 
 # Vista para listar usuarios
@@ -271,4 +261,3 @@ def eliminar_usuario(request, username=None):
         request.session['llamarMensaje'] = llamarMensaje
         request.session['mensaje'] = mensaje
         return redirect("listar_usuario")
-
