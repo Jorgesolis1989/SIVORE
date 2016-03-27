@@ -151,14 +151,16 @@ def registro_usuario(request):
             csvf = StringIO(request.FILES['file'].read().decode())
             reader = csv.reader(csvf, delimiter=',')
             print(reader)
-            counter=0
+            line=0
+            useredit =0;
+            usercreate=0;
             for row in reader:
-                if (counter > 0):
+                if (line > 0):
                     #Consultando el usuario en la base de datos.
-                    usuario = Usuario.objects.get(cedula_usuario=row[0])
                     print("Buscando usuario" + row[0])
-
-                    if not usuario:
+                    try:
+                        usuario = Usuario.objects.get(cedula_usuario=row[0])
+                    except Usuario.DoesNotExist:
                         usuario = Usuario()
                         usuario.cedula_usuario = row[0]
                         usuario.first_name = row[1]
@@ -172,23 +174,26 @@ def registro_usuario(request):
 
                         # Enviando contraseña al correo electronico registrado.
                         mensaje = "Señor(a) ", usuario.first_name , "\nSu usuario de acceso es: ", usuario.cedula_usuario , "\n Contraseña: ", usuario.password
-                        print(mensaje)
-                        #send_mail('Envío de contraseña de acceso a SIVORE', mensaje, 'sivoreunivalle@gmail.com', [usuario.email], fail_silently=False)
 
+                        #send_mail('Envío de contraseña de acceso a SIVORE', mensaje, 'sivoreunivalle@gmail.com', [usuario.email], fail_silently=False)
+                        print("cree a " + usuario.first_name)
+                        usercreate +=1
                     else:
                         usuario.is_active = True
+                        print("active a " + usuario.first_name)
+                        useredit +=1
                     #Crea el usuario en la BD s i hay excepcion
                     try:
                         usuario.save()
-                        counter += 1
-                        print("Cree a " + usuario.first_name)
                     except Exception as e:
                         print(e)
+                    for permission in usuario.user_permissions.all():
+                        usuario.user_permissions.remove(permission)
                     usuario.user_permissions.add(Permission.objects.get(codename='Votante'))
                 else:
-                    counter += 1
+                    line += 1
 
-            mensaje = "Se registraron exitosamente " + str(counter - 1) + " votantes en el sistemas"
+            mensaje = "Se crearon exitosamente " + str(usercreate) + " y se activaron " + str(useredit) + " votantes en el sistemas"
             llamarMensaje = "exito_usuario"
 
         else:
