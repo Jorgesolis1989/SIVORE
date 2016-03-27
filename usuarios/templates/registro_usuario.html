@@ -15,7 +15,7 @@
             <!-- Nav tabs -->
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#demo-bsc-tab-1" data-toggle="tab"><i class="fa"></i> Crear usuario</a></li>
-                <li><a href="#demo-bsc-tab-2" data-toggle="tab"><i class="fa"></i>Cargar archivo con usuarios</a></li>
+                <li><a href="#demo-bsc-tab-2" data-toggle="tab"><i class="fa"></i>Cargar usuarios votantes</a></li>
             </ul>
             <!-- Tabs Content -->
             <div class="tab-content">
@@ -102,29 +102,29 @@
                 </div>
 
                 <div class="tab-pane fade" id="demo-bsc-tab-2">
-                    <!--<h4 class="mar-btm text-thin">Cargar usuarios</h4>-->
                     <hr>
                     <div class="panel">
-                         <div class="panel-body">
-
-                    <form enctype="multipart/form-data"  action="" method="post">
-                        {% csrf_token %}
-                        <p>{{ form.non_field_errors }}</p>
-                        <p>{{ form.file.label_tag }} {{ form.file.help_text }}
-                        {{ form.non.errors }}
-                        </p>
-
-                        {{ form2.file }}
-
-                        <!--<input name="file" type="file" multiple /> -->
-                        <input name="btnload" type="submit" value="Cargar" />
-                    </form>
+                        <div class="panel-body">
+                            <form enctype="multipart/form-data"  action="" method="post" id="demo-dropzone" class="dropzone">
+                                {% csrf_token %}
+                                <div class="dz-default dz-message">
+                                    <div class="dz-icon icon-wrap icon-circle icon-wrap-md">
+                                        <i class="fa fa-cloud-upload fa-3x"></i>
+                                    </div>
+                                    <div>
+                                        <p class="dz-text">{{ form2.file }}</p>
+                                        <div class="fallback">
+                                            <p class="dz-text"><input name="btnload" type="submit" value="Subir" /></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                     <!--===================================================-->
                     <!-- End Dropzonejs -->
                         </div>
+                    </div>
                 </div>
-                </div>
-                </div>
+            </div>
      </div>
     <script>
     window.onload = function() {
