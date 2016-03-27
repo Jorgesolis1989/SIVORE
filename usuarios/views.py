@@ -108,6 +108,11 @@ def registro_usuario(request):
                 password = User.objects.make_random_password()
                 usuario.set_password(password)
 
+                # Creando en la tabla votante
+                if form.cleaned_data["rol"] == "Votante":
+                    print("Es votante")
+
+
                 # Enviando contraseña al correo electronico registrado.
                 mensaje = "Señor(a) ", usuario.first_name , "\nSu usuario de acceso es: ", usuario.cedula_usuario , "\n Contraseña: ", usuario.password
                 #send_mail('Envío de contraseña de acceso a SIVORE', mensaje, 'sivoreunivalle@gmail.com', [usuario.email], fail_silently=False)
@@ -196,8 +201,7 @@ def registro_usuario(request):
             mensaje = "Se crearon exitosamente " + str(usercreate) + " y se activaron " + str(useredit) + " votantes en el sistemas"
             llamarMensaje = "exito_usuario"
 
-        else:
-            print("invalido form2")
+
         return render_to_response('registro_usuario.html', {'mensaje': mensaje, 'form': form , 'form2':form2, 'llamarMensaje': llamarMensaje}, context_instance=RequestContext(request))
 
     #Ninguno de los dos formularios crear  ni cargar Method GET

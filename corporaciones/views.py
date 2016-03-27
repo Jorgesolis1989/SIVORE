@@ -10,6 +10,7 @@ def registro_corporacion(request):
     mensaje = ""
     if request.method == 'POST':
         form = FormularioRegistroCorporacion(request.POST)
+        print("Es Post")
 
         #Si el formulario es valido y tiene datos
         if form.is_valid():
@@ -19,13 +20,15 @@ def registro_corporacion(request):
             #Consultando la corporacion en la base de datos.
             corporacion = Corporacion.objects.filter(id_corporation=id_corporation)
 
+            print("Es Valido")
+
             #Si el usuario no existe, lo crea
             if not corporacion:
                 # Creando corporacion
                 corporacion = Corporacion()
                 corporacion.id_corporation= form.cleaned_data["id_corporation"]
                 corporacion.name_corporation= form.cleaned_data["name_corporation"]
-                corporacion.id_facultad= form.cleaned_data["id_facultad"]
+                corporacion.facultad= form.cleaned_data["facultad"]
 
                 #Crea corporacion en la BD s i hay excepcion
                 try:
@@ -47,7 +50,7 @@ def registro_corporacion(request):
             data = {
                 'form': form,
             }
-            return render_to_response('registro_usuario.html', data, context_instance=RequestContext(request))
+            return render_to_response('registro_corporacion.html', data, context_instance=RequestContext(request))
     else:
         form = FormularioRegistroCorporacion()
 
@@ -73,7 +76,7 @@ def editar_corporacion(request, id_corporation=None):
             #Capture el id de corporacion
             corporacion.id_corporation = form.cleaned_data["id_corporation"]
             corporacion.name_corporation = form.cleaned_data["name_corporation"]
-            corporacion.id_facultad = form.cleaned_data["id_facultad"]
+            corporacion.facultad = form.cleaned_data["facultad"]
 
              #Actualiza la corporacion en la BD si hay excepcion
             try:
@@ -94,7 +97,7 @@ def editar_corporacion(request, id_corporation=None):
         else:
             form = FormularioEditarCorporacion()
 
-            form.initial = {'id_corporation': corporacion.id_corporation, 'name_corporation': corporacion.name_corporation, 'id_facultad': corporacion.id_facultad}
+            form.initial = {'id_corporation': corporacion.id_corporation, 'name_corporation': corporacion.name_corporation, 'facultad': corporacion.facultad}
         return render(request, 'editar_corporacion.html', {'form': form})
 
 

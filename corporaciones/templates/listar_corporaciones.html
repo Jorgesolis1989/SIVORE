@@ -21,7 +21,7 @@
                 <tr>
                     <th>Id</th>
                     <th>Nombre</th>
-                    <th class="min-tablet">Id facultad</th>
+                    <th class="min-tablet"> Facultad</th>
                     <th class="min-desktop">Acciones</th>
                 </tr>
             </thead>
@@ -30,7 +30,11 @@
                     <tr>
                         <td>{{ corporacion.id_corporation }}</td>
                         <td>{{ corporacion.name_corporation }}</td>
-                        <td>{{ corporacion.id_facultad }}</td>
+                        {% if corporacion.facultad.DoesNotExist %}
+                            <td>{{ corporacion.facultad }}</td>
+                        {% else %}
+                            <td>No aplica</td>
+                        {% endif %}
                         <td>
                             <a class="btn btn-xs btn-default add-tooltip" data-toggle="tooltip" href="/corporaciones/editar/{{ corporacion.id_corporation }}" data-original-title="Edit" data-container="body"><i class="fa fa-pencil"></i></a>
                             <a id="{{ corporacion.id_corporation }}" class="demo-bootbox-confirm-corp"  data-toggle="tooltip" href="#" data-original-title="Delete" data-container="body"><i class="btn btn-xs btn-danger add-tooltip btn-info fa fa-times"></i></a>

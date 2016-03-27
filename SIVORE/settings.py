@@ -41,6 +41,7 @@ INSTALLED_APPS = {
     'django.contrib.staticfiles',
     'usuarios',
     'corporaciones',
+    'votantes',
 }
 
 MIDDLEWARE_CLASSES = (

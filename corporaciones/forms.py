@@ -9,8 +9,7 @@ class FormularioRegistroCorporacion(forms.Form):
     name_corporation = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí el nombre de la corporación', 'required':'true'}))
 
-    id_facultad = forms.CharField(
-        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí el id de la facultad', 'min':'1' , 'required':'true'}))
+    facultad = forms.ModelChoiceField(queryset=Corporacion.objects.all(), required=False)
 
     def corporacion_existe(self):
         diccionario_limpio = self.cleaned_data
@@ -28,6 +27,4 @@ class FormularioEditarCorporacion(forms.Form):
     name_corporation = forms.CharField(
             widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí el nombre de la corporación', 'required':'true'}))
 
-    id_facultad = forms.CharField(
-            widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí el id de la facultad', 'min':'1' , 'required':'true'}))
-
+    facultad = forms.ModelChoiceField(queryset=Corporacion.objects.all(), required=False)
