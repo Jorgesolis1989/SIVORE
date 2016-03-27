@@ -36,7 +36,7 @@ class FormularioRegistroUsuario(forms.Form):
     CHOICES = [('Administrador','Administrador'), ('Votante','Votante'), ('Superior','Superior') ]
     rol = forms.ChoiceField(widget=forms.RadioSelect()   , choices=CHOICES)
 
-    esta_activo = forms.BooleanField(
+    esta_activo = forms.BooleanField(initial=True , required=False,
         widget=forms.CheckboxInput(attrs={'class': 'form-checkbox form-icon'}))
 
     email = forms.EmailField(
@@ -65,12 +65,13 @@ class FormularioEditarUsuario(forms.Form):
     CHOICES = [('Administrador','Administrador'), ('Votante','Votante'), ('Superior','Superior') ]
     rol = forms.ChoiceField(widget=forms.RadioSelect()   , choices=CHOICES)
 
-    esta_activo = forms.BooleanField(
-        widget=forms.CheckboxInput(attrs={'class': 'form-checkbox form-icon'}))
+    esta_activo = forms.BooleanField(initial=True, required=False, widget=forms.CheckboxInput(attrs={'class': 'form-checkbox form-icon'}))
 
     email = forms.EmailField(
         widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí su correo electronico', 'required':'true'}))
 
 
+class FormularioCargaArchivo(forms.Form):
+    cargar = forms.CharField(widget=forms.FileInput(attrs={'required':'true'}))
 
 

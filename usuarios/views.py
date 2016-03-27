@@ -101,6 +101,7 @@ def registro_usuario(request):
                 usuario.last_name = form.cleaned_data["apellido_usuario"]
                 usuario.email = form.cleaned_data["email"]
                 usuario.username = cedula_usuario
+                usuario.is_active = form.cleaned_data["esta_activo"]
                 #generando el password aleatorio.
                 password = User.objects.make_random_password()
                 usuario.set_password(password)
@@ -160,7 +161,8 @@ def editar_usuario(request, username=None):
             usuario.first_name = form.cleaned_data["nombre_usuario"]
             usuario.last_name = form.cleaned_data["apellido_usuario"]
             usuario.email = form.cleaned_data["email"]
-            usuario.is_active = form.cleaned_data["esta_activo"]
+            print(form.cleaned_data["esta_activo"])
+            #usuario.is_active = form.cleaned_data["esta_activo"]
             permission =Permission.objects.get(codename=form.cleaned_data["rol"])
             usuario.user_permissions.clear()
             usuario.user_permissions.add(permission)
