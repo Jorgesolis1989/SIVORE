@@ -4,7 +4,7 @@
 {% block content %}
     <!--<h1 class="page-header text-overflow">Usuarios</h1>-->
 <!--<div class="panel">-->
-        <div id=content2 class="panel panel-colorful panel-primary">
+    <div id=content2 class="panel panel-colorful panel-primary" xmlns="http://www.w3.org/1999/html">
             <div class="panel-heading">
                 <h3 class="panel-title">Registro de usuario</h3>
             </div>
@@ -17,11 +17,10 @@
                 <li class="active"><a href="#demo-bsc-tab-1" data-toggle="tab"><i class="fa"></i> Crear usuario</a></li>
                 <li><a href="#demo-bsc-tab-2" data-toggle="tab"><i class="fa"></i>Cargar archivo con usuarios</a></li>
             </ul>
-
             <!-- Tabs Content -->
-            <form id="demo-bv-bsc-tabs" class="form-horizontal" action="" method="post">
-                <div class="tab-content">
-                    <div class="tab-pane pad-btm fade in active" id="demo-bsc-tab-1">
+            <div class="tab-content">
+                <div class="tab-pane pad-btm fade in active" id="demo-bsc-tab-1">
+                <form name="FormularioRegistroUsuario" id="demo-bv-bsc-tabs" class="form-horizontal" action="" method="post">
                         <!--<h4 class="text-thin mar-btm">First Tab</h4>-->
                         <hr>
                         {% csrf_token %}
@@ -95,45 +94,38 @@
                     <div class="panel-footer">
                         <div class="row">
                             <div class="col-sm-7 col-sm-offset-3">
-                            <button class="btn btn-primary btn-labeled fa fa-send fa-lg" type="submit">Crear</button>
+                            <button class="btn btn-primary btn-labeled fa fa-send fa-lg" type="submit" name="btncreate">Crear</button>
                             </div>
                         </div>
                     </div>
-                    </div>
-                    <div class="tab-pane fade" id="demo-bsc-tab-2">
+                </form>
+                </div>
+
+                <div class="tab-pane fade" id="demo-bsc-tab-2">
                     <!--<h4 class="mar-btm text-thin">Cargar usuarios</h4>-->
                     <hr>
                     <div class="panel">
-                        <!--<div class="panel-heading">
-                            <h3 class="panel-title">Subir archivo</h3>
+                         <div class="panel-body">
+
+                    <form enctype="multipart/form-data"  action="" method="post">
+                        {% csrf_token %}
+                        <p>{{ form.non_field_errors }}</p>
+                        <p>{{ form.file.label_tag }} {{ form.file.help_text }}
+                        {{ form.non.errors }}
+                        </p>
+
+                        {{ form2.file }}
+
+                        <!--<input name="file" type="file" multiple /> -->
+                        <input name="btnload" type="submit" value="Cargar" />
+                    </form>
+                    <!--===================================================-->
+                    <!-- End Dropzonejs -->
                         </div>
-                        -->
-                        <div class="panel-body">
-                            <!--===================================================-->
-                            <form id="demo-dropzone" action="#" class="dropzone">
-                                <div class="dz-default dz-message">
-                                    <div class="dz-icon icon-wrap icon-circle icon-wrap-md">
-                                        <i class="fa fa-cloud-upload fa-3x"></i>
-                                    </div>
-                                    <div>
-                                        <p class="dz-text">Arrastar archivo para cargar</p>
-                                        <p class="text-muted">o hacer clic manualmente</p>
-                                    </div>
-                                </div>
-                                <div class="fallback">
-                                    <input name="file" type="file" multiple />
-                                </div>
-                            </form>
-                            <!--===================================================-->
-                            <!-- End Dropzonejs -->
-                        </div>
-                    </div>
                 </div>
                 </div>
-
-            </form>
-        </div>
-
+                </div>
+     </div>
     <script>
     window.onload = function() {
     llamarMensajes( '{{ llamarMensaje }}' , '{{ mensaje }}');
