@@ -6,9 +6,13 @@ from django.shortcuts import render_to_response, redirect, render
 from django.template.context import RequestContext
 import csv
 from io import StringIO
+
 from usuarios.models import Usuario
+from votantes.models import Votante
+
 from usuarios.forms import FormularioLogin
 from usuarios.forms import FormularioRegistroUsuario, FormularioEditarUsuario, FormularioCargar
+
 
 #Método auxiliar para encontrar la vista del usuario
 def retornar_vista(request , usuario):
@@ -68,6 +72,7 @@ def login_view(request):
 def registro_usuario(request):
     mensaje = ""
     llamarMensaje = ""
+
     #Verificación para crear un solo usuario
     if request.method == 'POST' and "btncreate" in request.POST:
         form = FormularioRegistroUsuario(request.POST)
@@ -95,11 +100,6 @@ def registro_usuario(request):
                 password = User.objects.make_random_password()
                 usuario.set_password(password)
 
-                # Creando en la tabla votante
-                if form.cleaned_data["rol"] == "Votante":
-                    print("Es votante")
-
-
                 # Enviando contraseña al correo electronico registrado.
                 mensaje = "Señor(a) ", usuario.first_name , "\nSu usuario de acceso es: ", usuario.cedula_usuario , "\n Contraseña: ", usuario.password
                 #send_mail('Envío de contraseña de acceso a SIVORE', mensaje, 'sivoreunivalle@gmail.com', [usuario.email], fail_silently=False)
@@ -110,12 +110,27 @@ def registro_usuario(request):
                 except Exception as e:
                     print(e)
 
-                print(form.cleaned_data["rol"])
+                # Colocandole permisos al usuario
                 usuario.user_permissions.add(Permission.objects.get(codename=form.cleaned_data["rol"]))
 
+                 # Si es votante, Creando en la tabla votante
+                if form.cleaned_data["rol"] == "Votante":
+                    votante = Votante()
+                    votante.usuario = usuario
+                    votante.codigo = form.cleaned_data["codigo_estudiante"]
+                    votante.plan = form.cleaned_data["plan_estudiante"]
+
+                #Crea el votante en la BD si hay excepcion
+                    try:
+                        votante.save()
+                    except Exception as e:
+                        print(e)
+
+                # Borrando los datos del formulario y enviando el mensaje de sactisfacion
                 form = FormularioRegistroUsuario()
                 mensaje = "El usuario se guardo correctamente, la contraseña se envío al correo " + usuario.email
                 llamarMensaje = "exito_usuario"
+
 
             # Si el usuario ya existe en la BD
             else:
