@@ -75,7 +75,6 @@ def registro_usuario(request):
 
         #Si el formulario es valido y tiene datos
         if form.is_valid():
-
             #Capture la cedula del usuario
             cedula_usuario = form.cleaned_data["cedula_usuario"]
 
@@ -144,14 +143,12 @@ def registro_usuario(request):
         if form2.is_valid():
             csvf = StringIO(request.FILES['file'].read().decode())
             reader = csv.reader(csvf, delimiter=',')
-            print(reader)
             line=0
             useredit =0;
             usercreate=0;
             for row in reader:
                 if (line > 0):
                     #Consultando el usuario en la base de datos.
-                    print("Buscando usuario" + row[0])
                     try:
                         usuario = Usuario.objects.get(cedula_usuario=row[0])
                     except Usuario.DoesNotExist:
@@ -197,7 +194,6 @@ def registro_usuario(request):
     else:
         form = FormularioRegistroUsuario()
         form2 = FormularioCargar()
-        print(form)
         return render_to_response('registro_usuario.html',{'mensaje': mensaje, 'form': form , 'form2':form2, 'llamarMensaje': llamarMensaje}, context_instance=RequestContext(request))
 
 # Vista para listar usuarios

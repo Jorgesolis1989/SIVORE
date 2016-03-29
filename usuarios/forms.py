@@ -34,7 +34,7 @@ class FormularioRegistroUsuario(forms.Form):
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí el apellido  del usuario', 'required':'true'}))
 
     CHOICES = [('Administrador','Administrador'), ('Votante','Votante'), ('Superior','Superior') ]
-    rol = forms.ChoiceField(widget=forms.RadioSelect(attrs={'onClick': 'showfieldvotantes(this)'}), choices=CHOICES)
+    rol = forms.ChoiceField(widget=forms.RadioSelect(attrs={'onClick': "showfieldvotantes('FormularioRegistroUsuario')"}), choices=CHOICES)
 
     esta_activo = forms.BooleanField( initial=True, required=False,
         widget=forms.CheckboxInput(attrs={'class': 'form-checkbox form-icon'}))
@@ -42,11 +42,11 @@ class FormularioRegistroUsuario(forms.Form):
     email = forms.EmailField(
         widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí su correo electronico', 'required':'true'}))
 
-    codigo_estudiante = forms.ImageField(
-        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí el códido de estudiante', 'min':'1' , 'required':'false'}))
+    codigo_estudiante = forms.IntegerField(
+       required=False,  widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí el códido de estudiante', 'min':'1' , 'required':'false'}))
 
-    plan_estudiante = forms.ImageField(
-        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí el plan del estudiante', 'min':'1' , 'required':'false'}))
+    plan_estudiante = forms.IntegerField(
+        required=False, widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí el plan del estudiante', 'min':'1' , 'required':'false'}))
 
 
     def usuario_existe(self):
@@ -67,7 +67,7 @@ class FormularioEditarUsuario(forms.Form):
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí el nombre del usuario', 'required':'true'}))
 
     apellido_usuario = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí el apellido  del usuario', 'required':'true'}))
+        widget=forms.TextInput( attrs={'class': 'form-control', 'placeholder': 'Escriba aquí el apellido  del usuario', 'required':'true'}))
 
     CHOICES = [('Administrador','Administrador'), ('Votante','Votante'), ('Superior','Superior') ]
     rol = forms.ChoiceField(widget=forms.RadioSelect()   , choices=CHOICES)
