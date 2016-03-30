@@ -3,7 +3,7 @@ from django.db import models
 class Corporacion(models.Model):
     id_corporation = models.IntegerField(primary_key=True)
     name_corporation = models.CharField(max_length=45, null=False)
-    facultad = models.OneToOneField('self', null=True, blank=True)
+    facultad = models.ForeignKey('self', null=True, blank=True, unique=False)
 
     class Meta:
         ordering = ["name_corporation"]

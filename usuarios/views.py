@@ -9,6 +9,7 @@ from io import StringIO
 
 from usuarios.models import Usuario
 from votantes.models import Votante
+from corporaciones.models import Corporacion
 
 from usuarios.forms import FormularioLogin
 from usuarios.forms import FormularioRegistroUsuario, FormularioEditarUsuario, FormularioCargar
@@ -178,30 +179,50 @@ def registro_usuario(request):
                         password = User.objects.make_random_password()
                         usuario.set_password(password)
 
+                        votante = Votante()
+                        votante.usuario = usuario
+                        votante.codigo = row[4]
+
+                        try:
+                            plan = Corporacion.objects.get(id_corporation=row[5])
+                            votante.plan = plan
+                        except Corporacion.DoesNotExist:
+                            print("La corporacion no existe")
+
+
                         # Enviando contraseña al correo electronico registrado.
                         mensaje = "Señor(a) ", usuario.first_name , "\nSu usuario de acceso es: ", usuario.cedula_usuario , "\n Contraseña: ", usuario.password
 
                         #send_mail('Envío de contraseña de acceso a SIVORE', mensaje, 'sivoreunivalle@gmail.com', [usuario.email], fail_silently=False)
-                        print("cree a " + usuario.first_name)
                         usercreate +=1
+
+
                     else:
                         usuario.is_active = True
-                        print("active a " + usuario.first_name)
                         useredit +=1
                     #Crea el usuario en la BD s i hay excepcion
                     try:
                         usuario.save()
                     except Exception as e:
                         print(e)
+
+                    #Crea el votante en la BD si hay excepcion
+                    try:
+                        votante.save()
+                    except Exception as e:
+                        print(e)
+
+                    #Removiendo los permisos
                     for permission in usuario.user_permissions.all():
                         usuario.user_permissions.remove(permission)
+
+                    # Poniendo el permiso de votante
                     usuario.user_permissions.add(Permission.objects.get(codename='Votante'))
                 else:
                     line += 1
 
             mensaje = "Se crearon exitosamente " + str(usercreate) + " y se activaron " + str(useredit) + " votantes en el sistemas"
             llamarMensaje = "exito_usuario"
-
 
         return render_to_response('registro_usuario.html', {'mensaje': mensaje, 'form': form , 'form2':form2, 'llamarMensaje': llamarMensaje}, context_instance=RequestContext(request))
 
@@ -263,8 +284,17 @@ def editar_usuario(request, username=None):
 @permission_required("usuarios.Administrador", login_url="/")
 def eliminar_usuario(request, username=None):
     if request.method == 'POST':
+
         usuario=Usuario.objects.get(cedula_usuario=username)
-        print('POST',"ENTRO AQUI")
+
+        # Si el usuario es votante
+        if usuario.has_perm("usuarios.Votante"):
+            votante = Votante.objects.get(usuario__cedula_usuario=usuario.cedula_usuario)
+
+            try:
+                votante.delete()
+            except Exception as e:
+                print(e)
         try:
             usuario.delete()
         except Exception as e:
