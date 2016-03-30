@@ -110,7 +110,7 @@ def eliminar_corporacion(request, id_corporation=None):
         except Exception as e:
             print(e)
     llamarMensaje = "elimino_corporacion"
-    mensaje = "Se eliminó la corporacion " +  str(corporacion.id_corporation) +" sactisfactoriamente"
+    mensaje = "Se eliminó la corporacion " +  str(id_corporation) +" sactisfactoriamente"
     request.session['llamarMensaje'] = llamarMensaje
     request.session['mensaje'] = mensaje
 

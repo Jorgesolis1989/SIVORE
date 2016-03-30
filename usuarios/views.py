@@ -245,18 +245,17 @@ def listar_usuario(request):
 @permission_required("usuarios.Administrador" , login_url="/")
 def editar_usuario(request, username=None):
     usuario = Usuario.objects.get(cedula_usuario=username)
+
     if request.method == 'POST':
         form = FormularioEditarUsuario(request.POST)
         #Si el formulario es valido y tiene datos
         if form.is_valid():
+
             #Capture la cedula del usuario
             usuario.first_name = form.cleaned_data["nombre_usuario"]
             usuario.last_name = form.cleaned_data["apellido_usuario"]
             usuario.email = form.cleaned_data["email"]
             usuario.is_active = form.cleaned_data["esta_activo"]
-            permission =Permission.objects.get(codename=form.cleaned_data["rol"])
-            usuario.user_permissions.clear()
-            usuario.user_permissions.add(permission)
 
              #Actualiza  el usuario en la BD si hay excepcion
             try:
@@ -264,9 +263,11 @@ def editar_usuario(request, username=None):
             except Exception as e:
                 print(e)
 
+            print("Voy a actualizar votante")
+
              # Si es votante, mostrar los campos facultad y codigo estudiante
             if form.cleaned_data["rol"] == "Votante":
-                votante = Votante.objects.get(usuario=usuario)
+                votante = Votante.objects.get(usuario__cedula_usuario=usuario.cedula_usuario)
                 votante.codigo = form.cleaned_data["codigo_estudiante"]
                 votante.plan = form.cleaned_data["plan_estudiante"]
 

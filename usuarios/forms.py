@@ -70,7 +70,7 @@ class FormularioEditarUsuario(forms.Form):
         widget=forms.TextInput( attrs={'class': 'form-control', 'placeholder': 'Escriba aquí el apellido  del usuario', 'required':'true'}))
 
     CHOICES = [('Administrador','Administrador'), ('Votante','Votante'), ('Superior','Superior') ]
-    rol = forms.ChoiceField(widget=forms.RadioSelect(attrs={'disabled': 'False'}), choices=CHOICES)
+    rol = forms.ChoiceField(widget=forms.RadioSelect(attrs={'disabled': 'False'}), choices=CHOICES, required=False)
 
 
     esta_activo = forms.BooleanField(initial=True, required=False,
