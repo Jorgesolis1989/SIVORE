@@ -243,6 +243,18 @@ def editar_usuario(request, username=None):
             except Exception as e:
                 print(e)
 
+             # Si es votante, mostrar los campos facultad y codigo estudiante
+            if form.cleaned_data["rol"] == "Votante":
+                votante = Votante.objects.get(usuario=usuario)
+                votante.codigo = form.cleaned_data["codigo_estudiante"]
+                votante.plan = form.cleaned_data["plan_estudiante"]
+
+                #Actualiza el votante en la BD
+                try:
+                    votante.save()
+                except Exception as e:
+                    print(e)
+
             #redireccionando a la vista
             llamarMensaje = "edito_usuario"
             mensaje = "Se editó el usuario " +  str(usuario.cedula_usuario) +" sactisfactoriamente"
@@ -250,15 +262,27 @@ def editar_usuario(request, username=None):
             request.session['mensaje'] = mensaje
             return redirect("listar_usuario")
     else:
+        es_votante = False
         if username is None:
             return render(request, 'administrador.html')
         else:
             form = FormularioEditarUsuario()
             permissions = Permission.objects.filter(user=usuario)
+            votante = Votante()
+            if usuario.has_perm('usuarios.Votante'):
+                print("entro a revisar votante")
+                try:
+                    votante = Votante.objects.get(usuario__cedula_usuario=usuario.cedula_usuario)
+                    es_votante = True
+                    form.initial = {'cedula_usuario': usuario.cedula_usuario, 'nombre_usuario': usuario.first_name, 'apellido_usuario': usuario.last_name,
+                            'rol': permissions[0].codename, 'codigo_estudiante': votante.codigo, 'plan_estudiante': votante.plan, 'email': usuario.email, 'esta_activo': usuario.is_active}
+                except Votante.DoesNotExist:
+                    votante = None
+            else:
+                form.initial = {'cedula_usuario': usuario.cedula_usuario, 'nombre_usuario': usuario.first_name, 'apellido_usuario': usuario.last_name,
+                            'rol': permissions[0].codename, 'email': usuario.email, 'esta_activo': usuario.is_active}
 
-            form.initial = {'cedula_usuario': usuario.cedula_usuario, 'nombre_usuario': usuario.first_name , 'apellido_usuario': usuario.last_name ,
-                            'rol': permissions[0].codename , 'email': usuario.email , 'esta_activo': usuario.is_active  }
-        return render(request, 'editar_usuario.html', {'form': form})
+        return render(request, 'editar_usuario.html', {'form': form , 'votante': es_votante})
 
 @permission_required("usuarios.Administrador", login_url="/")
 def eliminar_usuario(request, username=None):

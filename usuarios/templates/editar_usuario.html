@@ -39,12 +39,12 @@
             </div>
 
             <!-- Rol y opciones-->
-            <div class="form-group">
+            <div class="form-group" id="options-rol">
                 <label class="col-lg-3 control-label">Rol</label>
                     <div class="col-lg-7">
-                        <div class="radio ">
+                        <div class="radio">
                             {% for radio in form.rol %}
-                                <label class="form-radio form-icon active" id="alert-fields-votante">
+                                <label class="form-radio form-icon active">
                                     {{ radio.tag }}
                                 </label>
                                    {{ radio.choice_label}}
@@ -52,25 +52,26 @@
                         </div>
                     </div>
             </div>
-             <div id='hide' style='display:none;'>
-                            <fieldset>
-                                <div class="form-group">
-                                <label class="col-lg-3 control-label">Código estudiante</label>
-                                    <div class="col-lg-7">
-                                        {{ form.codigo_estudiante }}
-                                    </div>
-                                </div>
-                            </fieldset>
-                            <fieldset>
-                                <div class="form-group">
-                                <label class="col-lg-3 control-label">Plan estudiante</label>
-                                    <div class="col-lg-7">
-                                        {{ form.plan_estudiante}}
-                                    </div>
-                                </div>
-                            </fieldset>
+                {% if votante %}
+                <div id='hide'>
+                    <fieldset>
+                        <div class="form-group">
+                        <label class="col-lg-3 control-label">Código estudiante</label>
+                            <div class="col-lg-7">
+                                {{ form.codigo_estudiante }}
                             </div>
-
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <div class="form-group">
+                        <label class="col-lg-3 control-label">Plan estudiante</label>
+                            <div class="col-lg-7">
+                                {{ form.plan_estudiante}}
+                            </div>
+                        </div>
+                    </fieldset>
+                    </div>
+                {%endif %}
             <div class="form-group">
             <div class="col-lg-7 col-lg-offset-3">
             <div class="checkbox">

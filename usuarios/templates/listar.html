@@ -42,9 +42,9 @@
                         {% endif %}
 
                         <td>
+                            <!--acciones - boton editar y eliminar-->
                             <a class="btn btn-xs btn-default add-tooltip" data-toggle="tooltip" href="/usuarios/editar/{{ usuario.username }}" data-original-title="Edit" data-container="body"><i class="fa fa-pencil"></i></a>
                             <a id="{{ usuario.username }}" class="demo-bootbox-confirm"  data-toggle="tooltip" href="#" data-original-title="Delete" data-container="body"><i class="btn btn-xs btn-danger add-tooltip btn-info fa fa-times"></i></a>
-                            <!--<button id="demo-bootbox-confirm" class="btn btn-info btn-xs btn-danger add-tooltip">Eliminar</button>-->
                         </td>
                     </tr>
                 {% endfor %}
