@@ -141,3 +141,6 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'sivoreunivalle@gmail.com'
 EMAIL_HOST_PASSWORD = 'sivore123@'
+
+
+MEDIA_ROOT = 'candidatos/media'

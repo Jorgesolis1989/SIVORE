@@ -54,7 +54,8 @@
                     </ul>
                 </div>
             <!--Form-->
-                <form name="FormularioRegistroCandidato" id="demo-bv-wz-form" class="form-horizontal">
+                <form name="FormularioRegistroCandidato" id="demo-bv-wz-form" class="form-horizontal" method="post" enctype="multipart/form-data">
+               {% csrf_token %}
                 <div class="panel-body">
                     <div class="tab-content">
 
@@ -67,11 +68,7 @@
                                     <!-- Bootstrap Select with Search Input -->
                                     <!--field autocomplete search candidato -->
                                     <!--===================================================-->
-                                    <select class="selectpicker" data-live-search="true" data-width="100%" name="username">
-                                        {% for votante in votantes %}
-                                        <option>{{votante.usuario.cedula_usuario}} - {{votante.usuario.first_name}} {{votante.usuario.last_name}}</option>
-                                        {% endfor %}
-                                    </select>
+                                    {{ form.votante }}
                                     <!--===================================================-->
 
                                 </div>
@@ -83,8 +80,7 @@
                             <div clas="form-group">
                                 <label class="col-lg-3 control-label">Fotografía del candidato:</label>
                                 <div class="col-lg-7">
-                                    <input id="foto" name="foto" type="file" class="form-control" >
-                                    {{ form.id_foto }}
+                                    {{ form.foto }}
                                 </div>
                             </div>
                         </div>
@@ -97,11 +93,7 @@
                                     <!-- Bootstrap Select with Search Input -->
                                     <!--field autocomplete search type candidato -->
                                     <!--===================================================-->
-                                    <select id="tipo"  data-live-search="true" data-width="100%" name="typecandidato">
-                                        {% for tipo in form.tipo_candidato %}
-                                        <option> {{ tipo.label_tag }}</option>
-                                        {% endfor %}
-                                    </select>
+                                    {{ form.tipo_candidato }}
                                     <!--===================================================-->
                                 </div>
                             </div>
@@ -111,11 +103,7 @@
                                     <!-- Bootstrap Select with Search Input -->
                                     <!--field autocomplete search corporation candidato -->
                                     <!--===================================================-->
-                                    <select class="selectpicker" data-live-search="true" data-width="100%" name="name-corporation">
-                                      {% for corporacion in corporaciones %}
-                                        <option>{{corporacion.name_corporation }}</option>
-                                        {% endfor %}
-                                    </select>
+                                    {{ form.corporacion }}
                                     <!--===================================================-->
                                 </div>
                             </div>
@@ -123,7 +111,7 @@
 
                         <!--Fourth tab-->
                         <div id="demo-bv-tab4" class="tab-pane  mar-btm text-center">
-                            <h4>Candidato creado exitosamente!!</h4>
+                            <h4>Desea crear el candidato?!!</h4>
                             <p class="text-muted"></p>
                         </div>
                     </div>
@@ -134,11 +122,16 @@
                         <div class="box-inline">
                             <button type="button" class="previous btn btn-primary">Anterior paso</button>
                             <button type="button" class="next btn btn-primary">Siguiente paso</button>
-                            <button type="button" class="finish btn btn-warning" disabled>Crear y finalizar</button>
+                            <button type="submit" class="finish btn btn-warning" disabled>Crear y finalizar</button>
                         </div>
                     </div>
                 </form>
             </div>
     </div>
 </div>
+     <script>
+    window.onload = function() {
+    llamarMensajes( '{{ llamarMensaje }}' , '{{ mensaje }}');
+    };
+</script>
 {% endblock %}

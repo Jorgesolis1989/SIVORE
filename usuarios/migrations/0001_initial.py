@@ -16,8 +16,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Usuario',
             fields=[
-                ('user_ptr', models.OneToOneField(parent_link=True, auto_created=True, to=settings.AUTH_USER_MODEL)),
-                ('cedula_usuario', models.BigIntegerField(primary_key=True, serialize=False, unique=True)),
+                ('user_ptr', models.OneToOneField(parent_link=True, to=settings.AUTH_USER_MODEL, auto_created=True)),
+                ('cedula_usuario', models.BigIntegerField(unique=True, primary_key=True, serialize=False)),
             ],
             options={
                 'verbose_name_plural': 'Usuarios_Sivore',

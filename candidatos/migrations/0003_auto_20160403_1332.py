@@ -7,13 +7,13 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('corporaciones', '0001_initial'),
+        ('candidatos', '0002_candidato_votante'),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='corporacion',
-            name='facultad',
-            field=models.ForeignKey(blank=True, to='corporaciones.Corporacion', null=True),
+            model_name='candidato',
+            name='foto',
+            field=models.ImageField(upload_to='candidatos'),
         ),
     ]

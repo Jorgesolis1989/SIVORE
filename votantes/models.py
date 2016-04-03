@@ -4,7 +4,7 @@ from corporaciones.models import Corporacion
 
 class Votante(models.Model):
 	usuario = models.ForeignKey(Usuario)
-	codigo = models.BigIntegerField()
+	codigo = models.BigIntegerField(unique=True, primary_key=True)
 	plan = models.ForeignKey(Corporacion)
 
 	class Meta:

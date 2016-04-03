@@ -7,21 +7,21 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('corporaciones', '0001_initial'),
     ]
 
     operations = [
         migrations.CreateModel(
             name='Candidato',
             fields=[
-                ('id_candidato', models.IntegerField(primary_key=True, serialize=False, unique=True)),
-                ('votante_candidato_id', models.IntegerField(blank=True)),
-                ('foto', models.CharField(null=True, blank=True, max_length=45)),
+                ('id', models.AutoField(primary_key=True, serialize=False, auto_created=True, verbose_name='ID')),
+                ('foto', models.ImageField(upload_to='media/')),
                 ('tipo_candidato', models.CharField(blank=True, max_length=45)),
-                ('corporacion_candidato_id', models.IntegerField(blank=True)),
+                ('corporacion', models.ForeignKey(to='corporaciones.Corporacion')),
             ],
             options={
-                'ordering': ['id_candidato'],
-                'db_table': 'candidato',
+                'ordering': ['votante__codigo'],
+                'db_table': 'candidatos',
             },
         ),
     ]
