@@ -1,8 +1,6 @@
 from django import forms
 from usuarios.models import Usuario
-from corporaciones.models import  Corporacion
-from django.contrib.auth.models import User
-from django.forms import ModelForm
+from corporaciones.models import Corporacion
 
 """
 Este formulario se encuentran los datos para logueo del usuario
@@ -69,7 +67,7 @@ class FormularioEditarUsuario(forms.Form):
     apellido_usuario = forms.CharField(
         widget=forms.TextInput( attrs={'class': 'form-control', 'placeholder': 'Escriba aquí el apellido  del usuario', 'required':'true'}))
 
-    CHOICES = [('Administrador','Administrador'), ('Votante','Votante'), ('Superior','Superior') ]
+    CHOICES = [('Administrador','Administrador'), ('Votante','Votante'), ('Superior','Superior')]
     rol = forms.ChoiceField(widget=forms.RadioSelect(attrs={'disabled': 'False'}), choices=CHOICES, required=False)
 
 
@@ -80,7 +78,7 @@ class FormularioEditarUsuario(forms.Form):
         widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí su correo electronico', 'required':'true'}))
 
     codigo_estudiante = forms.IntegerField(
-       required=False,  widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí el códido de estudiante', 'min':'1' , 'required':'false'}))
+       required=False,  widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí el códido de estudiante', 'min':'1', 'required':'false'}))
 
     plan_estudiante = forms.ModelChoiceField(queryset=Corporacion.objects.filter(facultad__isnull=False), required=False, empty_label=None)
 

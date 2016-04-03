@@ -183,10 +183,15 @@
   color: #AAB2BD
 }
 
+#content-components{
+
+}
+
 .dz-text{
-  font-size: 24px;
-  margin: 0;
-  color: #AAB2BD
+  font-size: 14px;
+  width: 50%;
+  margin-left: 25%;
+  color: #AAB2BD;
 }
 
 .dz-text, .dz-icon,

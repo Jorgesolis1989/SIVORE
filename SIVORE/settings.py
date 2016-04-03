@@ -67,7 +67,8 @@ TEMPLATES = [
         'DIRS': [os.path.join(BASE_DIR,'templates'),
                  os.path.join(BASE_DIR,'usuarios/templates'),
                  os.path.join(BASE_DIR,'corporaciones/templates'),
-                 os.path.join(BASE_DIR,'candidatos/templates')],
+                 os.path.join(BASE_DIR,'candidatos/templates'),
+                 os.path.join(BASE_DIR,'votantes/templates')],
 
         'APP_DIRS': True,
         'OPTIONS': {

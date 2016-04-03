@@ -27,15 +27,15 @@
 	});
 
 
-
-	// BOOTBOX - CONFIRM MODAL - PARA ELIMINAR USUARIOS
+	// BOOTBOX - CONFIRM MODAL - PARA ELIMINAR USUARIOS (ADMINISTRADORES, VOTANTES Y SUPERIORES)
 	// =================================================================
 	// Require Bootbox
 	// http://bootboxjs.com/
 	// =================================================================
 	$('.demo-bootbox-confirm').on('click', function(){
 		var id = $(this).attr('id')
-		bootbox.confirm("Esta seguro que desea eliminar el usuario con cédula "+id+" ?", function(result) {
+		var name = $(this).attr('name')
+		bootbox.confirm("Esta seguro que desea eliminar el "+name+" con cédula "+id+" ?", function(result) {
 			if (result) {
 				document.formDelete.action = "/usuarios/eliminar/"+id
 				document.formDelete.submit()

@@ -40,6 +40,7 @@ INSTALLED_APPS = {
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'usuarios',
+    'votantes',
 }
 
 MIDDLEWARE_CLASSES = (
@@ -62,7 +63,8 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR,'templates'),
-                 os.path.join(BASE_DIR,'usuarios/templates')],
+                 os.path.join(BASE_DIR,'usuarios/templates'),
+                 os.path.join(BASE_DIR,'votantes/templates')],
 
         'APP_DIRS': True,
         'OPTIONS': {

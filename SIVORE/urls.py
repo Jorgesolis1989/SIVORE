@@ -14,4 +14,5 @@ urlpatterns = [
 	url(r'^usuarios/', include('usuarios.urls')),
 	url(r'^corporaciones/', include('corporaciones.urls')),
 	url(r'^candidatos/', include('candidatos.urls')),
+	url(r'^votantes/', include('votantes.urls')),
 ]

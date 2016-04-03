@@ -47,6 +47,9 @@
     <!--Demo script [ DEMONSTRATION ]-->
     <link href="{% static 'css/demo/nifty-demo.min.css'%}" rel="stylesheet">
 
+    <!--Demo script [ DEMONSTRATION ]-->
+    <link href="{% static 'css/demo/nifty-demo.css'%}" rel="stylesheet">
+
     <!--Dropzone [ OPTIONAL ]-->
     <link href="{% static 'plugins/dropzone/dropzone.css'%}" rel="stylesheet">
 
@@ -55,6 +58,8 @@
 
     <!--Chosen [ OPTIONAL ]-->
     <link href="{% static 'plugins/chosen/chosen.min.css' %}" rel="stylesheet">
+    <!--Chosen [ OPTIONAL ]-->
+    <link href="{% static 'plugins/chosen/chosen.css' %}" rel="stylesheet">
 
     <!--SCRIPT-->
     <!--=================================================-->
@@ -394,7 +399,7 @@
 
 									<!--Menu list item votantes-->
 									<li>
-										<a href="#">
+										<a href="/">
 											<i class="fa fa-users"></i>
 											<span class="menu-title">
 												<strong>Votantes</strong>
@@ -404,15 +409,15 @@
 										</a>
 
 									<ul class="collapse">
-											<li><a href="#">Crear votantes</a></li>
-                                            <li><a href="{% url 'listar_usuario' %}">Listar votantes</a></li>
+											<li><a href="{% url 'registro_usuario' %}">Crear votantes</a></li>
+                                            <li><a href="{% url 'listar_votantes' %}">Listar votantes</a></li>
 										</ul>
 									</li>
 									<!--end Menu list item votantes-->
 
 									<!--Menu list item Candidatos-->
 									<li>
-										<a href="#">
+										<a href="/">
 											<i class="fa fa-flask"></i>
 											<span class="menu-title">
 												<strong>Candidatos</strong>
@@ -967,6 +972,9 @@
 
     <!--Chosen [ OPTIONAL ]-->
     <script src="{% static 'plugins/chosen/chosen.jquery.min.js'%}"></script>
+
+    <!--Chosen [ OPTIONAL ]-->
+    <script src="{% static 'plugins/chosen/chosen.jquery.js'%}"></script>
 
      <!--Fast Click [ OPTIONAL ]-->
     <script src="{% static 'plugins/fast-click/fastclick.min.js'%}"></script>

@@ -3,6 +3,7 @@
  */
 
 function showfieldvotantes(form){
+
     var rol = document[form].rol.value;
    /* var rol = $(form.rol.value.attr('value')*/
     if (rol == 'Votante'){
@@ -16,4 +17,12 @@ function showfieldvotantes(form){
         document[form].plan_estudiante.required=false;
     }
 }
+
+function activetabscreateusers(varvotante){
+    $('.nav-tabs a[href="#demo-bsc-tab-2"]').tab('show')
+    alert("entre tabs")
+
+}
+
+
 

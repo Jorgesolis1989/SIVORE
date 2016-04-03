@@ -3,19 +3,21 @@
 {% block title %}Crear usuario{% endblock title %}
 {% block content %}
     <!--<h1 class="page-header text-overflow">Usuarios</h1>-->
-<!--<div class="panel">-->
-    <div id=content2 class="panel panel-colorful panel-primary" xmlns="http://www.w3.org/1999/html">
+    <!--<div class="panel">-->
+        <div id=content2 class="panel panel-colorful panel-primary" xmlns="http://www.w3.org/1999/html">
             <div class="panel-heading">
                 <h3 class="panel-title">Registro de usuario</h3>
             </div>
         </div>
-        <!--<div class="panel-body">-->
+        <div id="demo-custom-toolbar" class="table-toolbar-right">
+            <button id="demo-btn-addrow" class="btn btn-mint btn-labeled fa fa-plus" ><a href="{% url 'listar_usuario' %}" class="btn btn-mint">Listar usuarios</a></button>
+        </div>
         <!-- section tab crear usuario-->
         <div class="tab-base">
             <!-- Nav tabs -->
             <ul class="nav nav-tabs">
-                <li class="active"><a href="#demo-bsc-tab-1" data-toggle="tab"><i class="fa"></i> Crear usuario</a></li>
-                <li><a href="#demo-bsc-tab-2" data-toggle="tab"><i class="fa"></i>Cargar usuarios votantes</a></li>
+                <li class="active"><a id="user-create" href="#demo-bsc-tab-1" data-toggle="tab"><i class="fa"></i> Crear usuario</a></li>
+                <li><a id="users-create" href="#demo-bsc-tab-2" data-toggle="tab"><i class="fa"></i>Cargar usuarios votantes</a></li>
             </ul>
             <!-- Tabs Content -->
             <div class="tab-content">
@@ -54,7 +56,7 @@
                             <div class="form-group">
                                 <label class="col-lg-3 control-label">Rol</label>
                                     <div class="col-lg-7">
-                                        <div class="radio ">
+                                        <div class="radio">
                                             {% for radio in form.rol %}
                                                 <label class="form-radio form-icon active" id="alert-fields-votante">
                                                     {{ radio.tag }}
@@ -128,7 +130,7 @@
                                     <div class="dz-icon icon-wrap icon-circle icon-wrap-md">
                                         <i class="fa fa-cloud-upload fa-3x"></i>
                                     </div>
-                                    <div>
+                                    <div id="content-components">
                                         <p class="dz-text">{{ form2.file }}</p>
                                         <div class="fallback">
                                             <p class="dz-text"><input name="btnload" type="submit" value="Subir" /></p>

@@ -16,7 +16,7 @@ from usuarios.forms import FormularioRegistroUsuario, FormularioEditarUsuario, F
 
 
 #Método auxiliar para encontrar la vista del usuario
-def retornar_vista(request , usuario):
+def retornar_vista(request, usuario):
     print(usuario.get_all_permissions())
     if usuario.has_perm("usuarios.Administrador"):
         return administrador_home(request, usuario)
@@ -69,7 +69,7 @@ def login_view(request):
     return render(request, 'login.html', {'mensaje': mensaje, 'form': form })
 
 #Vista de registro de usuarios
-@permission_required("usuarios.Administrador" , login_url="/")
+@permission_required("usuarios.Administrador", login_url="/")
 def registro_usuario(request):
     mensaje = ""
     llamarMensaje = ""
@@ -230,7 +230,7 @@ def registro_usuario(request):
     else:
         form = FormularioRegistroUsuario()
         form2 = FormularioCargar()
-        return render_to_response('registro_usuario.html',{'mensaje': mensaje, 'form': form , 'form2':form2, 'llamarMensaje': llamarMensaje}, context_instance=RequestContext(request))
+        return render_to_response('registro_usuario.html',{'mensaje': mensaje, 'form': form, 'form2':form2, 'llamarMensaje': llamarMensaje}, context_instance=RequestContext(request))
 
 # Vista para listar usuarios
 @permission_required("usuarios.Administrador" , login_url="/")
