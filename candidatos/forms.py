@@ -8,8 +8,9 @@ Este formulario se encuentran los datos para registrar un candidato
 """
 class FormularioRegistroCandidato(forms.Form):
 
-    votante = forms.ModelChoiceField( widget=forms.Select(attrs={'class':'selectpicker', 'data-live-search':'true'
-                                                                 ,'data-width':'100%'}), queryset=Votante.objects.all(), required=True, empty_label=None)
+    votante = forms.ModelChoiceField( widget=forms.Select(attrs={'class':'selectpicker', 'data-live-search':'true',
+                                                                 'data-width':'100%'}),
+                                      queryset=Votante.objects.exclude(codigo__in=Candidato.objects.all().values_list('votante__codigo', flat=True)), required=True, empty_label=None)
     foto = forms.ImageField(label="Escoja la foto del candidato", required=False, widget=forms.FileInput(attrs={'class':'form-control'}))
 
     CHOICES = [('Principal','Principal'), ('Suplente','Suplente')]
