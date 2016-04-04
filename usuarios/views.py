@@ -187,7 +187,9 @@ def registro_usuario(request):
                             plan = Corporacion.objects.get(id_corporation=row[5])
                             votante.plan = plan
                         except Corporacion.DoesNotExist:
-                            print("La corporacion no existe")
+                            mensaje = "ERROR el plan "+ str( row[5]) + " no esta creado en el sistema, debe de crearlo para continuar.... Votantes creados "+ str(usercreate)
+                            llamarMensaje = "fracaso_usuario"
+                            return render_to_response('registro_usuario.html', {'mensaje': mensaje, 'form': form , 'form2':form2, 'llamarMensaje': llamarMensaje}, context_instance=RequestContext(request))
 
 
                         # Enviando contraseña al correo electronico registrado.
