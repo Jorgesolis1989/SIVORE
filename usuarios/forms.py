@@ -84,4 +84,4 @@ class FormularioEditarUsuario(forms.Form):
 
 
 class FormularioCargar(forms.Form):
-    file = forms.FileField(label='Seleccionar un archivo')
+    file = forms.FileField(label='Seleccionar un archivo' , widget=forms.FileInput(attrs={'accept':".csv"}))

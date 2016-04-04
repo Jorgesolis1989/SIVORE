@@ -11,7 +11,7 @@ class FormularioRegistroCandidato(forms.Form):
     votante = forms.ModelChoiceField( widget=forms.Select(attrs={'class':'selectpicker', 'data-live-search':'true',
                                                                  'data-width':'100%'}),
                                       queryset=Votante.objects.exclude(codigo__in=Candidato.objects.all().values_list('votante__codigo', flat=True)), required=True, empty_label=None)
-    foto = forms.ImageField(label="Escoja la foto del candidato", required=False, widget=forms.FileInput(attrs={'class':'form-control'}))
+    foto = forms.ImageField(label="Escoja la foto del candidato", required=False, widget=forms.FileInput(attrs={'class':'form-control', 'accept':".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|images/*"}))
 
     CHOICES = [('Principal','Principal'), ('Suplente','Suplente')]
     tipo_candidato = forms.ChoiceField(widget=forms.Select(attrs={'class': 'selectpicker', 'data-width':'100%'}),required=True, choices=CHOICES )
