@@ -19,8 +19,8 @@
         <table id="demo-dt-delete" class="table table-striped table-bordered" cellspacing="0" width="100%">
             <thead>
                 <tr>
-                    <th>Cédula</th>
-                    <th class="min-tablet">Código estudiante</th>
+                    <th>Código estudiante</th>
+                    <th class="min-tablet">Nombre estudiante</th>
                     <th class="min-tablet">Plan</th>
                     <th class="min-desktop">Acciones</th>
                 </tr>
@@ -28,9 +28,9 @@
             <tbody>
                 {% for votante in votantes %}
                     <tr>
-                        <td>{{ votante.usuario_id }}</td>
                         <td>{{ votante.codigo}}</td>
-                        <td>{{ votante.plan_id}}</td>
+                        <td>{{ votante.usuario.first_name}} {{ votante.usuario.last_name}} </td>
+                        <td>{{ votante.plan_id}} -  {{ votante.plan.name_corporation }}</td>
                         <td>
                             <!--acciones - boton editar y eliminar-->
                             <a class="btn btn-xs btn-default add-tooltip" data-toggle="tooltip" href="/usuarios/editar/{{ votante.usuario_id }}" data-original-title="Edit" data-container="body"><i class="fa fa-pencil"></i></a>

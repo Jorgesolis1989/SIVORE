@@ -74,6 +74,7 @@ def registro_usuario(request):
     mensaje = ""
     llamarMensaje = ""
 
+
     #Verificación para crear un solo usuario
     if request.method == 'POST' and "btncreate" in request.POST:
         form = FormularioRegistroUsuario(request.POST)
@@ -153,8 +154,11 @@ def registro_usuario(request):
 
     #Verificación para cargar usuarios votantes
     elif request.method == 'POST' and "btnload" in request.POST:
+
         form = FormularioRegistroUsuario()
         form2 = FormularioCargar(request.POST, request.FILES)
+        crearVotante = False
+
         #Si el formulario es valido y tiene datos
         if form2.is_valid():
             csvf = StringIO(request.FILES['file'].read().decode())
@@ -182,7 +186,7 @@ def registro_usuario(request):
                         votante = Votante()
                         votante.usuario = usuario
                         votante.codigo = row[4]
-
+                        crearVotante = True
                         try:
                             plan = Corporacion.objects.get(id_corporation=row[5])
                             votante.plan = plan
@@ -209,10 +213,12 @@ def registro_usuario(request):
                         print(e)
 
                     #Crea el votante en la BD si hay excepcion
-                    try:
-                        votante.save()
-                    except Exception as e:
-                        print(e)
+                    if crearVotante:
+                        try:
+                            votante.save()
+                            crearVotante = False
+                        except Exception as e:
+                            print(e)
 
                     #Removiendo los permisos
                     for permission in usuario.user_permissions.all():
