@@ -1,5 +1,7 @@
 from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render_to_response, render
+from django.db.models import Q
+
 from django.template.context import RequestContext
 import csv
 from io import StringIO
@@ -12,8 +14,8 @@ from candidatos.forms import FormularioRegistroCandidato
 @permission_required("usuarios.Administrador", login_url="/")
 def registro_candidato(request):
 
-    #Verificación para crear un solo usuario
-    if request.method == 'POST':
+    #Verificación para crear un solo candidato
+    if request.method == 'POST' and "btnload" in request.POST:
         form = FormularioRegistroCandidato(request.POST, request.FILES)
 
         #Si el formulario es valido y tiene datos
@@ -63,11 +65,18 @@ def registro_candidato(request):
             }
             return render(request, 'registro_candidato.html', data)
 
+    elif request.POST and 'votante' in request.POST:
+
+        votante = Votante.objects.get(codigo=request.POST['votante'])
+
+        form = FormularioRegistroCandidato()
+        form.fields["corporacion"].queryset = Corporacion.objects.filter(Q(id_corporation=votante.plan.id_corporation) | Q(id_corporation=votante.plan.facultad.id_corporation))
+        #print(form)
+
     #Ninguno de los dos formularios crear  ni cargar Method GET
     else:
         form = FormularioRegistroCandidato()
     return render(request, 'registro_candidato.html', {'form': form})
-
 
 
 
