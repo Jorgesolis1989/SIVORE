@@ -12,4 +12,4 @@ class Votante(models.Model):
 		db_table = 'votantes'
 
 	def __str__(self):
-		return '%s - %s  - %s - %s ' %(self.codigo , self.usuario.cedula_usuario, self.usuario.first_name, self.usuario.last_name)
+		return '%s - %s   %s - %s %s' %(self.codigo , self.usuario.first_name, self.usuario.last_name, self.plan.id_corporation, self.plan.name_corporation)
