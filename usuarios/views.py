@@ -141,7 +141,7 @@ def registro_usuario(request):
                 llamarMensaje = "fracaso_usuario"
 
 
-            return render(request , 'registro_usuario.html', {'mensaje': mensaje, 'form': form , 'form2':form2, 'llamarMensaje': llamarMensaje})
+            return render(request, 'registro_usuario.html', {'mensaje': mensaje, 'form': form , 'form2':form2, 'llamarMensaje': llamarMensaje})
 
         #si no es valido el formulario crear
         else:
@@ -191,7 +191,7 @@ def registro_usuario(request):
                             plan = Corporacion.objects.get(id_corporation=row[5])
                             votante.plan = plan
                         except Corporacion.DoesNotExist:
-                            mensaje = "ERROR el plan "+ str( row[5]) + " no esta creado en el sistema, debe de crearlo para continuar.... Votantes creados "+ str(usercreate)
+                            mensaje = "ERROR el plan " + str(row[5]) + "No está creado en el sistema, debe de crearlo para continuar.... Votantes creados "+ str(usercreate)
                             llamarMensaje = "fracaso_usuario"
                             return render_to_response('registro_usuario.html', {'mensaje': mensaje, 'form': form , 'form2':form2, 'llamarMensaje': llamarMensaje}, context_instance=RequestContext(request))
 
@@ -201,7 +201,6 @@ def registro_usuario(request):
 
                         #send_mail('Envío de contraseña de acceso a SIVORE', mensaje, 'sivoreunivalle@gmail.com', [usuario.email], fail_silently=False)
                         usercreate +=1
-
 
                     else:
                         usuario.is_active = True
@@ -232,7 +231,7 @@ def registro_usuario(request):
             mensaje = "Se crearon exitosamente " + str(usercreate) + " y se activaron " + str(useredit) + " votantes en el sistemas"
             llamarMensaje = "exito_usuario"
 
-        return render_to_response('registro_usuario.html', {'mensaje': mensaje, 'form': form , 'form2':form2, 'llamarMensaje': llamarMensaje}, context_instance=RequestContext(request))
+        return render_to_response('listar.html', {'mensaje': mensaje, 'form': form, 'form2': form2, 'llamarMensaje': llamarMensaje}, context_instance=RequestContext(request))
 
     #Ninguno de los dos formularios crear  ni cargar Method GET
     else:

@@ -1,13 +1,8 @@
 from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render_to_response, render
-from django.template.context import RequestContext
-import csv
-from io import StringIO
 from candidatos.models import Candidato
-from votantes.models import Votante
-from usuarios.models import Usuario
-from corporaciones.models import Corporacion
-from candidatos.forms import FormularioRegistroCandidato
+from candidatos.forms import FormularioEditarCandidato, FormularioRegistroCandidato
+from django.contrib.auth.models import Permission
 
 @permission_required("usuarios.Administrador", login_url="/")
 def registro_candidato(request):
@@ -49,15 +44,15 @@ def registro_candidato(request):
 
             # Si el candidato ya existe en la BD
             else:
-                form = FormularioRegistroCandidato()
+                form = FormularioEditarCandidato()
                 mensaje = "El candidato " + str(votante.codigo)+ " ya esta registrado en la base de datos"
                 llamarMensaje = "fracaso_usuario"
 
-            return render(request , 'registro_candidato.html', {'mensaje': mensaje, 'form': form, 'llamarMensaje':llamarMensaje})
+            return render(request , 'listar_candidatos.html', {'mensaje': mensaje, 'form': form, 'llamarMensaje':llamarMensaje})
 
         #si no es valido el formulario, crear
         else:
-            form = FormularioRegistroCandidato()
+            form = FormularioEditarCandidato()
             data = {
                 'form': form,
             }
@@ -65,8 +60,51 @@ def registro_candidato(request):
 
     #Ninguno de los dos formularios crear  ni cargar Method GET
     else:
-        form = FormularioRegistroCandidato()
+        form = FormularioEditarCandidato()
     return render(request, 'registro_candidato.html', {'form': form})
+
+# Vista para listar votantes
+@permission_required("usuarios.Administrador", login_url="/")
+def listar_candidatos(request):
+    candidatos = Candidato.objects.all()
+    llamarMensaje = request.session.pop('llamarMensaje', None)
+    mensaje = request.session.pop('mensaje', None)
+
+    return render(request,  'listar_candidatos.html', {'candidatos': candidatos, 'llamarMensaje': llamarMensaje,'mensaje': mensaje})
+
+
+#Edicion candidato
+@permission_required("usuarios.Administrador" , login_url="/")
+def editar_candidato(request, codigo=None):
+    candidato = Candidato.objects.get(votante__codigo=codigo)
+
+    if request.method == 'POST':
+        form = (request.POST)
+        #Si el formulario es valido y tiene datos
+        if form.is_valid():
+
+            #Capture el codigo del candidato
+            candidato.votante.codigo = form.cleaned_data["codigo_candidato"]
+            candidato.votante.usuario.first_name = form.cleaned_data["nombres_candidato"]
+            candidato.votante.usuario.last_name = form.cleaned_data["apellidos_candidato"]
+            candidato.corporacion = form.cleaned_data["corporacion"]
+
+             #Actualiza  el usuario en la BD si hay excepcion
+            try:
+                candidato.save()
+            except Exception as e:
+                print(e)
+        else:
+            if codigo is None:
+                return render(request, 'administrador.html')
+
+            else:
+                form = FormularioEditarCandidato()
+
+            return render(request, 'registro_candidato.html', {'form': form})
+
+        return render(request, 'listar_candidatos.html', {'form': form})
+
 
 
 
