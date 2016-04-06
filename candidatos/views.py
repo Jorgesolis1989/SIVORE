@@ -30,10 +30,14 @@ def registro_candidato(request):
                 # Creando el candidato
                 candidato = Candidato()
                 candidato.votante = votante
-                candidato.foto = request.FILES['foto']
                 candidato.tipo_candidato = form.cleaned_data["tipo_candidato"]
                 candidato.corporacion = form.cleaned_data["corporacion"]
 
+                # Foto del candidato
+                if request.FILES:
+                    candidato.foto = request.FILES['foto']
+                else:
+                    candidato.foto = None
                 #Crea el usuario en la BD s i hay excepcion
                 try:
                     candidato.save()
