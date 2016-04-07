@@ -113,16 +113,24 @@ def editar_candidato(request, codigo=None):
         #Si el formulario es valido y tiene datos
         if form.is_valid():
             #Capture el codigo del candidato
-            candidato.votante = form.cleaned_data["votante"]
             candidato.tipo_candidato = form.cleaned_data["tipo_candidato"]
             candidato.corporacion = form.cleaned_data["corporacion"]
-            candidato.foto = request.FILES['foto']
 
+            # Foto del candidato
+            if request.FILES:
+                candidato.foto = request.FILES['foto']
+
+            print("entro hasta guara")
             #Actualiza  el usuario en la BD si hay excepcion
             try:
                 candidato.save()
             except Exception as e:
                 print(e)
+            mensaje = "El candidato " + str(candidato.votante.codigo)+ " fue modifcado exitosamente."
+            llamarMensaje = "exito_usuario"
+            request.session["llamarMensaje"] = llamarMensaje
+            request.session["mensaje"] = mensaje
+            return redirect("listar_candidatos")
         else:
             if codigo is None:
                 return render(request, 'administrador.html')
@@ -140,6 +148,8 @@ def editar_candidato(request, codigo=None):
 
             form.initial = {'votante': candidato.votante, 'nombrefoto': candidato.foto, 'tipo_candidato': candidato.tipo_candidato,
                            'corporacion' : candidato.corporacion}
+            form.fields["corporacion"].queryset = Corporacion.objects.filter(Q(id_corporation=candidato.votante.plan.id_corporation) | Q(id_corporation=candidato.votante.plan.facultad.id_corporation))
+
 
         except Candidato.DoesNotExist:
             print("no existe")

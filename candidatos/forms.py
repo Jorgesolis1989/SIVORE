@@ -42,8 +42,8 @@ Este formulario se encuentran los datos para registrar un candidato
 class FormularioEditarCandidato(forms.Form):
 
     votante = forms.CharField( widget=forms.TextInput(attrs={'class':'form-control', 'data-live-search':'true',
-                                                                 'data-width':'100%', 'disabled': 'False'}), required=True)
-    nombrefoto = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'disabled': 'False'}))
+                                                                 'data-width':'100%', 'disabled': 'False'}), required=False)
+    nombrefoto = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'disabled': 'False'}), required=False)
 
     foto = forms.ImageField(label="Escoja la foto del candidato", required=False, widget=forms.FileInput(attrs={'class':'form-control', 'accept':".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|images/*"}))
 
