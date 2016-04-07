@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import permission_required
-from django.shortcuts import render_to_response, render
+from django.shortcuts import render_to_response, render, redirect
 from django.db.models import Q
 
 from django.template.context import RequestContext
@@ -47,6 +47,9 @@ def registro_candidato(request):
 
                 mensaje = "El candidato " + str(votante.codigo)+ " fue creado exitosamente"
                 llamarMensaje = "exito_usuario"
+                request.session["llamarMensaje"] = llamarMensaje
+                request.session["mensaje"] = mensaje
+                return redirect("listar_candidatos")
 
             # Si el candidato ya existe en la BD
             else:
