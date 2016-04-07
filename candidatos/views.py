@@ -14,6 +14,7 @@ from candidatos.forms import FormularioRegistroCandidato, FormularioEditarCandid
 def registro_candidato(request):
 
     #Verificación para crear un solo candidato
+
     if request.method == 'POST' and "btnload" in request.POST:
         form = FormularioRegistroCandidato(request.POST, request.FILES)
 
@@ -87,7 +88,6 @@ def registro_candidato(request):
             form.fields["votante"].initial = votantes[0]
             form.fields["corporacion"].queryset = Corporacion.objects.filter(Q(id_corporation=votantes[0].plan.id_corporation) | Q(id_corporation=votantes[0].plan.facultad.id_corporation))
 
-        print(form.consulta , "asasa")
     return render(request, 'registro_candidato.html', {'form': form})
 
 # Vista para listar votantes
