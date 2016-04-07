@@ -133,9 +133,9 @@ def editar_candidato(request, codigo=None):
         try:
             votante = Votante.objects.get(codigo=codigo)
             candidato = Candidato.objects.get(votante__codigo=codigo)
-            print(candidato)
+            print(candidato.foto)
 
-            form.initial = {'votante': candidato.votante, 'foto': candidato.foto, 'tipo_candidato': candidato.tipo_candidato,
+            form.initial = {'votante': candidato.votante, 'nombrefoto': candidato.foto, 'tipo_candidato': candidato.tipo_candidato,
                            'corporacion' : candidato.corporacion}
 
         except Candidato.DoesNotExist:
