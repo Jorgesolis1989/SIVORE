@@ -251,7 +251,14 @@ def listar_usuario(request):
 #Edicion usuarios
 @permission_required("usuarios.Administrador" , login_url="/")
 def editar_usuario(request, username=None):
-    usuario = Usuario.objects.get(cedula_usuario=username)
+    try:
+        usuario = Usuario.objects.get(cedula_usuario=username)
+    except Usuario.DoesNotExist:
+        llamarMensaje ="fracaso_usuario"
+        mensaje = "El usuario "+str(username)+" No existe en el sistema"
+        request.session["llamarMensaje"] = llamarMensaje
+        request.session["mensaje"] = mensaje
+        return redirect("listar_usuario")
 
     if request.method == 'POST':
         form = FormularioEditarUsuario(request.POST)
