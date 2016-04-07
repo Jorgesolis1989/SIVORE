@@ -56,7 +56,9 @@
             <!--Form-->
                 <form name="FormularioRegistroCandidato" id="demo-bv-wz-form" class="form-horizontal" method="post" enctype="multipart/form-data">
                {% csrf_token %}
+
                 <div class="panel-body">
+                    {{ form.votante.error_messages }}
                     <div class="tab-content">
 
                         <!--First tab-->

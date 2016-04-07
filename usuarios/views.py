@@ -230,9 +230,9 @@ def registro_usuario(request):
 
             mensaje = "Se crearon exitosamente " + str(usercreate) + " y se activaron " + str(useredit) + " votantes en el sistemas"
             llamarMensaje = "exito_usuario"
-
-        return render_to_response('listar.html', {'mensaje': mensaje, 'form': form, 'form2': form2, 'llamarMensaje': llamarMensaje}, context_instance=RequestContext(request))
-
+            request.session['llamarMensaje'] = llamarMensaje
+            request.session['mensaje'] = mensaje
+            return redirect("listar_usuario")
     #Ninguno de los dos formularios crear  ni cargar Method GET
     else:
         form = FormularioRegistroUsuario()

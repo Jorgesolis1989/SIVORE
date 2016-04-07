@@ -65,17 +65,32 @@ def registro_candidato(request):
             }
             return render(request, 'registro_candidato.html', data)
 
-    elif request.POST and 'votante' in request.POST:
-
-        votante = Votante.objects.get(codigo=request.POST['votante'])
-
+    elif request.POST:
         form = FormularioRegistroCandidato()
-        form.fields["corporacion"].queryset = Corporacion.objects.filter(Q(id_corporation=votante.plan.id_corporation) | Q(id_corporation=votante.plan.facultad.id_corporation))
+        if not "votante" in request.POST:
+            mensaje = "ERROR NO eligió ningún votante"
+            llamarMensaje = "fracaso_usuario"
+            return render(request, 'registro_candidato.html', {'form': form, 'llamarMensaje':llamarMensaje , 'mensaje': mensaje})
+
+        else:
+            votante = Votante.objects.get(codigo=request.POST['votante'])
+            form.fields["corporacion"].queryset = Corporacion.objects.filter(Q(id_corporation=votante.plan.id_corporation) | Q(id_corporation=votante.plan.facultad.id_corporation))
         #print(form)
 
     #Ninguno de los dos formularios crear  ni cargar Method GET
     else:
         form = FormularioRegistroCandidato()
+        votantes = Votante.objects.exclude(codigo__in=Candidato.objects.all().values_list('votante__codigo', flat=True))
+
+        if not votantes:
+            mensaje = "Debe de haber votantes para crear candidatos, dirijase a votantes"
+            llamarMensaje = "fracaso_usuario"
+            return render(request, 'registro_candidato.html', {'form': form, 'llamarMensaje':llamarMensaje , 'mensaje': mensaje})
+        else:
+            form.fields["votante"].initial = votantes[0]
+            form.fields["corporacion"].queryset = Corporacion.objects.filter(Q(id_corporation=votantes[0].plan.id_corporation) | Q(id_corporation=votantes[0].plan.facultad.id_corporation))
+
+        print(form.consulta , "asasa")
     return render(request, 'registro_candidato.html', {'form': form})
 
 # Vista para listar votantes
