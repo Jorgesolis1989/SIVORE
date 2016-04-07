@@ -24,7 +24,8 @@
                     <th>Apellidos</th>
                     <th class="min-tablet">Tipo de Candidato</th>
                     <th class="min-tablet">Corporación</th>
-                    <th class="min-tablet">Acciones</th>
+                    <th class="min-tablet">Activar</th>
+                    <th class="min-tablet">Editar</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,10 +36,11 @@
                         <td>{{ candidato.votante.usuario.last_name}}</td>
                         <td>{{ candidato.tipo_candidato}}</td>
                         <td>{{ candidato.corporacion}}</td>
+                        <td><input id="demo-sw-checked" type="checkbox" checked></td>
                         <td>
                             <!--acciones - boton editar y eliminar-->
                             <a class="btn btn-xs btn-default add-tooltip" data-toggle="tooltip" href="/candidatos/editar/{{ candidato.votante.codigo }}" data-original-title="Edit" data-container="body"><i class="fa fa-pencil"></i></a>
-                            <a id="{{ votante.usuario_id }}" name="votante" class="demo-bootbox-confirm"  data-toggle="tooltip" href="#" data-original-title="Delete" data-container="body"><i class="btn btn-xs btn-danger add-tooltip btn-info fa fa-times"></i></a>
+                            <!--<a id="{{ votante.usuario_id }}" name="votante" class="demo-bootbox-confirm"  data-toggle="tooltip" href="#" data-original-title="Delete" data-container="body"><i class="btn btn-xs btn-danger add-tooltip btn-info fa fa-times"></i></a>-->
                         </td>
                     </tr>
                 {% endfor %}

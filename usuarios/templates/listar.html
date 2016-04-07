@@ -22,7 +22,7 @@
                     <th class="min-tablet">Correo Electrónico</th>
                     <th class="min-tablet">Rol</th>
                     <th class="min-tablet">Activo</th>
-                    <th class="min-desktop">Acciones</th>
+                    <th class="min-desktop">Editar</th>
                 </tr>
             </thead>
             <tbody>
@@ -33,14 +33,15 @@
                         <td>{{ usuario.email }}</td>
 
                         <td>{{ usuario.user_permissions.get.codename }}</td>
-                        {%  if usuario.is_active%}<td> Si</td>
-                        {% else %}<td>No</td>
+                        {%  if usuario.is_active%}
+                            <td><input id="demo-sw-checked" type="checkbox" checked></td>
+                        {% else %}
+                            <td><input id="demo-sw-checked" type="checkbox"></td>
                         {% endif %}
-
                         <td>
                             <!--acciones - boton editar y eliminar-->
                             <a class="btn btn-xs btn-default add-tooltip" data-toggle="tooltip" href="/usuarios/editar/{{ usuario.username }}" data-original-title="Edit" data-container="body"><i class="fa fa-pencil"></i></a>
-                            <a id="{{ usuario.username }}" name="usuario" class="demo-bootbox-confirm"  data-toggle="tooltip" href="#" data-original-title="Delete" data-container="body"><i class="btn btn-xs btn-danger add-tooltip btn-info fa fa-times"></i></a>
+                            <!--<a id="{{ usuario.username }}" name="usuario" class="demo-bootbox-confirm"  data-toggle="tooltip" href="#" data-original-title="Delete" data-container="body"><i class="btn btn-xs btn-danger add-tooltip btn-info fa fa-times"></i></a>-->
                         </td>
                     </tr>
                 {% endfor %}

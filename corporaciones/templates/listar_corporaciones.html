@@ -22,7 +22,8 @@
                     <th>Id</th>
                     <th>Nombre</th>
                     <th class="min-tablet"> Facultad</th>
-                    <th class="min-desktop">Acciones</th>
+                    <th class="min-desktop">Activar</th>
+                    <th class="min-desktop">Editar</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,9 +36,10 @@
                         {% else %}
                             <td>No aplica</td>
                         {% endif %}
+                        <td><input id="demo-sw-checked" type="checkbox" checked></td>
                         <td>
                             <a class="btn btn-xs btn-default add-tooltip" data-toggle="tooltip" href="/corporaciones/editar/{{ corporacion.id_corporation }}" data-original-title="Edit" data-container="body"><i class="fa fa-pencil"></i></a>
-                            <a id="{{ corporacion.id_corporation }}" class="demo-bootbox-confirm-corp"  data-toggle="tooltip" href="#" data-original-title="Delete" data-container="body"><i class="btn btn-xs btn-danger add-tooltip btn-info fa fa-times"></i></a>
+                            <!--<a id="{{ corporacion.id_corporation }}" class="demo-bootbox-confirm-corp"  data-toggle="tooltip" href="#" data-original-title="Delete" data-container="body"><i class="btn btn-xs btn-danger add-tooltip btn-info fa fa-times"></i></a>-->
                         </td>
                     </tr>
                 {% endfor %}
