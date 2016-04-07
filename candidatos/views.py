@@ -20,7 +20,6 @@ def registro_candidato(request):
         #Si el formulario es valido y tiene datos
         if form.is_valid():
 
-            print("es valido formulario candidato")
             #Capture la cedula del usuario
             votante = form.cleaned_data["votante"]
 
@@ -74,7 +73,6 @@ def registro_candidato(request):
         else:
             votante = Votante.objects.get(codigo=request.POST['votante'])
             form.fields["corporacion"].queryset = Corporacion.objects.filter(Q(id_corporation=votante.plan.id_corporation) | Q(id_corporation=votante.plan.facultad.id_corporation))
-        #print(form)
 
     #Ninguno de los dos formularios crear  ni cargar Method GET
     else:
@@ -109,20 +107,16 @@ def editar_candidato(request, codigo=None):
 
     if request.method == 'POST':
         form = FormularioEditarCandidato(request.POST)
-        print("entro")
         #Si el formulario es valido y tiene datos
         if form.is_valid():
-            print("valido form")
             #Capture el codigo del candidato
-            votante = Votante.objects.filter(votante__codigo=codigo)
             candidato.votante = form.cleaned_data["votante"]
             candidato.tipo_candidato = form.cleaned_data["tipo_candidato"]
             candidato.corporacion = form.cleaned_data["corporacion"]
-            candidato.foto = form.cleaned_data["foto"]
+            candidato.foto = request.FILES['foto']
 
-             #Actualiza  el usuario en la BD si hay excepcion
+            #Actualiza  el usuario en la BD si hay excepcion
             try:
-                votante.save()
                 candidato.save()
             except Exception as e:
                 print(e)
@@ -140,13 +134,13 @@ def editar_candidato(request, codigo=None):
             votante = Votante.objects.get(codigo=codigo)
             candidato = Candidato.objects.get(votante__codigo=codigo)
             print(candidato)
+
             form.initial = {'votante': candidato.votante, 'foto': candidato.foto, 'tipo_candidato': candidato.tipo_candidato,
                            'corporacion' : candidato.corporacion}
-            votantecodigo = candidato.votante.codigo
 
         except Candidato.DoesNotExist:
             print("no existe")
-        return render(request, 'editar_candidato.html', {'form': form, 'votantecodigo': votantecodigo})
+        return render(request, 'editar_candidato.html', {'form': form})
 
 
 
