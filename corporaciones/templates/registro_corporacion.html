@@ -20,7 +20,8 @@
                     <fieldset>
                         <div class="form-group">
                         <label class="col-lg-3 control-label">Número de la Corporación</label>
-                            <div class="col-lg-7">
+                            <div class="col-lg-7 btn-link add-tooltip" data-toggle="tooltip" data-original-title="Número que identifica la corporación, los Consejos (Superior, Académico), Facultades o Programas
+                            Académicos asignados por la Universidad. Ejemplo: 3743, correspondiente al Programa Académico de Ingeniería de Sistemas.">
                             {{ form.id_corporation }}
                             </div>
                         </div>
@@ -28,8 +29,8 @@
 
                     <fieldset>
                         <div class="form-group">
-                        <label class="col-lg-3 control-label">Nombre Corporación</label>
-                            <div class="col-lg-7">
+                        <label class="col-lg-3 control-label" >Nombre Corporación</label>
+                            <div class="col-lg-7 btn-link add-tooltip" data-original-title="Nombre de los Consejos (Superior, Académico), Facultades o Programas Académicos de la Universidad. Ejemplo: Consejo Superior.">
                                 {{ form.name_corporation}}
                             </div>
                         </div>
@@ -37,7 +38,8 @@
                         <fieldset>
                         <div class="form-group">
                             <label class="col-lg-3 control-label">Número de la Facultad</label>
-                                <div class="col-lg-7">
+                                <div class="col-lg-7 btn-link add-tooltip" data-original-title="En esta lista se escoge la 1ra opción (---) si desea crear Consejos o Facultades y se escoge la Facultad relacionada
+                                con el programa académico que desea crear.">
                                        {{ form.facultad}}
                                 </div>
                         </div>
