@@ -121,17 +121,20 @@
                 </div>
 
                 <div class="tab-pane fade" id="demo-bsc-tab-2">
-                    <hr>
                     <div class="panel">
                         <div class="panel-body">
+
                             <form enctype="multipart/form-data"  action="" method="post" id="demo-dropzone" class="dropzone">
                                 {% csrf_token %}
+                                <h3 class="panel-title">Crear usuarios votantes por medio de archivo .csv</h3>
                                 <div class="dz-default dz-message">
                                     <div class="dz-icon icon-wrap icon-circle icon-wrap-md">
                                         <i class="fa fa-cloud-upload fa-3x"></i>
                                     </div>
                                     <div id="content-components">
-                                        <p class="dz-text">{{ form2.file }}</p>
+                                        <p class="dz-text btn-link add-tooltip" data-toggle="tooltip" data-original-title="Elegir archivo .csv para cargar los votantes al sistema.">
+                                            {{ form2.file }}
+                                        </p>
                                         <div class="fallback">
                                             <p class="dz-text"><input name="btnload" type="submit" value="Subir" /></p>
                                         </div>
