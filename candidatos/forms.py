@@ -37,7 +37,7 @@ class FormularioRegistroCandidato(forms.Form):
         return cedula
 
 """
-Este formulario se encuentran los datos para registrar un candidato
+Este formulario se encuentran los datos para editar un candidato
 """
 class FormularioEditarCandidato(forms.Form):
 

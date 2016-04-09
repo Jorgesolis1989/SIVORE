@@ -7,15 +7,15 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('usuarios', '0001_initial'),
         ('corporaciones', '0001_initial'),
+        ('usuarios', '0001_initial'),
     ]
 
     operations = [
         migrations.CreateModel(
             name='Votante',
             fields=[
-                ('codigo', models.BigIntegerField(unique=True, primary_key=True, serialize=False)),
+                ('codigo', models.BigIntegerField(primary_key=True, serialize=False, unique=True)),
                 ('plan', models.ForeignKey(to='corporaciones.Corporacion')),
                 ('usuario', models.ForeignKey(to='usuarios.Usuario')),
             ],

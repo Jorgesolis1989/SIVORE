@@ -16,13 +16,13 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Usuario',
             fields=[
-                ('user_ptr', models.OneToOneField(parent_link=True, to=settings.AUTH_USER_MODEL, auto_created=True)),
-                ('cedula_usuario', models.BigIntegerField(unique=True, primary_key=True, serialize=False)),
+                ('user_ptr', models.OneToOneField(to=settings.AUTH_USER_MODEL, parent_link=True, auto_created=True)),
+                ('cedula_usuario', models.BigIntegerField(serialize=False, primary_key=True, unique=True)),
             ],
             options={
                 'verbose_name_plural': 'Usuarios_Sivore',
-                'permissions': (('Administrador', 'Permisos de Administrador'), ('Superior', 'Permisos de Superior'), ('Votante', 'Permisos de Votante'), ('Candidato', 'Permisos de Candidato')),
                 'ordering': ['first_name'],
+                'permissions': (('Administrador', 'Permisos de Administrador'), ('Superior', 'Permisos de Superior'), ('Votante', 'Permisos de Votante'), ('Candidato', 'Permisos de Candidato')),
             },
             bases=('auth.user',),
             managers=[

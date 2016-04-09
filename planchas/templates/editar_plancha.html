@@ -1,0 +1,69 @@
+{% extends "base-admin.html" %}
+{% block title %}Editar plancha{% endblock title %}
+{% block content %}
+<div class="panel">
+        <div class="panel panel-colorful panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Editar plancha</h3>
+            </div>
+        </div>
+        <div class="panel-body">
+            <form name="FormularioEditarPlancha" id="demo-bv-bsc-tabs" class="form-horizontal" action="" method="post">
+                    <div class="tab-pane pad-btm fade in active" id="demo-bsc-tab-1">
+                        <hr>
+                        {% csrf_token %}
+                    <div class="panel-body">
+                    <fieldset>
+                        <div class="form-group">
+                        <label class="col-lg-3 control-label">Número plancha</label>
+                            <div class="col-lg-7 btn-link add-tooltip" data-toggle="tooltip" data-original-title="">
+                            {{ form.numeroplancha }}
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <div class="form-group">
+                        <label class="col-lg-3 control-label">Nombre de la corporación</label>
+                            <div class="col-lg-7 btn-link add-tooltip" data-original-title="Se escoge la corporación a la que pertenecerá la plancha.">
+                                {{ form.corporacion}}
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">Candidato principal</label>
+                                <div class="col-lg-7 btn-link add-tooltip" data-original-title="">
+                                       {{ form.candidato_principal}}
+                                </div>
+                        </div>
+
+                    </fieldset>
+                    <fieldset>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">Candidato suplente</label>
+                                <div class="col-lg-7 btn-link add-tooltip" data-original-title="">
+                                       {{ form.candidato_suplente}}
+                                </div>
+                        </div>
+                    </fieldset>
+                <!--===================================================-->
+                </div>
+                    <div class="panel-footer">
+                        <div class="row">
+                            <div class="col-sm-7 col-sm-offset-3">
+                            <button class="btn btn-primary btn-labeled fa fa-send fa-lg" type="submit">Crear</button>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+            </form>
+        </div>
+</div>
+    <script>
+    window.onload = function() {
+    llamarMensajes( '{{ llamarMensaje }}' , '{{ mensaje }}');
+    };
+    </script>
+
+{% endblock %}

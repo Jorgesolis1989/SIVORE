@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id_corporation', models.IntegerField(primary_key=True, serialize=False)),
                 ('name_corporation', models.CharField(max_length=45)),
-                ('facultad', models.ForeignKey(to='corporaciones.Corporacion', blank=True, null=True)),
+                ('facultad', models.ForeignKey(blank=True, to='corporaciones.Corporacion', null=True)),
             ],
             options={
                 'ordering': ['name_corporation'],

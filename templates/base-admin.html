@@ -438,7 +438,7 @@
 
 									<!--Menu list item planchas-->
 									<li>
-										<a href="#">
+										<a href="/">
 											<i class="fa fa-list-alt"></i>
 											<span class="menu-title">
 												<strong>Planchas</strong>
@@ -448,10 +448,8 @@
 										</a>
 
 									<ul class="collapse">
-											<li><a href="#">Crear planchas</a></li>
-											<li><a href="#">Listar planchas</a></li>
-											<li><a href="#">Editar planchas</a></li>
-
+											<li><a href="{% url 'registro_plancha' %}">Crear planchas</a></li>
+											<li><a href="{% url 'listar_planchas' %}">Listar planchas</a></li>
 										</ul>
 									</li>
 									<!--end Menu list item planchas-->
