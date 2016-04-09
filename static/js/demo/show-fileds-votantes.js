@@ -20,8 +20,6 @@ function showfieldvotantes(form){
 
 function activetabscreateusers(varvotante){
     $('.nav-tabs a[href="#demo-bsc-tab-2"]').tab('show')
-    alert("entre tabs")
-
 }
 
 

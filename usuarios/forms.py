@@ -35,8 +35,6 @@ class FormularioRegistroUsuario(forms.Form):
     CHOICES = [('Administrador','Administrador'), ('Votante','Votante'), ('Superior','Superior') ]
     rol = forms.ChoiceField(widget=forms.RadioSelect(attrs={'onClick': "showfieldvotantes('FormularioRegistroUsuario')"}), choices=CHOICES)
 
-    esta_activo = forms.BooleanField( initial=True, required=False,
-        widget=forms.CheckboxInput(attrs={'class': 'form-checkbox form-icon'}))
 
     email = forms.EmailField(
         widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí su correo electronico', 'required':'true'}))

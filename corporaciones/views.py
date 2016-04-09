@@ -18,33 +18,28 @@ def registro_corporacion(request):
             id_corporation = form.cleaned_data["id_corporation"]
 
             #Consultando la corporacion en la base de datos.
-            corporacion = Corporacion.objects.filter(id_corporation=id_corporation)
-
-            print("Es Valido")
-
-            #Si el usuario no existe, lo crea
-            if not corporacion:
-                # Creando corporacion
+            try:
+                corporacion = Corporacion.objects.get(id_corporation=id_corporation)
+            except Corporacion.DoesNotExist:
                 corporacion = Corporacion()
-                corporacion.id_corporation= form.cleaned_data["id_corporation"]
-                corporacion.name_corporation= form.cleaned_data["name_corporation"]
-                corporacion.facultad= form.cleaned_data["facultad"]
+                corporacion_create(corporacion, form)
 
-                #Crea corporacion en la BD s i hay excepcion
-                try:
-                    corporacion.save()
-                except Exception as e:
-                    print(e)
-
-                form = FormularioRegistroCorporacion()
                 llamarMensaje = "exito_corporacion"
                 mensaje = "La corporación "+ str(id_corporation)  +" se guardo correctamente"
-            else:
-                form = FormularioRegistroCorporacion()
-                llamarMensaje = "fracaso_corporacion"
-                mensaje = "La corporación " + str(id_corporation)  + " ya esta registrada"
 
-            return render_to_response('registro_corporacion.html', {'mensaje': mensaje, 'form': form , "llamarMensaje": llamarMensaje}, context_instance=RequestContext(request))
+            else:
+                if not corporacion.is_active:
+                    corporacion_create(corporacion, form)
+                    llamarMensaje = "exito_corporacion"
+                    mensaje = "La corporación "+ str(id_corporation)  +" se guardo correctamente"
+                else:
+                    llamarMensaje = "fracaso_corporacion"
+                    mensaje = "La corporación " + str(id_corporation)  + " ya esta registrada"
+
+            request.session['llamarMensaje'] = llamarMensaje
+            request.session['mensaje'] = mensaje
+
+            return redirect("listar_corporacion")
         else:
             form = FormularioRegistroCorporacion()
             data = {
@@ -62,7 +57,7 @@ def listar_corporacion(request):
 
     llamarMensaje = request.session.pop('llamarMensaje', None)
     mensaje = request.session.pop('mensaje', None)
-    corporaciones = Corporacion.objects.all()
+    corporaciones = Corporacion.objects.filter(is_active=True)
     return render(request, 'listar_corporaciones.html', {'corporaciones': corporaciones , 'llamarMensaje': llamarMensaje,'mensaje':mensaje })
 
 #Edicion usuarios
@@ -77,6 +72,7 @@ def editar_corporacion(request, id_corporation=None):
             corporacion.id_corporation = form.cleaned_data["id_corporation"]
             corporacion.name_corporation = form.cleaned_data["name_corporation"]
             corporacion.facultad = form.cleaned_data["facultad"]
+
 
              #Actualiza la corporacion en la BD si hay excepcion
             try:
@@ -101,12 +97,14 @@ def editar_corporacion(request, id_corporation=None):
         return render(request, 'editar_corporacion.html', {'form': form})
 
 
+# Este metodo no elimina en la base de datos, sino que desactiva la corporacion
 @permission_required("usuarios.Administrador", login_url="/")
 def eliminar_corporacion(request, id_corporation=None):
     if request.method == 'POST':
         corporacion=Corporacion.objects.get(id_corporation=id_corporation)
+        corporacion.is_active = False
         try:
-            corporacion.delete()
+            corporacion.save()
         except Exception as e:
             print(e)
     llamarMensaje = "elimino_corporacion"
@@ -115,3 +113,14 @@ def eliminar_corporacion(request, id_corporation=None):
     request.session['mensaje'] = mensaje
 
     return redirect("listar_corporacion")
+
+def corporacion_create(corporacion, form):
+    corporacion.id_corporation= form.cleaned_data["id_corporation"]
+    corporacion.name_corporation= form.cleaned_data["name_corporation"]
+    corporacion.facultad= form.cleaned_data["facultad"]
+    corporacion.is_active = True
+
+    try:
+        corporacion.save()
+    except Exception as e:
+        print(e)

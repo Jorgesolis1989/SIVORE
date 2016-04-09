@@ -17,7 +17,7 @@ def registro_candidato(request):
 
     if request.method == 'POST' and "btnload" in request.POST:
         form = FormularioRegistroCandidato(request.POST, request.FILES)
-
+        print("LOad")
         #Si el formulario es valido y tiene datos
         if form.is_valid():
 
@@ -68,15 +68,16 @@ def registro_candidato(request):
             return render(request, 'registro_candidato.html', data)
 
     elif request.POST:
-        form = FormularioRegistroCandidato()
         if not "votante" in request.POST:
-            mensaje = "ERROR NO eligió ningún votante"
+            mensaje = "Por favor elegir un votante"
             llamarMensaje = "fracaso_usuario"
+            form = FormularioRegistroCandidato()
             return render(request, 'registro_candidato.html', {'form': form, 'llamarMensaje':llamarMensaje , 'mensaje': mensaje})
-
         else:
             votante = Votante.objects.get(codigo=request.POST['votante'])
+            form = FormularioRegistroCandidato(request.POST)
             form.fields["corporacion"].queryset = Corporacion.objects.filter(Q(id_corporation=votante.plan.id_corporation) | Q(id_corporation=votante.plan.facultad.id_corporation))
+
 
     #Ninguno de los dos formularios crear  ni cargar Method GET
     else:

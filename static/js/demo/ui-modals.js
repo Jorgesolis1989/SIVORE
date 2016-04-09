@@ -43,6 +43,23 @@
 		});
 	});
 
+	 // BOOTBOX - CONFIRM MODAL - PARA ELIMINAR USUARIOS VOTANTES
+	// =================================================================
+	// Require Bootbox
+	// http://bootboxjs.com/
+	// =================================================================
+	$('.demo-bootbox-confirm-delete').on('click', function(){
+		var id = $(this).attr('id')
+		var name = $(this).attr('name')
+		bootbox.confirm("Esta seguro que desea eliminar el "+name+" con cédula "+id+" ?", function(result) {
+			if (result) {
+				document.formDelete.action = "/votantes/eliminar/"+id
+				document.formDelete.submit()
+			}
+		});
+	});
+
+
 
 	 // BOOTBOX - CONFIRM MODAL - PARA ELIMINAR CORPORACIONES
 	// =================================================================

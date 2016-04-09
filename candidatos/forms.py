@@ -25,6 +25,7 @@ class FormularioRegistroCandidato(forms.Form):
         diccionario_limpio = self.cleaned_data
         votante = diccionario_limpio.get('votante')
         if votante is None:
+            print("validador")
             raise self.ValidationError("El votante no puede ser nulo")
 
     def candidato_existe(self):

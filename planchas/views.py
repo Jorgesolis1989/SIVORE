@@ -10,7 +10,7 @@ from planchas.forms import FormularioRegistroPlancha, FormularioEditarPlancha
 @permission_required("usuarios.Administrador", login_url="/")
 def registro_plancha(request):
 
-    #Verificación para crear un solo candidato
+    #Verificación para crear una plancha
 
     if request.method == 'POST' and "btnload" in request.POST:
         form = FormularioRegistroPlancha(request.POST)
@@ -18,43 +18,36 @@ def registro_plancha(request):
         #Si el formulario es valido y tiene datos
         if form.is_valid():
 
-            #Capture la cedula del usuario
-            votante = form.cleaned_data["votante"]
-
-            candidato =Candidato.objects.filter(votante__usuario__cedula_usuario=votante.usuario.cedula_usuario)
+            #Capture el numero de plancha
+            plancha = form.cleaned_data["numeroplancha"]
 
             #Si el candidato no existe, lo crea
-            if not candidato:
-                # Creando el candidato
-                candidato = Candidato()
-                candidato.votante = votante
-                candidato.tipo_candidato = form.cleaned_data["tipo_candidato"]
-                candidato.corporacion = form.cleaned_data["corporacion"]
+            if not plancha:
+                # Creando la plancha
+                plancha = Plancha()
+                plancha.numeroplancha = form.cleaned_data["numeroplancha"]
+                plancha.corporacion = form.cleaned_data["corporacion"]
+                plancha.candidato_principal = form.cleaned_data["candidato_principal"]
+                plancha.candidato_suplente = form.cleaned_data["candidato_suplente"]
 
-                # Foto del candidato
-                if request.FILES:
-                    candidato.foto = request.FILES['foto']
-                else:
-                    candidato.foto = None
-                #Crea el usuario en la BD s i hay excepcion
                 try:
-                    candidato.save()
+                    plancha.save()
                 except Exception as e:
                     print(e)
 
-                mensaje = "El candidato " + str(votante.codigo)+ " fue creado exitosamente"
+                mensaje = "La plancha N° " + str(plancha.numeroplancha)+ " fue creada exitosamente."
                 llamarMensaje = "exito_usuario"
                 request.session["llamarMensaje"] = llamarMensaje
                 request.session["mensaje"] = mensaje
                 return redirect("listar_planchas")
 
-            # Si el candidato ya existe en la BD
+            # Si la plancha ya existe en la BD
             else:
                 form = FormularioRegistroPlancha()
-                mensaje = "El candidato " + str(votante.codigo)+ " ya esta registrado en la base de datos"
+                mensaje = "La plancha " + str(plancha.numeroplancha)+ " ya esta existe."
                 llamarMensaje = "fracaso_usuario"
 
-            return render(request , 'registro_plancha.html', {'mensaje': mensaje, 'form': form, 'llamarMensaje':llamarMensaje})
+            return render(request, 'registro_plancha.html', {'mensaje': mensaje, 'form': form, 'llamarMensaje':llamarMensaje})
 
         #si no es valido el formulario, crear
         else:
@@ -64,29 +57,37 @@ def registro_plancha(request):
             }
             return render(request, 'registro_plancha.html', data)
 
+    # Cambio de corporacion
     elif request.POST:
-        form = FormularioRegistroPlancha()
-        if not "votante" in request.POST:
-            mensaje = "ERROR NO eligió ningún votante"
+        form = FormularioRegistroPlancha(request.POST)
+
+        # Corporacion es nula
+        if not "corporacion" in request.POST:
+            mensaje = "Por favor elegir una corporación"
             llamarMensaje = "fracaso_usuario"
             return render(request, 'registro_plancha.html', {'form': form, 'llamarMensaje':llamarMensaje , 'mensaje': mensaje})
 
+        # Cambio de corporacion y cargar candidatos de esa corporacion
         else:
-            votante = Votante.objects.get(codigo=request.POST['votante'])
-            form.fields["corporacion"].queryset = Corporacion.objects.filter(Q(id_corporation=votante.plan.id_corporation) | Q(id_corporation=votante.plan.facultad.id_corporation))
+            corporacion = Corporacion.objects.get(id_corporation=request.POST['corporacion'])
+            form.fields["candidato_principal"].queryset = Candidato.objects.filter(Q(corporacion__id_corporation=corporacion.id_corporation) & Q (tipo_candidato='Principal'))
+            form.fields["candidato_suplente"].queryset = Candidato.objects.filter(Q(corporacion__id_corporation=corporacion.id_corporation) & Q (tipo_candidato='Suplente'))
 
     #Ninguno de los dos formularios crear  ni cargar Method GET
     else:
+        print("entre eee")
         form = FormularioRegistroPlancha()
-        votantes = Votante.objects.exclude(codigo__in=Candidato.objects.all().values_list('votante__codigo', flat=True))
+        corporaciones = Corporacion.objects.all()
 
-        if not votantes:
-            mensaje = "Debe de haber votantes para crear candidatos, dirijase a votantes"
+        if not corporaciones:
+            mensaje = "Debe de haber corporaciones para crear las planchas, dirijase a corporaciones"
             llamarMensaje = "fracaso_usuario"
             return render(request, 'registro_plancha.html', {'form': form, 'llamarMensaje':llamarMensaje , 'mensaje': mensaje})
         else:
-            form.fields["votante"].initial = votantes[0]
-            form.fields["corporacion"].queryset = Corporacion.objects.filter(Q(id_corporation=votantes[0].plan.id_corporation) | Q(id_corporation=votantes[0].plan.facultad.id_corporation))
+            #form.fields["corporacion"].initial = corporaciones[0]
+            print(corporaciones[0])
+            form.fields["candidato_principal"].queryset = Candidato.objects.filter(Q(corporacion =corporaciones[0].id_corporation) & Q(tipo_candidato="Principal"))
+            form.fields["candidato_suplente"].queryset = Candidato.objects.filter(Q(corporacion=corporaciones[0].id_corporation) & Q(tipo_candidato="Suplente"))
 
     return render(request, 'registro_plancha.html', {'form': form})
 

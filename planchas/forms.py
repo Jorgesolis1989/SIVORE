@@ -12,7 +12,7 @@ class FormularioRegistroPlancha(forms.Form):
     numeroplancha = forms.IntegerField(
         widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí el número de la plancha', 'min':'1', 'required':'true'}))
 
-    corporacion = forms.ModelChoiceField(widget=forms.Select(attrs={'class':'selectpicker', 'data-live-search':'true',
+    corporacion = forms.ModelChoiceField(widget=forms.Select(attrs={'onchange':'this.form.submit()','class':'selectpicker', 'data-live-search':'true',
                                                                  'data-width':'100%'}), queryset=Corporacion.objects.all(), required=True, empty_label=None)
 
     #las dos siguientes instrucciones son consultas de los candidatos (principal, suplente) asociados a una corporacion determinada

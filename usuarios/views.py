@@ -74,7 +74,6 @@ def registro_usuario(request):
     mensaje = ""
     llamarMensaje = ""
 
-
     #Verificación para crear un solo usuario
     if request.method == 'POST' and "btncreate" in request.POST:
         form = FormularioRegistroUsuario(request.POST)
@@ -85,63 +84,37 @@ def registro_usuario(request):
             #Capture la cedula del usuario
             cedula_usuario = form.cleaned_data["cedula_usuario"]
 
-            #Consultando el usuario en la base de datos.
-            usuario = Usuario.objects.filter(cedula_usuario=cedula_usuario)
+            try:
+                #Consultando el usuario en la base de datos.
+                usuario = Usuario.objects.get(cedula_usuario=cedula_usuario)
 
             #Si el usuario no existe, lo crea
-            if not usuario:
+            except Usuario.DoesNotExist:
                 # Creando el usuario
                 usuario = Usuario()
-                usuario.cedula_usuario = cedula_usuario
-                usuario.first_name = form.cleaned_data["nombre_usuario"]
-                usuario.last_name = form.cleaned_data["apellido_usuario"]
-                usuario.email = form.cleaned_data["email"]
-                usuario.username = cedula_usuario
-                usuario.is_active = form.cleaned_data["esta_activo"]
-                #generando el password aleatorio.
-                password = User.objects.make_random_password()
-                usuario.set_password(password)
-
-                # Enviando contraseña al correo electronico registrado.
-                mensaje = "Señor(a) ", usuario.first_name , "\nSu usuario de acceso es: ", usuario.cedula_usuario , "\n Contraseña: ", usuario.password
-                #send_mail('Envío de contraseña de acceso a SIVORE', mensaje, 'sivoreunivalle@gmail.com', [usuario.email], fail_silently=False)
-
-                #Crea el usuario en la BD s i hay excepcion
-                try:
-                    usuario.save()
-                except Exception as e:
-                    print(e)
-
-                # Colocandole permisos al usuario
-                usuario.user_permissions.add(Permission.objects.get(codename=form.cleaned_data["rol"]))
-
-                 # Si es votante, Creando en la tabla votante
-                if form.cleaned_data["rol"] == "Votante":
-                    votante = Votante()
-                    votante.usuario = usuario
-                    votante.codigo = form.cleaned_data["codigo_estudiante"]
-                    votante.plan = form.cleaned_data["plan_estudiante"]
-
-                #Crea el votante en la BD si hay excepcion
-                    try:
-                        votante.save()
-                    except Exception as e:
-                        print(e)
-
+                createuser(usuario, form)
                 # Borrando los datos del formulario y enviando el mensaje de sactisfacion
                 form = FormularioRegistroUsuario()
                 mensaje = "El usuario se guardo correctamente, la contraseña se envío al correo " + usuario.email
                 llamarMensaje = "exito_usuario"
 
 
-            # Si el usuario ya existe en la BD
             else:
-                form = FormularioRegistroUsuario()
-                mensaje = "El usuario " + str(cedula_usuario)  + " ya esta registrado"
-                llamarMensaje = "fracaso_usuario"
+                # Si el usuario esta en la BD y no esta activo
 
+                if not usuario.is_active:
+                    createuser(usuario, form)
+                    mensaje = "El usuario se guardo correctamente, la contraseña se envío al correo " + usuario.email
+                    llamarMensaje = "exito_usuario"
 
-            return render(request, 'registro_usuario.html', {'mensaje': mensaje, 'form': form , 'form2':form2, 'llamarMensaje': llamarMensaje})
+                # Si el usuario ya existe en la BD y esta activo
+                else:
+                    mensaje = "El usuario " + str(cedula_usuario)  + " ya esta registrado"
+                    llamarMensaje = "fracaso_usuario"
+
+            request.session['llamarMensaje'] = llamarMensaje
+            request.session['mensaje'] = mensaje
+            return redirect("listar_usuario")
 
         #si no es valido el formulario crear
         else:
@@ -166,6 +139,7 @@ def registro_usuario(request):
             line=0
             useredit =0;
             usercreate=0;
+            userexist=0;
             for row in reader:
                 if (line > 0):
                     #Consultando el usuario en la base de datos.
@@ -202,9 +176,13 @@ def registro_usuario(request):
                         #send_mail('Envío de contraseña de acceso a SIVORE', mensaje, 'sivoreunivalle@gmail.com', [usuario.email], fail_silently=False)
                         usercreate +=1
 
+                    #Usuario ya existe pero esta desactivo
                     else:
-                        usuario.is_active = True
-                        useredit +=1
+                        if not usuario.is_active:
+                            usuario.is_active = True
+                            useredit +=1
+                        else:
+                            userexist +=1
                     #Crea el usuario en la BD s i hay excepcion
                     try:
                         usuario.save()
@@ -229,6 +207,9 @@ def registro_usuario(request):
                     line += 1
 
             mensaje = "Se crearon exitosamente " + str(usercreate) + " y se activaron " + str(useredit) + " votantes en el sistemas"
+            if userexist != 0:
+                mensaje = mensaje + ", además estaba activos " + str(userexist) + " usuarios"
+
             llamarMensaje = "exito_usuario"
             request.session['llamarMensaje'] = llamarMensaje
             request.session['mensaje'] = mensaje
@@ -242,7 +223,7 @@ def registro_usuario(request):
 # Vista para listar usuarios
 @permission_required("usuarios.Administrador" , login_url="/")
 def listar_usuario(request):
-    usuarios = Usuario.objects.all()
+    usuarios = Usuario.objects.filter(is_active=True)
     llamarMensaje = request.session.pop('llamarMensaje', None)
     mensaje = request.session.pop('mensaje', None)
 
@@ -277,8 +258,6 @@ def editar_usuario(request, username=None):
             except Exception as e:
                 print(e)
 
-            print("Voy a actualizar votante")
-
              # Si es votante, mostrar los campos facultad y codigo estudiante
             if form.cleaned_data["rol"] == "Votante":
                 votante = Votante.objects.get(usuario__cedula_usuario=usuario.cedula_usuario)
@@ -296,7 +275,7 @@ def editar_usuario(request, username=None):
             mensaje = "Se editó el usuario " +  str(usuario.cedula_usuario) +" sactisfactoriamente"
             request.session['llamarMensaje'] = llamarMensaje
             request.session['mensaje'] = mensaje
-            return redirect("listar_usuario")
+            return redirect("listar_votantes")
     else:
         es_votante = False
         if username is None:
@@ -306,7 +285,6 @@ def editar_usuario(request, username=None):
             permissions = Permission.objects.filter(user=usuario)
             votante = Votante()
             if usuario.has_perm('usuarios.Votante'):
-                print("entro a revisar votante")
                 try:
                     votante = Votante.objects.get(usuario__cedula_usuario=usuario.cedula_usuario)
                     es_votante = True
@@ -325,23 +303,53 @@ def eliminar_usuario(request, username=None):
     if request.method == 'POST':
 
         usuario=Usuario.objects.get(cedula_usuario=username)
+        usuario.is_active = False
 
-        # Si el usuario es votante
-        if usuario.has_perm("usuarios.Votante"):
-            votante = Votante.objects.get(usuario__cedula_usuario=usuario.cedula_usuario)
-
-            try:
-                votante.delete()
-            except Exception as e:
-                print(e)
         try:
-            usuario.delete()
-        except Exception as e:
-            print(e)
-
+            usuario.save()
+        except Exception:
+            print(usuario, usuario.is_active)
         #redireccionando a la vista
         llamarMensaje = "elimino_usuario"
         mensaje = "Se eliminó el usuario " +  str(username) +" sactisfactoriamente"
         request.session['llamarMensaje'] = llamarMensaje
         request.session['mensaje'] = mensaje
         return redirect("listar_usuario")
+
+def createuser(usuario, form):
+    usuario.cedula_usuario = form.cleaned_data["cedula_usuario"]
+    usuario.first_name = form.cleaned_data["nombre_usuario"]
+    usuario.last_name = form.cleaned_data["apellido_usuario"]
+    usuario.email = form.cleaned_data["email"]
+    usuario.username = form.cleaned_data["cedula_usuario"]
+    usuario.is_active = True
+    #generando el password aleatorio.
+    password = User.objects.make_random_password()
+    usuario.set_password(password)
+
+    # Enviando contraseña al correo electronico registrado.
+    mensaje = "Señor(a) ", usuario.first_name , "\nSu usuario de acceso es: ", usuario.cedula_usuario , "\n Contraseña: ", usuario.password
+    #send_mail('Envío de contraseña de acceso a SIVORE', mensaje, 'sivoreunivalle@gmail.com', [usuario.email], fail_silently=False)
+
+    #Crea el usuario en la BD s i hay excepcion
+    try:
+        usuario.save()
+    except Exception as e:
+        print(e)
+
+    # Colocandole permisos al usuario
+    usuario.user_permissions.add(Permission.objects.get(codename=form.cleaned_data["rol"]))
+
+     # Si es votante, Creando en la tabla votante
+    if form.cleaned_data["rol"] == "Votante":
+        votante = Votante()
+        votante.usuario = usuario
+        votante.codigo = form.cleaned_data["codigo_estudiante"]
+        votante.plan = form.cleaned_data["plan_estudiante"]
+
+    #Crea el votante en la BD si hay excepcion
+        try:
+            votante.save()
+        except Exception as e:
+            print(e)
+
