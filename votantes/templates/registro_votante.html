@@ -1,0 +1,134 @@
+{% extends "base-admin.html" %}
+
+{% block title %}Crear votante{% endblock title %}
+{% block content %}
+    <!--<h1 class="page-header text-overflow">Usuarios</h1>-->
+    <!--<div class="panel">-->
+        <div id=content2 class="panel panel-colorful panel-primary" xmlns="http://www.w3.org/1999/html">
+            <div class="panel-heading">
+                <h3 class="panel-title">Registro de votante</h3>
+            </div>
+        </div>
+        <div id="demo-custom-toolbar" class="table-toolbar-right">
+            <button id="demo-btn-addrow" class="btn btn-mint btn-labeled fa fa-plus" ><a href="{% url 'listar_votantes' %}" class="btn btn-mint">Listar votantes</a></button>
+        </div>
+        <!-- section tab crear votante-->
+        <div class="tab-base">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs">
+                <li class="active"><a id="user-create" href="#demo-bsc-tab-1" data-toggle="tab"><i class="fa"></i> Crear votante</a></li>
+                <li><a id="users-create" href="#demo-bsc-tab-2" data-toggle="tab"><i class="fa"></i>Cargar votantes</a></li>
+            </ul>
+            <!-- Tabs Content -->
+            <div class="tab-content">
+                <div class="tab-pane pad-btm fade in active" id="demo-bsc-tab-1">
+                <form name="FormularioRegistroVotante" id="demo-bv-bsc-tabs" class="form-horizontal" action="" method="post">
+                        <!--<h4 class="text-thin mar-btm">First Tab</h4>-->
+                        <hr>
+                        {% csrf_token %}
+                    <div class="panel-body">
+                    <fieldset>
+                        <div class="form-group">
+                        <label class="col-lg-3 control-label">Cédula</label>
+                            <div class="col-lg-7">
+                            {{ form.cedula_usuario }}
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <div class="form-group">
+                        <label class="col-lg-3 control-label">Nombres</label>
+                            <div class="col-lg-7">
+                                {{ form.nombre_usuario }}
+                            </div>
+                        </div>
+                    </fieldset>
+                        <fieldset>
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label">Apellidos</label>
+                                    <div class="col-lg-7">
+                                           {{ form.apellido_usuario}}
+                                    </div>
+                            </div>
+                            <fieldset>
+                                <div class="form-group">
+                                <label class="col-lg-3 control-label">Código estudiante</label>
+                                    <div class="col-lg-7">
+                                        {{ form.codigo_estudiante }}
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <div class="form-group">
+                                <label class="col-lg-3 control-label">Plan estudiante</label>
+                                    <div class="col-lg-7">
+                                        {{ form.plan_estudiante}}
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </fieldset>
+                <!--===================================================-->
+
+                <!--REGULAR EXPRESSION BASED VALIDATORS-->
+                <!--===================================================-->
+                    <fieldset>
+                        <div class="form-group">
+                        <label class="col-lg-3 control-label">Correo electrónico</label>
+                        <div class="col-lg-7">
+                        {{ form.email }}
+                        </div>
+                        </div>
+                    </fieldset>
+                <!--===================================================-->
+                {{ form.error_messages }}
+                </div>
+                    <div class="panel-footer">
+                        <div class="row">
+                            <div class="col-sm-7 col-sm-offset-3">
+                            <button class="btn btn-primary btn-labeled fa fa-send fa-lg" type="submit" name="btncreate">Crear</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                </div>
+
+                <div class="tab-pane fade" id="demo-bsc-tab-2">
+                    <div class="panel">
+                        <div class="panel-body">
+
+                            <form enctype="multipart/form-data"  action="" method="post" id="demo-dropzone" class="dropzone">
+                                {% csrf_token %}
+                                <h3 class="panel-title">Crear usuarios votantes por medio de archivo .csv</h3>
+                                <div class="dz-default dz-message">
+                                    <div class="dz-icon icon-wrap icon-circle icon-wrap-md">
+                                        <i class="fa fa-cloud-upload fa-3x"></i>
+                                    </div>
+                                    <div id="content-components">
+                                        <p class="dz-text btn-link add-tooltip" data-toggle="tooltip" data-original-title="Elegir archivo .csv para cargar los votantes al sistema.">
+                                            {{ form2.file }}
+                                        </p>
+                                        <div class="fallback">
+                                            <p class="dz-text"><input name="btnload" type="submit" value="Subir" /></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                    <!--===================================================-->
+                    <!-- End Dropzonejs -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+     </div>
+    <script>
+    window.onload = function() {
+    llamarMensajes( '{{ llamarMensaje }}' , '{{ mensaje }}');
+};
+
+</script>
+
+        <!-- end section tab cargar usuario-->
+       <!-- </div>-->
+<!--</div>-->
+{% endblock %}
