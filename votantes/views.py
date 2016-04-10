@@ -2,6 +2,9 @@ from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render_to_response, redirect, render
 from votantes.models import Votante
 from usuarios.models import Usuario
+from candidatos.models import Candidato
+from planchas.models import Plancha
+from django.db.models import Q
 from corporaciones.models import Corporacion
 from django.template.context import RequestContext
 from django.contrib.auth.models import Permission
@@ -177,16 +180,37 @@ def listar_votantes(request):
 @permission_required("usuarios.Administrador", login_url="/")
 def eliminar_votante(request, username=None):
     if request.method == 'POST':
-        usuario = Usuario.objects.get(cedula_usuario=username)
-        usuario.is_active = False
         try:
-            usuario.save()
-        except Exception as e:
-            print(e)
+            votante = Votante.objects.filter(usuario__cedula_usuario=username)
 
+            if votante:
+                votante[0].is_active = False
+                votante[0].usuario.is_active = False
+                votante[0].save()
+
+                # Si tiene candidatp
+                candidato = Candidato.objects.filter(votante= votante)
+                if candidato:
+                    candidato[0].is_active = False
+                    candidato[0].save()
+
+                    # Si tiene plancha
+                    plancha = Plancha.objects.filter(Q(candidato_principal=candidato[0]) |
+                                                     Q(candidato_suplente=candidato[0]))
+                    if plancha:
+                        plancha[0].is_active = False
+                        plancha[0].save()
+
+
+        except Exception as e:
+            llamarMensaje = "fracaso_usuario"
+            mensaje = "Hubo un eror, no se eliminó el votante " +  str(username) +" sactisfactoriamente."
+
+        else:
         #redireccionando a la vista
-        llamarMensaje = "elimino_usuario"
-        mensaje = "Se eliminó el votante " +  str(username) +" sactisfactoriamente."
+            llamarMensaje = "elimino_usuario"
+            mensaje = "Se eliminó el votante " +  str(username) +" sactisfactoriamente."
+
         request.session['llamarMensaje'] = llamarMensaje
         request.session['mensaje'] = mensaje
         return redirect("listar_votantes")
