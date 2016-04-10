@@ -6,6 +6,7 @@ class Votante(models.Model):
 	usuario = models.ForeignKey(Usuario)
 	codigo = models.BigIntegerField(unique=True, primary_key=True)
 	plan = models.ForeignKey(Corporacion)
+	is_active = models.BooleanField(default=True)
 
 	class Meta:
 		ordering = ["codigo"]

@@ -97,7 +97,7 @@ def registro_candidato(request):
 # Vista para listar votantes
 @permission_required("usuarios.Administrador", login_url="/")
 def listar_candidatos(request):
-    candidatos = Candidato.objects.all()
+    candidatos = Candidato.objects.filter(is_active=True    )
     llamarMensaje = request.session.pop('llamarMensaje', None)
     mensaje = request.session.pop('mensaje', None)
 

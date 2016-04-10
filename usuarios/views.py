@@ -4,12 +4,15 @@ from django.contrib.auth.models import Permission
 from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render_to_response, redirect, render
 from django.template.context import RequestContext
+from django.db.models import Q
 import csv
 from io import StringIO
 
 from usuarios.models import Usuario
 from votantes.models import Votante
+from candidatos.models import Candidato
 from corporaciones.models import Corporacion
+from planchas.models import Plancha
 
 from usuarios.forms import FormularioLogin
 from usuarios.forms import FormularioRegistroUsuario, FormularioEditarUsuario, FormularioCargar
@@ -301,17 +304,49 @@ def editar_usuario(request, username=None):
 @permission_required("usuarios.Administrador", login_url="/")
 def eliminar_usuario(request, username=None):
     if request.method == 'POST':
-
-        usuario=Usuario.objects.get(cedula_usuario=username)
-        usuario.is_active = False
-
         try:
+            usuario=Usuario.objects.get(cedula_usuario=username)
+            usuario.is_active = False
             usuario.save()
+
+            # si hay votante desactivelo
+            votante = Votante.objects.filter(usuario__cedula_usuario=username)
+
+
+            if votante:
+                print("Encontre votante")
+                votante[0].is_active = False
+                votante[0].save()
+                print("Eliminar votante")
+
+                # if es candidato desactivelo
+                candidato = Candidato.objects.filter(votante__usuario__cedula_usuario=username)
+
+                if candidato:
+                    print("Encontre candidato")
+                    candidato[0].is_active = False
+                    candidato[0].save()
+                    print("Eliminar candidato")
+
+                    # if es candidato plancha
+                    plancha = Plancha.objects.filter(Q(candidato_principal__votante__usuario__cedula_usuario=username) |
+                                                     Q(candidato_suplente__votante__usuario__cedula_usuario=username))
+
+                    if plancha:
+                        print("Econtre plancha")
+                        plancha[0].is_active = False
+                        plancha[0].save()
+                        print("Eliminar plancha")
+
+
         except Exception:
-            print(usuario, usuario.is_active)
+            llamarMensaje = "fracaso_usuario"
+            mensaje = "Hubo un error, no se eliminó el usuario " +  str(username)
+
         #redireccionando a la vista
-        llamarMensaje = "elimino_usuario"
-        mensaje = "Se eliminó el usuario " +  str(username) +" sactisfactoriamente"
+        else:
+            llamarMensaje = "elimino_usuario"
+            mensaje = "Se eliminó el usuario " +  str(username) +" sactisfactoriamente"
         request.session['llamarMensaje'] = llamarMensaje
         request.session['mensaje'] = mensaje
         return redirect("listar_usuario")
