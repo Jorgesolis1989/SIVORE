@@ -49,7 +49,7 @@ def registro_plancha(request):
             # Si la plancha ya existe en la BD
             else:
                 form = FormularioRegistroPlancha()
-                mensaje = "La plancha" + str(numplancha) + " ya esta existe o los candidatos pertenecen a una plancha."
+                mensaje = "La plancha" + str(numplancha) + " ya existe o los candidatos pertenecen a una plancha."
                 llamarMensaje = "fracaso_usuario"
 
             return render(request, 'registro_plancha.html', {'mensaje': mensaje, 'form': form, 'llamarMensaje':llamarMensaje})
