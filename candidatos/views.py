@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render_to_response, render, redirect
 from django.db.models import Q
+from planchas.models import Plancha
 
 from django.template.context import RequestContext
 import csv
@@ -157,5 +158,37 @@ def editar_candidato(request, codigo=None):
         return render(request, 'editar_candidato.html', {'form': form})
 
 
+@permission_required("usuarios.Administrador", login_url="/")
+def eliminar_candidato(request, username=None):
+    if request.method == 'POST':
+        try:
+
+            candidato=Candidato.objects.get(votante__codigo=username)
+            candidato.is_active = False
+            candidato.votante.is_active = False
+            candidato.votante.usuario.is_active = False
+
+            candidato.save()
+
+            # if es candidato plancha
+            plancha = Plancha.objects.filter(Q(candidato_principal=candidato) | Q(candidato_suplente=candidato))
+
+
+            if plancha:
+                print("encontre plancha")
+                plancha[0].is_active = False
+                plancha[0].save()
+
+        except Exception:
+            llamarMensaje = "fracaso_usuario"
+            mensaje = "Hubo un error, no se eliminó el candidato " +  str(username)
+
+        #redireccionando a la vista
+        else:
+            llamarMensaje = "elimino_usuario"
+            mensaje = "Se eliminó el candidato " +  str(username) +" sactisfactoriamente"
+        request.session['llamarMensaje'] = llamarMensaje
+        request.session['mensaje'] = mensaje
+        return redirect("listar_candidato")
 
 
