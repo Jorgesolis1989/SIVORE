@@ -7,6 +7,7 @@ class Plancha(models.Model):
     corporacion = models.ForeignKey(Corporacion, null=False)
     candidato_principal = models.ForeignKey(Candidato, null=False, related_name='principal')
     candidato_suplente = models.ForeignKey(Candidato, null=False, related_name='suplente')
+    is_active = models.BooleanField(default=True)
 
     class Meta:
         ordering = ["numeroplancha"]
