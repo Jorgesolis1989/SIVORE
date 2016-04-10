@@ -14,14 +14,14 @@ def registro_plancha(request):
 
     if request.method == 'POST' and "btnload" in request.POST:
         form = FormularioRegistroPlancha(request.POST)
-
         #Si el formulario es valido y tiene datos
         if form.is_valid():
-
             #Capture el numero de plancha
-            plancha = form.cleaned_data["numeroplancha"]
+            numplancha = form.cleaned_data["numeroplancha"]
 
-            #Si el candidato no existe, lo crea
+            plancha = Plancha.objects.filter(numeroplancha=numplancha)
+
+            #Si la plancha no existe, la crea
             if not plancha:
                 # Creando la plancha
                 plancha = Plancha()
@@ -44,7 +44,7 @@ def registro_plancha(request):
             # Si la plancha ya existe en la BD
             else:
                 form = FormularioRegistroPlancha()
-                mensaje = "La plancha " + str(plancha.numeroplancha)+ " ya esta existe."
+                mensaje = "La plancha " + str(numplancha) + " ya esta existe."
                 llamarMensaje = "fracaso_usuario"
 
             return render(request, 'registro_plancha.html', {'mensaje': mensaje, 'form': form, 'llamarMensaje':llamarMensaje})
@@ -94,11 +94,11 @@ def registro_plancha(request):
 # Vista para listar votantes
 @permission_required("usuarios.Administrador", login_url="/")
 def listar_planchas(request):
-    candidatos = Candidato.objects.all()
+    planchas = Plancha.objects.all()
     llamarMensaje = request.session.pop('llamarMensaje', None)
     mensaje = request.session.pop('mensaje', None)
 
-    return render(request,  'listar_planchas.html', {'candidatos': candidatos, 'llamarMensaje': llamarMensaje,'mensaje': mensaje})
+    return render(request,  'listar_planchas.html', {'planchas': planchas, 'llamarMensaje': llamarMensaje,'mensaje': mensaje})
 
 
 #Edicion candidato
