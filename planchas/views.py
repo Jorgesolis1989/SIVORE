@@ -16,13 +16,18 @@ def registro_plancha(request):
         form = FormularioRegistroPlancha(request.POST)
         #Si el formulario es valido y tiene datos
         if form.is_valid():
-            #Capture el numero de plancha
+            #Capture el numero de plancha y candidato principal y suplente dados desde el form
             numplancha = form.cleaned_data["numeroplancha"]
+            candidatoprin = form.cleaned_data["candidato_principal"]
+            candidatosupl = form.cleaned_data["candidato_suplente"]
 
+            #Consulto en la BD si existen
             plancha = Plancha.objects.filter(numeroplancha=numplancha)
+            candidatoprincipal = Plancha.objects.filter(candidato_principal = candidatoprin)
+            candidadatosuplente = Plancha.objects.filter(candidato_suplente = candidatosupl)
 
-            #Si la plancha no existe, la crea
-            if not plancha:
+            #Si la plancha no existe y los candidatos no estan asignados, crea la plancha
+            if not plancha and not candidatoprincipal or not candidadatosuplente:
                 # Creando la plancha
                 plancha = Plancha()
                 plancha.numeroplancha = form.cleaned_data["numeroplancha"]
@@ -44,7 +49,7 @@ def registro_plancha(request):
             # Si la plancha ya existe en la BD
             else:
                 form = FormularioRegistroPlancha()
-                mensaje = "La plancha " + str(numplancha) + " ya esta existe."
+                mensaje = "La plancha" + str(numplancha) + " ya esta existe o los candidatos pertenecen a una plancha."
                 llamarMensaje = "fracaso_usuario"
 
             return render(request, 'registro_plancha.html', {'mensaje': mensaje, 'form': form, 'llamarMensaje':llamarMensaje})
