@@ -115,56 +115,73 @@ def listar_planchas(request):
 
 #Edicion candidato
 @permission_required("usuarios.Administrador" , login_url="/")
-def editar_plancha(request, codigo=None):
-    candidato = Candidato.objects.get(votante__codigo=codigo)
+def editar_plancha(request, idcorporacion=None,numplancha=None):
+    #plancha = Plancha.objects.filter(Q(corporacion=idcorporacion) & Q(numeroplancha=numplancha))
+    #plancha = Plancha.objects.get(corporacion=idcorporacion, numeroplancha=numplancha)
 
-    if request.method == 'POST':
+    if request.method == 'POST' and "btnload" in request.POST:
         form = FormularioEditarPlancha(request.POST)
         #Si el formulario es valido y tiene datos
         if form.is_valid():
-            #Capture el codigo del candidato
-            candidato.tipo_candidato = form.cleaned_data["tipo_candidato"]
-            candidato.corporacion = form.cleaned_data["corporacion"]
 
-            # Foto del candidato
-            if request.FILES:
-                candidato.foto = request.FILES['foto']
+            #Consulto en la BD si existe la plancha
+            plancha = Plancha.objects.filter(numeroplancha=numplancha)
 
-            print("entro hasta guara")
-            #Actualiza  el usuario en la BD si hay excepcion
+            #Si la plancha no existe y los candidatos no estan asignados, crea la plancha
+            if not plancha:
+                #Capture el numero de plancha y candidato principal y suplente dados desde el form
+                numplancha = form.cleaned_data["numeroplancha"]
+                corporacion = form.cleaned_data["corporacion"]
+                candidatoprin = form.cleaned_data["candidato_principal"]
+                candidatosupl = form.cleaned_data["candidato_suplente"]
             try:
-                candidato.save()
+                plancha.save()
             except Exception as e:
                 print(e)
-            mensaje = "El candidato " + str(candidato.votante.codigo)+ " fue modifcado exitosamente."
-            llamarMensaje = "exito_usuario"
-            request.session["llamarMensaje"] = llamarMensaje
-            request.session["mensaje"] = mensaje
-            return redirect("listar_candidatos")
-        else:
-            if codigo is None:
-                return render(request, 'administrador.html')
-            else:
-                form = FormularioEditarPlancha()
 
-            return render(request, 'registro_plancha.html', {'form': form})
+                mensaje = "La plancha #" + str(plancha.numeroplancha)+ "de la corporación "+ str(plancha.corporacion)+" fue modificada exitosamente."
+                llamarMensaje = "exito_usuario"
+                request.session["llamarMensaje"] = llamarMensaje
+                request.session["mensaje"] = mensaje
+                return redirect("listar_planchas")
+
+        #si no es valido el formulario, crear
+        else:
+            form = FormularioEditarPlancha()
+            data = {
+                'form': form,
+            }
+            return render(request, 'editar_plancha.html', data)
+
+    # Cambio de corporacion
+    elif request.POST:
+        form = FormularioEditarPlancha(request.POST)
+        corporacion = Corporacion.objects.get(id_corporation=request.POST['corporacion'])
+        candidatosprin_sin_plancha = (Candidato.objects.filter(Q(corporacion=corporacion.id_corporation) & Q(tipo_candidato="Principal") & Q(is_active=True))).exclude(votante__codigo__in = Plancha.objects.all().values_list('candidato_principal__votante__codigo', flat=True))
+        candidatossupl_sin_plancha = (Candidato.objects.filter(Q(corporacion=corporacion.id_corporation) & Q(tipo_candidato="Suplente") & Q(is_active=True) )).exclude(votante__codigo__in = Plancha.objects.all().values_list('candidato_suplente__votante__codigo', flat=True))
+
+        form.fields["candidato_principal"].queryset = candidatosprin_sin_plancha
+        form.fields["candidato_suplente"].queryset = candidatossupl_sin_plancha
+
+    #Ninguno de los dos formularios crear ni cargar Method GET
     else:
         form = FormularioEditarPlancha()
+        corporaciones = Corporacion.objects.all()
 
+        # Candidatos principales y suplentes de una corporacion que no estan en alguna plancha
+
+        candidatosprin_sin_plancha = (Candidato.objects.filter(Q(corporacion=corporaciones[0].id_corporation) & Q(tipo_candidato="Principal") & Q(is_active=True))).exclude(corporacion__candidato__principal = Plancha.objects.all().values_list('candidato_principal__votante__codigo', flat=True))
+
+        candidatossupl_sin_plancha = (Candidato.objects.filter(Q(corporacion=corporaciones[0].id_corporation) & Q(tipo_candidato="Suplente") & Q(is_active=True) )).exclude(votante__codigo__in = Plancha.objects.all().values_list('candidato_suplente__votante__codigo', flat=True))
+        print("entre get en plancha")
+
+        plancha = Plancha.objects.get(corporacion=idcorporacion, numeroplancha=numplancha)
+        print(plancha)
         try:
-            votante = Votante.objects.get(codigo=codigo)
-            candidato = Candidato.objects.get(votante__codigo=codigo)
-            print(candidato.foto)
+            form.initial = {'numeroplancha': plancha.numeroplancha, 'corporacion': plancha.corporacion, 'candidato_principal': plancha.candidato_principal,
+                            'candidato_suplente': plancha.candidato_suplente}
 
-            form.initial = {'votante': candidato.votante, 'nombrefoto': candidato.foto, 'tipo_candidato': candidato.tipo_candidato,
-                           'corporacion' : candidato.corporacion}
-            form.fields["corporacion"].queryset = Corporacion.objects.filter(Q(id_corporation=candidato.votante.plan.id_corporation) | Q(id_corporation=candidato.votante.plan.facultad.id_corporation))
+        except Plancha.DoesNotExist:
+            print("no existe plancha")
 
-
-        except Candidato.DoesNotExist:
-            print("no existe")
-        return render(request, 'editar_plancha.html', {'form': form})
-
-
-
-
+    return render(request, 'editar_plancha.html', {'form': form})

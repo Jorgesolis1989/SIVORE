@@ -139,14 +139,13 @@ def editar_candidato(request, codigo=None):
             else:
                 form = FormularioEditarCandidato()
 
-            return render(request, 'registro_candidato.html', {'form': form})
+            return render(request, 'editar_candidato.html', {'form': form})
     else:
         form = FormularioEditarCandidato()
 
         try:
             votante = Votante.objects.get(codigo=codigo)
             candidato = Candidato.objects.get(votante__codigo=codigo)
-            print(candidato.foto)
 
             form.initial = {'votante': candidato.votante, 'nombrefoto': candidato.foto, 'tipo_candidato': candidato.tipo_candidato,
                            'corporacion' : candidato.corporacion}
@@ -162,7 +161,6 @@ def editar_candidato(request, codigo=None):
 def eliminar_candidato(request, username=None):
     if request.method == 'POST':
         try:
-
             candidato=Candidato.objects.get(votante__codigo=username)
             candidato.is_active = False
             candidato.votante.is_active = False
