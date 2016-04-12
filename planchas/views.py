@@ -98,7 +98,7 @@ def registro_plancha(request):
 # Vista para listar votantes
 @permission_required("usuarios.Administrador", login_url="/")
 def listar_planchas(request):
-    planchas = Plancha.objects.all()
+    planchas = Plancha.objects.filter(is_active=True)
     llamarMensaje = request.session.pop('llamarMensaje', None)
     mensaje = request.session.pop('mensaje', None)
 
