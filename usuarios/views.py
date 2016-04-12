@@ -29,6 +29,7 @@ def retornar_vista(request, usuario):
         return superior_home(request, usuario)
     else:
         return login_view()
+
 # Pagina principal para usuario Administrador
 @permission_required("usuarios.Administrador" , login_url="/")
 def administrador_home(request , usuario):

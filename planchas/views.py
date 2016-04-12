@@ -9,7 +9,6 @@ from planchas.forms import FormularioRegistroPlancha, FormularioEditarPlancha
 
 @permission_required("usuarios.Administrador", login_url="/")
 def registro_plancha(request):
-
     #Verificación para crear una plancha
 
     if request.method == 'POST' and "btnload" in request.POST:
@@ -88,10 +87,14 @@ def registro_plancha(request):
             llamarMensaje = "fracaso_usuario"
             return render(request, 'registro_plancha.html', {'form': form, 'llamarMensaje':llamarMensaje , 'mensaje': mensaje})
         else:
-            candidatosnoplancha = Plancha.objects.exclude(candidato_principal__votante__codigo__in=Plancha.objects.all().values_list('candidato_principal__votante__codigo', flat=True))
 
-            form.fields["candidato_principal"].queryset = Candidato.objects.filter(Q(corporacion=corporaciones[0].id_corporation) & Q(tipo_candidato="Principal"))
-            form.fields["candidato_suplente"].queryset = Candidato.objects.filter(Q(corporacion=corporaciones[0].id_corporation) & Q(tipo_candidato="Suplente"))
+            # Candidatos principales de una corporacion que no estan en alguna plancha
+
+            candidatosprin_sin_plancha = (Candidato.objects.filter(Q(corporacion=corporaciones[0].id_corporation) & Q(tipo_candidato="Principal"))).exclude(corporacion__candidato__principal = Plancha.objects.all().values_list('candidato_principal', flat=True))
+            candidatossupl_sin_plancha = (Candidato.objects.filter(Q(corporacion=corporaciones[0].id_corporation) & Q(tipo_candidato="Suplente"))).exclude(votante__codigo__in = Plancha.objects.all().values_list('candidato_suplente__votante__codigo', flat=True))
+
+            form.fields["candidato_principal"].queryset = candidatosprin_sin_plancha
+            form.fields["candidato_suplente"].queryset = candidatossupl_sin_plancha
 
     return render(request, 'registro_plancha.html', {'form': form})
 
