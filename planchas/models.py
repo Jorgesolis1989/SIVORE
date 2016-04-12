@@ -6,7 +6,7 @@ class Plancha(models.Model):
     numeroplancha = models.IntegerField(null=False, unique=True, primary_key=True)
     corporacion = models.ForeignKey(Corporacion, null=False)
     candidato_principal = models.ForeignKey(Candidato, null=False, related_name='principal')
-    candidato_suplente = models.ForeignKey(Candidato, null=False, related_name='suplente')
+    candidato_suplente = models.ForeignKey(Candidato, null=True, related_name='suplente')
     is_active = models.BooleanField(default=True)
 
     class Meta:

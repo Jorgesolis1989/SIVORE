@@ -23,7 +23,7 @@ class FormularioRegistroPlancha(forms.Form):
                                                                             'data-width':'100%'}), queryset=consulta_candidato_principal, required=True, empty_label=None)
 
     candidato_suplente = forms.ModelChoiceField(widget=forms.Select(attrs={'class':'selectpicker', 'data-live-search':'true',
-                                                                            'data-width':'100%'}), queryset=consulta_candidato_suplente, required=True, empty_label=None)
+                                                                            'data-width':'100%'}), queryset=consulta_candidato_suplente, required=False)
 
 
     def plancha_nulo(self):

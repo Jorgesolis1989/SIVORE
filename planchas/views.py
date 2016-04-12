@@ -27,7 +27,7 @@ def registro_plancha(request):
             candidadatosuplente = Plancha.objects.filter(candidato_suplente = candidatosupl)
 
             #Si la plancha no existe y los candidatos no estan asignados, crea la plancha
-            if not plancha and not candidatoprincipal or not candidadatosuplente:
+            if not plancha:
                 # Creando la plancha
                 plancha = Plancha()
                 plancha.numeroplancha = form.cleaned_data["numeroplancha"]
@@ -70,17 +70,16 @@ def registro_plancha(request):
         if not "corporacion" in request.POST:
             mensaje = "Por favor elegir una corporación"
             llamarMensaje = "fracaso_usuario"
-            return render(request, 'registro_plancha.html', {'form': form, 'llamarMensaje':llamarMensaje , 'mensaje': mensaje})
+            return render(request, 'registro_plancha.html', {'form': form, 'llamarMensaje':llamarMensaje, 'mensaje': mensaje})
 
         # Cambio de corporacion y cargar candidatos de esa corporacion
         else:
             corporacion = Corporacion.objects.get(id_corporation=request.POST['corporacion'])
-            form.fields["candidato_principal"].queryset = Candidato.objects.filter(Q(corporacion__id_corporation=corporacion.id_corporation) & Q (tipo_candidato='Principal'))
-            form.fields["candidato_suplente"].queryset = Candidato.objects.filter(Q(corporacion__id_corporation=corporacion.id_corporation) & Q (tipo_candidato='Suplente'))
+            form.fields["candidato_principal"].queryset = Candidato.objects.filter(Q(corporacion__id_corporation=corporacion.id_corporation) & Q(tipo_candidato='Principal'))
+            form.fields["candidato_suplente"].queryset = Candidato.objects.filter(Q(corporacion__id_corporation=corporacion.id_corporation) & Q(tipo_candidato='Suplente'))
 
     #Ninguno de los dos formularios crear  ni cargar Method GET
     else:
-        print("entre eee")
         form = FormularioRegistroPlancha()
         corporaciones = Corporacion.objects.all()
 
@@ -89,9 +88,9 @@ def registro_plancha(request):
             llamarMensaje = "fracaso_usuario"
             return render(request, 'registro_plancha.html', {'form': form, 'llamarMensaje':llamarMensaje , 'mensaje': mensaje})
         else:
-            #form.fields["corporacion"].initial = corporaciones[0]
-            print(corporaciones[0])
-            form.fields["candidato_principal"].queryset = Candidato.objects.filter(Q(corporacion =corporaciones[0].id_corporation) & Q(tipo_candidato="Principal"))
+            candidatosnoplancha = Plancha.objects.exclude(candidato_principal__votante__codigo__in=Plancha.objects.all().values_list('candidato_principal__votante__codigo', flat=True))
+
+            form.fields["candidato_principal"].queryset = Candidato.objects.filter(Q(corporacion=corporaciones[0].id_corporation) & Q(tipo_candidato="Principal"))
             form.fields["candidato_suplente"].queryset = Candidato.objects.filter(Q(corporacion=corporaciones[0].id_corporation) & Q(tipo_candidato="Suplente"))
 
     return render(request, 'registro_plancha.html', {'form': form})
