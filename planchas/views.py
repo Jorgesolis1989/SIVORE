@@ -75,10 +75,9 @@ def registro_plancha(request):
         else:
             corporacion = Corporacion.objects.get(id_corporation=request.POST['corporacion'])
 
-            candidatosprin_sin_plancha = (Candidato.objects.filter(Q(corporacion=corporacion.id_corporation) & Q(tipo_candidato="Principal"))).exclude(votante__codigo__in = Plancha.objects.all().values_list('candidato_principal__votante__codigo', flat=True))
-            print("Candidatos Principales")
-            print(candidatosprin_sin_plancha)
-            candidatossupl_sin_plancha = (Candidato.objects.filter(Q(corporacion=corporacion.id_corporation) & Q(tipo_candidato="Suplente"))).exclude(votante__codigo__in = Plancha.objects.all().values_list('candidato_suplente__votante__codigo', flat=True))
+            candidatosprin_sin_plancha = (Candidato.objects.filter(Q(corporacion=corporacion.id_corporation) & Q(tipo_candidato="Principal") & Q(is_active=True))).exclude(votante__codigo__in = Plancha.objects.all().values_list('candidato_principal__votante__codigo', flat=True))
+
+            candidatossupl_sin_plancha = (Candidato.objects.filter(Q(corporacion=corporacion.id_corporation) & Q(tipo_candidato="Suplente") & Q(is_active=True) )).exclude(votante__codigo__in = Plancha.objects.all().values_list('candidato_suplente__votante__codigo', flat=True))
 
             form.fields["candidato_principal"].queryset = candidatosprin_sin_plancha
             form.fields["candidato_suplente"].queryset = candidatossupl_sin_plancha
@@ -95,10 +94,9 @@ def registro_plancha(request):
 
             # Candidatos principales de una corporacion que no estan en alguna plancha
 
-            candidatosprin_sin_plancha = (Candidato.objects.filter(Q(corporacion=corporaciones[0].id_corporation) & Q(tipo_candidato="Principal"))).exclude(corporacion__candidato__principal = Plancha.objects.all().values_list('candidato_principal__votante__codigo', flat=True))
-            print("Candidatos Principales")
-            print(candidatosprin_sin_plancha)
-            candidatossupl_sin_plancha = (Candidato.objects.filter(Q(corporacion=corporaciones[0].id_corporation) & Q(tipo_candidato="Suplente"))).exclude(votante__codigo__in = Plancha.objects.all().values_list('candidato_suplente__votante__codigo', flat=True))
+            candidatosprin_sin_plancha = (Candidato.objects.filter(Q(corporacion=corporaciones[0].id_corporation) & Q(tipo_candidato="Principal") & Q(is_active=True))).exclude(corporacion__candidato__principal = Plancha.objects.all().values_list('candidato_principal__votante__codigo', flat=True))
+
+            candidatossupl_sin_plancha = (Candidato.objects.filter(Q(corporacion=corporaciones[0].id_corporation) & Q(tipo_candidato="Suplente") & Q(is_active=True) )).exclude(votante__codigo__in = Plancha.objects.all().values_list('candidato_suplente__votante__codigo', flat=True))
 
             form.fields["candidato_principal"].queryset = candidatosprin_sin_plancha
             form.fields["candidato_suplente"].queryset = candidatossupl_sin_plancha
