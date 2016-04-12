@@ -134,16 +134,24 @@ def editar_plancha(request, idcorporacion=None,numplancha=None):
                 corporacion = form.cleaned_data["corporacion"]
                 candidatoprin = form.cleaned_data["candidato_principal"]
                 candidatosupl = form.cleaned_data["candidato_suplente"]
-            try:
-                plancha.save()
-            except Exception as e:
-                print(e)
 
-                mensaje = "La plancha #" + str(plancha.numeroplancha)+ "de la corporación "+ str(plancha.corporacion)+" fue modificada exitosamente."
-                llamarMensaje = "exito_usuario"
-                request.session["llamarMensaje"] = llamarMensaje
-                request.session["mensaje"] = mensaje
-                return redirect("listar_planchas")
+                try:
+                    plancha.save()
+                except Exception as e:
+                    print(e)
+
+                    mensaje = "La plancha #" + str(plancha.numeroplancha)+ "de la corporación "+ str(plancha.corporacion)+" fue modificada exitosamente."
+                    llamarMensaje = "exito_usuario"
+                    request.session["llamarMensaje"] = llamarMensaje
+                    request.session["mensaje"] = mensaje
+                    return redirect("listar_planchas")
+            # Si la plancha ya existe en la BD
+            else:
+                form = FormularioRegistroPlancha()
+                mensaje = "La plancha" + str(numplancha) + " ya existe o los candidatos pertenecen a una plancha."
+                llamarMensaje = "fracaso_usuario"
+
+            return render(request, 'registro_plancha.html', {'mensaje': mensaje, 'form': form, 'llamarMensaje':llamarMensaje})
 
         #si no es valido el formulario, crear
         else:
