@@ -67,8 +67,8 @@
 	// http://bootboxjs.com/
 	// =================================================================
 	$('.demo-bootbox-confirm-corp').on('click', function(){
-		var id = $(this).attr('id')
-		bootbox.confirm("Esta seguro que desea eliminar la corporación número "+id +" ?", function(result) {
+		var plancha = $(this).attr('id')
+		bootbox.confirm("Esta seguro que desea eliminar la corporación número "+plancha.numeroplancha +" ?", function(result) {
 			if (result) {
 				document.formDelete.action = "/corporaciones/eliminar/"+id
 				document.formDelete.submit()
@@ -77,6 +77,22 @@
 		});
 	});
 
+	 // BOOTBOX - CONFIRM MODAL - PARA ELIMINAR CORPORACIONES
+	// =================================================================
+	// Require Bootbox
+	// http://bootboxjs.com/
+	// =================================================================
+	$('.demo-bootbox-confirm-plancha').on('click', function(){
+		var id = $(this).attr('id')
+		var name = $(this).attr('name')
+		bootbox.confirm("Esta seguro que desea eliminar la plancha número "+name +" de la corporación "+id+"?", function(result) {
+			if (result) {
+				document.formDelete.action = "/planchas/eliminar/"+id+"/"+name+"/"
+				document.formDelete.submit()
+
+			}
+		});
+	});
 
 
 	// BOOTBOX - PROMPT MODAL

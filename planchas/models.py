@@ -3,10 +3,10 @@ from candidatos.models import Candidato
 from corporaciones.models import Corporacion
 
 class Plancha(models.Model):
-    numeroplancha = models.IntegerField(null=False, unique=True, primary_key=True)
+    numeroplancha = models.IntegerField(null=False, unique=False)
     corporacion = models.ForeignKey(Corporacion, null=False)
     candidato_principal = models.ForeignKey(Candidato, null=False, related_name='principal')
-    candidato_suplente = models.ForeignKey(Candidato, null=True, related_name='suplente')
+    candidato_suplente = models.ForeignKey(Candidato, null=True, blank=True, unique=False, default=None)
     is_active = models.BooleanField(default=True)
 
     class Meta:
