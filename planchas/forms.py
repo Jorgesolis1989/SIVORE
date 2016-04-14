@@ -48,8 +48,8 @@ class FormularioEditarPlancha(forms.Form):
     numeroplancha = forms.IntegerField(
         widget=forms.NumberInput(attrs={'class': 'form-control', 'min':'1', 'required':'true'}))
 
-    corporacion = forms.ModelChoiceField(widget=forms.Select(attrs={'onchange':'this.form.submit()','class':'selectpicker', 'data-live-search':'true',
-                                                                 'data-width':'100%'}), queryset=Corporacion.objects.all(), required=True, empty_label=None)
+    corporacion = forms.ModelChoiceField(widget=forms.Select(attrs={'disabled':'false','onchange':'this.form.submit()','class':'selectpicker', 'data-live-search':'true',
+                                                                 'data-width':'100%'}), queryset=Corporacion.objects.all(), required=False)
 
     #las dos siguientes instrucciones son consultas de los candidatos (principal, suplente) asociados a una corporacion determinada
     consulta_candidato_principal = Candidato.objects.filter(tipo_candidato__exact='Principal')

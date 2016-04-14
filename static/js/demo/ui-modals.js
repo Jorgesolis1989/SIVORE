@@ -85,7 +85,9 @@
 	$('.demo-bootbox-confirm-plancha').on('click', function(){
 		var id = $(this).attr('id')
 		var name = $(this).attr('name')
-		bootbox.confirm("Esta seguro que desea eliminar la plancha número "+name +" de la corporación "+id+"?", function(result) {
+		var nameCorporation = $(this).attr('value')
+
+		bootbox.confirm("Esta seguro que desea eliminar la plancha número "+name +" de la corporación "+nameCorporation+"?", function(result) {
 			if (result) {
 				document.formDelete.action = "/planchas/eliminar/"+id+"/"+name+"/"
 				document.formDelete.submit()

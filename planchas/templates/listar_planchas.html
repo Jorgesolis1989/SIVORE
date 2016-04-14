@@ -43,7 +43,7 @@
                         <td>
                             <!--acciones - boton editar y eliminar-->
                             <a class="btn btn-xs btn-default add-tooltip" data-toggle="tooltip" href="/planchas/editar/{{ plancha.corporacion.id_corporation }}/{{ plancha.numeroplancha }}" data-original-title="Edit" data-container="body"><i class="fa fa-pencil"></i></a>
-                            <a id="{{ plancha.corporacion.id_corporation }}" name="{{ plancha.numeroplancha }}" class="demo-bootbox-confirm-plancha"  data-toggle="tooltip" href="#" data-original-title="Delete" data-container="body"><i class="btn btn-xs btn-danger add-tooltip btn-info fa fa-times"></i></a>
+                            <a value="{{ plancha.corporacion.name_corporation }}"id="{{ plancha.corporacion.id_corporation }}" name="{{ plancha.numeroplancha }}" class="demo-bootbox-confirm-plancha"  data-toggle="tooltip" href="#" data-original-title="Delete" data-container="body"><i class="btn btn-xs btn-danger add-tooltip btn-info fa fa-times"></i></a>
                         </td>
                     </tr>
                 {% endfor %}
