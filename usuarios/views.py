@@ -315,30 +315,25 @@ def eliminar_usuario(request, username=None):
 
 
             if votante:
-                print("Encontre votante")
                 votante[0].is_active = False
                 votante[0].save()
-                print("Eliminar votante")
+
 
                 # if es candidato desactivelo
                 candidato = Candidato.objects.filter(votante__usuario__cedula_usuario=username)
 
                 if candidato:
-                    print("Encontre candidato")
                     candidato[0].is_active = False
                     candidato[0].save()
-                    print("Eliminar candidato")
+
 
                     # if es candidato plancha
                     plancha = Plancha.objects.filter(Q(candidato_principal__votante__usuario__cedula_usuario=username) |
                                                      Q(candidato_suplente__votante__usuario__cedula_usuario=username))
 
                     if plancha:
-                        print("Econtre plancha")
                         plancha[0].is_active = False
                         plancha[0].save()
-                        print("Eliminar plancha")
-
 
         except Exception:
             llamarMensaje = "fracaso_usuario"
@@ -348,10 +343,13 @@ def eliminar_usuario(request, username=None):
         else:
             llamarMensaje = "elimino_usuario"
             mensaje = "Se eliminó el usuario " +  str(username) +" sactisfactoriamente"
+
+
         request.session['llamarMensaje'] = llamarMensaje
         request.session['mensaje'] = mensaje
         return redirect("listar_usuario")
 
+# Método auxiliar para crear
 def createuser(usuario, form):
     usuario.cedula_usuario = form.cleaned_data["cedula_usuario"]
     usuario.first_name = form.cleaned_data["nombre_usuario"]
