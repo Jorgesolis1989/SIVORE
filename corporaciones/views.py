@@ -213,6 +213,7 @@ def corporacion_create(corporacion, form):
     plancha_voto_en_blanco.corporacion = corporacion
     plancha_voto_en_blanco.numeroplancha = 0
     try:
+
         plancha_voto_en_blanco.save()
     except Exception as e:
         print(e)
