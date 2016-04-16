@@ -77,7 +77,9 @@ def registro_plancha(request):
     #Ninguno de los dos formularios crear  ni cargar Method GET
     else:
         form = FormularioRegistroPlancha()
-        corporaciones = Corporacion.objects.all()
+
+        corporaciones = Corporacion.objects.filter(is_active=True)
+        print(corporaciones)
 
         if not corporaciones:
             mensaje = "Debe de haber corporaciones para crear las planchas, dirijase a corporaciones"
@@ -93,6 +95,7 @@ def registro_plancha(request):
 
             form.fields["candidato_principal"].queryset = candidatosprin_sin_plancha
             form.fields["candidato_suplente"].queryset = candidatossupl_sin_plancha
+            form.fields["corporacion"].queryset = corporaciones
 
     return render(request, 'registro_plancha.html', {'form': form})
 

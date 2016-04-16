@@ -19,31 +19,39 @@
         <table id="demo-dt-delete" class="table table-striped table-bordered" cellspacing="0" width="100%">
             <thead>
                 <tr>
-                    <th>Número de plancha</th>
                     <th>Corporación</th>
                     <th>Candidato principal</th>
                     <th class="min-tablet">Candidato Suplente</th>
+                    <th>Número de plancha</th>
                     <th class="min-tablet">Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 {% for plancha in planchas %}
                     <tr>
-                        <td>{{ plancha.numeroplancha}}</td>
+
                         <td>{{ plancha.corporacion}}</td>
-                        <td>{{ plancha.candidato_principal}}</td>
+                        <td>{{ plancha.candidato_principal.votante.codigo}} -
+                            {{plancha.candidato_principal.votante.usuario.first_name  }}
+                            {{plancha.candidato_principal.votante.usuario.last_name  }}
+                        </td>
                         {% if plancha.candidato_suplente.DoesNotExist %}
-                            <td>{{ plancha.candidato_suplente}}</td>
+                            <td>{{ plancha.candidato_suplente.votante.codigo}} -
+                            {{plancha.candidato_suplente.votante.usuario.first_name  }}
+                            {{plancha.candidato_suplente.votante.usuario.last_name  }}
+                            </td>
                         {% else %}
                             <td> ------</td>
                         {% endif %}
 
 
-
+                        <td>{{ plancha.numeroplancha}}</td>
                         <td>
                             <!--acciones - boton editar y eliminar-->
+                            {% if plancha.candidato_principal.votante.codigo != 0 %}
                             <a class="btn btn-xs btn-default add-tooltip" data-toggle="tooltip" href="/planchas/editar/{{ plancha.corporacion.id_corporation }}/{{ plancha.numeroplancha }}" data-original-title="Edit" data-container="body"><i class="fa fa-pencil"></i></a>
                             <a value="{{ plancha.corporacion.name_corporation }}"id="{{ plancha.corporacion.id_corporation }}" name="{{ plancha.numeroplancha }}" class="demo-bootbox-confirm-plancha"  data-toggle="tooltip" href="#" data-original-title="Delete" data-container="body"><i class="btn btn-xs btn-danger add-tooltip btn-info fa fa-times"></i></a>
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}

@@ -67,8 +67,8 @@
 	// http://bootboxjs.com/
 	// =================================================================
 	$('.demo-bootbox-confirm-corp').on('click', function(){
-		var plancha = $(this).attr('id')
-		bootbox.confirm("Esta seguro que desea eliminar la corporación número "+plancha.numeroplancha +" ?", function(result) {
+		var id = $(this).attr('id')
+		bootbox.confirm("Esta seguro que desea eliminar la corporación número "+id +" ?", function(result) {
 			if (result) {
 				document.formDelete.action = "/corporaciones/eliminar/"+id
 				document.formDelete.submit()
