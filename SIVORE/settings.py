@@ -44,6 +44,7 @@ INSTALLED_APPS = {
     'votantes',
     'candidatos',
     'planchas',
+    'jornadas',
 }
 
 MIDDLEWARE_CLASSES = (
@@ -70,7 +71,8 @@ TEMPLATES = [
                  os.path.join(BASE_DIR,'corporaciones/templates'),
                  os.path.join(BASE_DIR,'candidatos/templates'),
                  os.path.join(BASE_DIR,'votantes/templates'),
-                 os.path.join(BASE_DIR,'planchas/templates')],
+                 os.path.join(BASE_DIR,'planchas/templates'),
+                 os.path.join(BASE_DIR,'jornadas/templates')],
 
         'APP_DIRS': True,
         'OPTIONS': {
