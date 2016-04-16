@@ -64,6 +64,12 @@
     <!--Switchery [ OPTIONAL ]-->
     <link href="{% static 'plugins/switchery/switchery.min.css'%}" rel="stylesheet">
 
+    <!--Bootstrap Timepicker [ OPTIONAL ]-->
+    <link href="{% static 'plugins/bootstrap-timepicker/bootstrap-timepicker.min.css'%}" rel="stylesheet">
+
+    <!--Bootstrap Datepicker [ OPTIONAL ]-->
+    <link href="{% static 'plugins/bootstrap-datepicker/bootstrap-datepicker.css'%}" rel="stylesheet">
+
     <!--SCRIPT-->
     <!--=================================================-->
 
@@ -471,11 +477,8 @@
 
 										<!--Submenu-->
 										<ul class="collapse">
-											<li><a href="#">Crear jornada</a></li>
-											<li><a href="#">Listar jornadas</a></li>
-											<li><a href="#">Editar jornada</a></li>
-											<li><a href="#">Eliminar jornada</a></li>
-
+											<li><a href="{% url 'registro_jornada' %}">Crear jornada</a></li>
+											<li><a href="{% url 'registro_plancha' %}">Listar jornadas</a></li>
 										</ul>
 									</li>
 
@@ -1007,5 +1010,11 @@
 
     <!--Switchery [ OPTIONAL ]-->
     <script src="{% static 'plugins/switchery/switchery.min.js'%}"></script>
+
+     <!--Bootstrap Timepicker [ OPTIONAL ]-->
+    <script src="{% static 'plugins/bootstrap-timepicker/bootstrap-timepicker.min.js'%}"></script>
+
+    <!--Bootstrap Datepicker [ OPTIONAL ]-->
+    <script src="{% static 'plugins/bootstrap-datepicker/bootstrap-datepicker.js'%}"></script>
 </body>
 </html>
