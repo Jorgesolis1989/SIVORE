@@ -145,6 +145,7 @@ def corporacion_create(corporacion, form):
 
 
     """
+
     TODA CORPORACION DEBE DE TENER UNA PLANCHA VOTO EN BLANCO, ESTA SE CREA CUANDO SE CREA LA CORPORACIÓN
     """
 
