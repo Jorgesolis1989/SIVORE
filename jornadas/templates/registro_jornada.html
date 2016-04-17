@@ -7,60 +7,81 @@
                 <h3 class="panel-title">Registro jornada</h3>
             </div>
         </div>
-            <!--Page content-->
-            <!--===================================================-->
-            <div id="page-content">
-                <div class="panel">
-                    <p class="text-thin mar-btm">Nombre Jornada</p>
-                    <div>
-                        <div  class="input-group date">
-                            {{form.nombre_jornada  }}
-                        </div>
+        <!--Page content-->
+        <!--===================================================-->
+        <div id="page-content">
+            <div class="panel">
+                <p class="text-thin mar-btm">Nombre Jornada</p>
+                    <div class="col-sm-15">
+                        {{form.nombre_jornada  }}
                     </div>
-                    <br>
-                    <br>
-                    <p class="text-thin mar-btm">Fecha Jornada</p>
+                <br>
+                <br>
+                <p class="text-thin mar-btm">Fecha Jornada</p>
 
-                    <!--Bootstrap Datepicker : Component-->
-                    <!--===================================================-->
-                    <div id="demo-dp-component">
-                        <div class="input-group date">
-                            <input type="text" class="form-control">
-                            <span class="input-group-addon"><i class="fa fa-calendar fa-lg"></i></span>
-                        </div>
-                    </div>
-                    <br>
-                    <br>
-                        <!--===================================================-->
-                </div>
-
-                <div class="panel">
-                    <p class="text-thin mar-btm">Hora inicio:</p>
-                    <!--Bootstrap Timepicker : Text Input-->
-                    <!--===================================================-->
-                     <div class="input-group date">
-                        <input id="demo-tp-com" type="text" class="form-control">
-                        <span class="input-group-addon"><i class="fa fa-clock-o fa-lg"></i></span>
-                    </div>
-
-                    <br>
-                    <br>
-                    <p class="text-thin mar-btm">Hora final:</p>
-
-                    <!--Bootstrap Timepicker : Component-->
-                    <!--===================================================-->
+                <!--Bootstrap Datepicker : Component-->
+                <!--===================================================-->
+                <div id="demo-dp-component">
                     <div class="input-group date">
-                        <input id="demo-tp-com-1" type="text" class="form-control">
-                        <span class="input-group-addon"><i class="fa fa-clock-o fa-lg"></i></span>
+                        <input type="text" class="form-control">
+                        <span class="input-group-addon"><i class="fa fa-calendar fa-lg"></i></span>
                     </div>
+                </div>
+                <br>
+                <br>
                     <!--===================================================-->
-                    <br>
-                    <br>
+            </div>
+
+            <div class="panel">
+                <p class="text-thin mar-btm">Hora inicio:</p>
+                <!--Bootstrap Timepicker : Text Input-->
+                <!--===================================================-->
+                 <div class="input-group date">
+                    <input id="demo-tp-com" type="text" class="form-control">
+                    <span class="input-group-addon"><i class="fa fa-clock-o fa-lg"></i></span>
                 </div>
 
+                <br>
+                <br>
+                <p class="text-thin mar-btm">Hora final:</p>
+
+                <!--Bootstrap Timepicker : Component-->
+                <!--===================================================-->
+                <div class="input-group date">
+                    <input id="demo-tp-com-1" type="text" class="form-control">
+                    <span class="input-group-addon"><i class="fa fa-clock-o fa-lg"></i></span>
+                </div>
+                <!--===================================================-->
+                <br>
+                <br>
             </div>
-            <!--===================================================-->
-            <!--End page content-->
+
+            <div class="panel">
+                <br>
+                <h5 class="text-thin mar-btm">Corporaciones:</h5>
+
+                <!-- Multiple Select Choosen -->
+                <!--===================================================-->
+                <select id="demo-cs-multiselect" data-placeholder="Choose a Country..." multiple tabindex="4">
+                    <option value="United States">United States</option>
+
+                    <option value="Romania">Romania</option>
+                    <option value="Russian Federation">Russian Federation</option>
+                    <option value="Rwanda">Rwanda</option>
+                    <option value="Saint Barthelemy">Saint Barthelemy</option>
+                    <option value="Seychelles">Seychelles</option>
+                    <option value="Wallis and Futuna">Wallis and Futuna</option>
+                    <option value="Western Sahara">Western Sahara</option>
+                    <option value="Yemen">Yemen</option>
+                    <option value="Zambia">Zambia</option>
+                    <option value="Zimbabwe">Zimbabwe</option>
+                </select>
+                    <!--===================================================-->
+            </div>
+
+        </div>
+        <!--===================================================-->
+        <!--End page content-->
         <!--===================================================-->
         <!--END CONTENT CONTAINER-->
 </div>

@@ -7,7 +7,7 @@ Este formulario se encuentran los datos para registrar una jornada
 class FormularioRegistroJornada(forms.Form):
 
     nombre_jornada = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí el nombre del usuario', 'required':'true'}))
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí el nombre del usuario', 'required':'true', 'data-width':'100%'}))
 
 
 
