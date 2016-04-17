@@ -7,17 +7,31 @@
                 <h3 class="panel-title">Registro jornada</h3>
             </div>
         </div>
-        <div class="panel-body">
-            <form class="form-horizontal" action="" method="post">
-                <p class="text-thin mar-btm">Nombre jornada</p>
+            <!--Page content-->
+            <!--===================================================-->
+            <div id="page-content">
+                <div class="panel">
+                    <p class="text-thin mar-btm">Hora inicio:</p>
+                    <!--Bootstrap Timepicker : Text Input-->
+                    <!--===================================================-->
+                    <input id="demo-tp-textinput" type="text" class="form-control">
+                    <br>
+                    <br>
+                    <p class="text-thin mar-btm">Hora final:</p>
 
-                    <div id="demo-dp-component">
-                        <div class="input-group date">
-                            {{ form.nombre_jornada }}
-                        </div>
+                    <!--Bootstrap Timepicker : Component-->
+                    <!--===================================================-->
+                    <div class="input-group date">
+                        <input id="demo-tp-com" type="text" class="form-control">
+                        <span class="input-group-addon"><i class="fa fa-clock-o fa-lg"></i></span>
                     </div>
-                <br>
-                <p class="text-thin mar-btm">Fecha jornada</p>
+                    <!--===================================================-->
+                    <br>
+                    <br>
+                </div>
+                <div class="panel">
+                    <br>
+                    <p class="text-thin mar-btm">Fecha Jornada</p>
 
                     <!--Bootstrap Datepicker : Component-->
                     <!--===================================================-->
@@ -27,34 +41,16 @@
                             <span class="input-group-addon"><i class="fa fa-calendar fa-lg"></i></span>
                         </div>
                     </div>
+                    <br>
+                    <br>
+                        <!--===================================================-->
+                </div>
 
-                <p class="text-thin mar-btm">Hora Inicio</p>
-
-                    <!--Bootstrap Timepicker : Component-->
-                    <!--===================================================-->
-                    <div class="input-group date">
-                        <input id="demo-tp-com" type="text" class="form-control">
-                        <span class="input-group-addon"><i class="fa fa-clock-o fa-lg"></i></span>
-                    </div>
-                <p class="text-thin mar-btm">Hora Final</p>
-
-                    <!--Bootstrap Timepicker : Component-->
-                    <!--===================================================-->
-                    <div class="input-group date">
-                        <input id="demo-tp-com" type="text" class="form-control">
-                        <span class="input-group-addon"><i class="fa fa-clock-o fa-lg"></i></span>
-                    </div>
-                <br>
-                <h5 class="text-thin mar-btm">Seleccionar las corporaciones</h5>
-
-                <!-- Multiple Select Choosen -->
-                <!--===================================================-->
-                <select id="demo-cs-multiselect" multiple tabindex="4">
-                    <option value="United States">United States</option>
-                </select>
-
-            </form>
-        </div>
+            </div>
+            <!--===================================================-->
+            <!--End page content-->
+        <!--===================================================-->
+        <!--END CONTENT CONTAINER-->
 </div>
     <script>
     window.onload = function() {
