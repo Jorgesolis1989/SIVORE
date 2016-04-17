@@ -44,6 +44,14 @@ $(document).ready(function() {
 	$('#demo-tp-com').timepicker();
 
 
+	// BOOTSTRAP TIMEPICKER 2
+	// =================================================================
+	// Require Bootstrap Timepicker
+	// http://jdewit.github.io/bootstrap-timepicker/
+	// =================================================================
+	$('#demo-tp-com-1').timepicker();
+
+
 
 	// BOOTSTRAP TIMEPICKER - COMPONENT
 	// =================================================================
@@ -114,19 +122,6 @@ $(document).ready(function() {
 	// http://abpetkov.github.io/switchery/
 	// =================================================================
 	new Switchery(document.getElementById('demo-sw-unchecked'));
-
-
-	// SWITCHERY - CHECKING STATE
-	// =================================================================
-	// Require Switchery
-	// http://abpetkov.github.io/switchery/
-	// =================================================================
-	var changeCheckbox = document.getElementById('demo-sw-checkstate'), changeField = document.getElementById('demo-sw-checkstate-field');
-	new Switchery(changeCheckbox);
-	changeField.innerHTML = changeCheckbox.checked;
-	changeCheckbox.onchange = function() {
-		changeField.innerHTML = changeCheckbox.checked;
-	};
 
 
 	// SWITCHERY - COLORED
