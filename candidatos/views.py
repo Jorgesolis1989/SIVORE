@@ -78,19 +78,26 @@ def registro_candidato(request):
         else:
             votante = Votante.objects.get(codigo=request.POST['votante'])
             form = FormularioRegistroCandidato(request.POST)
-            form.fields["corporacion"].queryset = Corporacion.objects.filter(Q(id_corporation=votante.plan.id_corporation) | Q(id_corporation=votante.plan.facultad.id_corporation))
+
+            corporaciones_habilitadas = Jornada_Corporacion.objects.filter(jornada__is_active=True).values_list("corporacion__id_corporation" , flat=True)
+            corporacion_candidato = Corporacion.objects.filter(Q(id_corporation=votante.plan.id_corporation) |
+                                                       Q(id_corporation=votante.plan.facultad.id_corporation))\
+                                                     .filter(id_corporation__in= corporaciones_habilitadas)
+
+            form.fields["corporacion"].queryset = corporacion_candidato
 
     #Ninguno de los dos formularios crear  ni cargar Method GET
     else:
         form = FormularioRegistroCandidato()
 
-        if not form.votantes:
+        if not form.votantes_que_pueden_ser_candidatos:
             mensaje = "Debe de haber votantes para crear candidatos, dirijase a votantes"
             llamarMensaje = "fracaso_usuario"
             return render(request, 'registro_candidato.html', {'form': form, 'llamarMensaje':llamarMensaje , 'mensaje': mensaje})
         else:
-            form.fields["votante"].initial = form.votantes[0]
-            form.fields["corporacion"].queryset = Corporacion.objects.filter(Q(id_corporation=form.votantes[0].plan.id_corporation) | Q(id_corporation=form.votantes[0].plan.facultad.id_corporation))
+            votante_inicial = form.votantes_que_pueden_ser_candidatos[0]
+            form.fields["votante"].initial = votante_inicial
+
 
     return render(request, 'registro_candidato.html', {'form': form})
 
@@ -148,8 +155,13 @@ def editar_candidato(request, codigo=None):
 
             form.initial = {'votante': candidato.votante, 'nombrefoto': candidato.foto, 'tipo_candidato': candidato.tipo_candidato,
                            'corporacion' : candidato.corporacion}
-            form.fields["corporacion"].queryset = Corporacion.objects.filter(Q(id_corporation=candidato.votante.plan.id_corporation) | Q(id_corporation=candidato.votante.plan.facultad.id_corporation))
 
+            corporaciones_habilitadas = Jornada_Corporacion.objects.filter(jornada__is_active=True).values_list("corporacion__id_corporation" , flat=True)
+            corporacion_candidato = Corporacion.objects.filter(Q(id_corporation=votante.plan.id_corporation) |
+                                                       Q(id_corporation=votante.plan.facultad.id_corporation))\
+                                                     .filter(id_corporation__in= corporaciones_habilitadas)
+
+            form.fields["corporacion"].queryset = corporacion_candidato
 
         except Candidato.DoesNotExist:
             print("no existe")
@@ -169,7 +181,6 @@ def eliminar_candidato(request, username=None):
 
             # if es candidato plancha
             plancha = Plancha.objects.filter(Q(candidato_principal=candidato) | Q(candidato_suplente=candidato))
-
 
             if plancha:
                 print("encontre plancha")
