@@ -31,21 +31,29 @@
                     <tr>
 
                         <td>{{ plancha.corporacion}}</td>
+                        {% if plancha.candidato_principal.votante.codigo == 0 %}
+                            <td> Voto en Blanco </td>
+                        {% else %}
                         <td>{{ plancha.candidato_principal.votante.codigo}} -
                             {{plancha.candidato_principal.votante.usuario.first_name  }}
                             {{plancha.candidato_principal.votante.usuario.last_name  }}
                         </td>
+                        {% endif %}
                         {% if plancha.candidato_suplente.DoesNotExist %}
                             <td>{{ plancha.candidato_suplente.votante.codigo}} -
                             {{plancha.candidato_suplente.votante.usuario.first_name  }}
                             {{plancha.candidato_suplente.votante.usuario.last_name  }}
                             </td>
                         {% else %}
-                            <td> ------</td>
+                            <td></td>
                         {% endif %}
 
+                        {% if plancha.numeroplancha == 0 %}
 
+                            <td> </td>
+                        {% else %}
                         <td>{{ plancha.numeroplancha}}</td>
+                        {% endif %}
                         <td>
                             <!--acciones - boton editar y eliminar-->
                             {% if plancha.candidato_principal.votante.codigo != 0 %}

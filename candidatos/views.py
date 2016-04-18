@@ -10,6 +10,8 @@ from candidatos.models import Candidato
 from votantes.models import Votante
 from corporaciones.models import Corporacion
 from candidatos.forms import FormularioRegistroCandidato, FormularioEditarCandidato
+from jornadas.models import Jornada
+from jornadas.models import Jornada_Corporacion
 
 @permission_required("usuarios.Administrador", login_url="/")
 def registro_candidato(request):
@@ -83,7 +85,15 @@ def registro_candidato(request):
     #Ninguno de los dos formularios crear  ni cargar Method GET
     else:
         form = FormularioRegistroCandidato()
-        votantes = Votante.objects.exclude(codigo__in=Candidato.objects.all().values_list('votante__codigo', flat=True))
+
+        # Votantes de corporaciones que se vayan a elegir
+        corporaciones_que_se_eligiran = Corporacion.objects.filter(id_corporation__in= (Jornada_Corporacion.objects.filter(jornada__is_active=True).values_list("id_corporation", flat=True)))
+
+        # Votantes que se pueden postular los activos y los que se vayan a elegir
+        votantes = Votante.objects.filter( (Q(plan__in= corporaciones_que_se_eligiran) | Q(plan__facultad__in=corporaciones_que_se_eligiran)) , is_active=True)
+
+        #Excluir a los votantes que son candidatos
+        votantes.exclude(codigo__in=Candidato.objects.all().values_list('votante__codigo', flat=True))
 
         if not votantes:
             mensaje = "Debe de haber votantes para crear candidatos, dirijase a votantes"
@@ -98,7 +108,7 @@ def registro_candidato(request):
 # Vista para listar votantes
 @permission_required("usuarios.Administrador", login_url="/")
 def listar_candidatos(request):
-    candidatos = Candidato.objects.filter(is_active=True    )
+    candidatos = Candidato.objects.filter(is_active=True)
     llamarMensaje = request.session.pop('llamarMensaje', None)
     mensaje = request.session.pop('mensaje', None)
 
