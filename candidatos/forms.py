@@ -37,13 +37,10 @@ class FormularioRegistroCandidato(forms.Form):
     """
     *******************************************  Consultas para el campo corporaciones **********************
     """
-    corporaciones_habilitadas = Jornada_Corporacion.objects.filter(jornada__is_active=True).values_list("corporacion__id_corporation" , flat=True)
+    corporaciones_habilitadas = Jornada_Corporacion.objects.filter(jornada__is_active=True)
 
-
-    corporacion_candidato = Corporacion.objects.filter(Q(id_corporation=votantes_que_pueden_ser_candidatos[0].plan.id_corporation) |
-                                                       Q(id_corporation=votantes_que_pueden_ser_candidatos[0].plan.facultad.id_corporation))\
-                                                     .filter(id_corporation__in= corporaciones_habilitadas)
-
+    corporacion_candidato = corporaciones_habilitadas.filter(Q(corporacion__id_corporation=votantes_que_pueden_ser_candidatos[0].plan.id_corporation) |
+                                                             Q(corporacion__id_corporation=votantes_que_pueden_ser_candidatos[0].plan.facultad.id_corporation))
 
 
     corporacion = forms.ModelChoiceField( widget=forms.Select(attrs={'class':'selectpicker', 'data-live-search':'true'
@@ -81,5 +78,5 @@ class FormularioEditarCandidato(forms.Form):
     tipo_candidato = forms.ChoiceField(widget=forms.Select(attrs={'class': 'selectpicker', 'data-width':'100%'}),required=True, choices=CHOICES )
 
     corporacion = forms.ModelChoiceField(widget=forms.Select(attrs={'class':'selectpicker'
-                                                              ,'data-width':'100%'}), queryset=Corporacion.objects.all(), required=True, empty_label=None)
+                                                              ,'data-width':'100%'}), queryset=Jornada_Corporacion.objects.all(), required=True, empty_label=None)
 

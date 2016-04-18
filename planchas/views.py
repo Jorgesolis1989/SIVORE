@@ -215,7 +215,7 @@ def editar_plancha(request, idcorporacion=None,numplancha=None):
 @permission_required("usuarios.Administrador", login_url="/")
 def eliminar_plancha(request, idcorporacion=None, numplancha=None):
     if request.method == 'POST':
-        plancha=Plancha.objects.get(corporacion__id_corporation=idcorporacion, numeroplancha = numplancha )
+        plancha=Plancha.objects.get(corporacion__id_corporation=idcorporacion, numeroplancha = numplancha , is_active=True)
         plancha.is_active = False
         try:
             plancha.save()
@@ -242,7 +242,6 @@ def plancha_create(plancha, form):
     plancha.candidato_principal= candidatoprin
     plancha.candidato_suplente= candidatosupl
     plancha.is_active = True
-
 
 
     try:

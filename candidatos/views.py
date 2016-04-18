@@ -20,6 +20,7 @@ def registro_candidato(request):
 
     if request.method == 'POST' and "btnload" in request.POST:
         form = FormularioRegistroCandidato(request.POST, request.FILES)
+
         #Si el formulario es valido y tiene datos
         if form.is_valid():
 
@@ -34,7 +35,7 @@ def registro_candidato(request):
                 candidato = Candidato()
                 candidato.votante = votante
                 candidato.tipo_candidato = form.cleaned_data["tipo_candidato"]
-                candidato.corporacion = form.cleaned_data["corporacion"]
+                candidato.jornada_corporacion = form.cleaned_data["corporacion"]
 
                 # Foto del candidato
                 if request.FILES:
@@ -79,10 +80,9 @@ def registro_candidato(request):
             votante = Votante.objects.get(codigo=request.POST['votante'])
             form = FormularioRegistroCandidato(request.POST)
 
-            corporaciones_habilitadas = Jornada_Corporacion.objects.filter(jornada__is_active=True).values_list("corporacion__id_corporation" , flat=True)
-            corporacion_candidato = Corporacion.objects.filter(Q(id_corporation=votante.plan.id_corporation) |
-                                                       Q(id_corporation=votante.plan.facultad.id_corporation))\
-                                                     .filter(id_corporation__in= corporaciones_habilitadas)
+            corporaciones_habilitadas = Jornada_Corporacion.objects.filter(jornada__is_active=True)
+            corporacion_candidato = corporaciones_habilitadas.filter(Q(corporacion__id_corporation=votante.plan.id_corporation) |
+                                                                    Q(corporacion__id_corporation=votante.plan.facultad.id_corporation))
 
             form.fields["corporacion"].queryset = corporacion_candidato
 
@@ -114,7 +114,14 @@ def listar_candidatos(request):
 #Edicion candidato
 @permission_required("usuarios.Administrador" , login_url="/")
 def editar_candidato(request, codigo=None):
-    candidato = Candidato.objects.get(votante__codigo=codigo)
+    try:
+        candidato = Candidato.objects.get(votante__codigo=codigo)
+    except Candidato.DoesNotExist:
+        mensaje = "El candidato con codigo "+str(codigo)+" no existe"
+        llamarMensaje = "fracaso_usuario"
+        request.session["llamarMensaje"] = llamarMensaje
+        request.session["mensaje"] = mensaje
+        return redirect("listar_candidatos")
 
     if request.method == 'POST':
         form = FormularioEditarCandidato(request.POST)
@@ -122,7 +129,7 @@ def editar_candidato(request, codigo=None):
         if form.is_valid():
             #Capture el codigo del candidato
             candidato.tipo_candidato = form.cleaned_data["tipo_candidato"]
-            candidato.corporacion = form.cleaned_data["corporacion"]
+            candidato.jornada_corporacion = form.cleaned_data["corporacion"]
 
             # Foto del candidato
             if request.FILES:
@@ -154,17 +161,17 @@ def editar_candidato(request, codigo=None):
             candidato = Candidato.objects.get(votante__codigo=codigo)
 
             form.initial = {'votante': candidato.votante, 'nombrefoto': candidato.foto, 'tipo_candidato': candidato.tipo_candidato,
-                           'corporacion' : candidato.corporacion}
+                           'corporacion' : candidato.jornada_corporacion}
 
-            corporaciones_habilitadas = Jornada_Corporacion.objects.filter(jornada__is_active=True).values_list("corporacion__id_corporation" , flat=True)
-            corporacion_candidato = Corporacion.objects.filter(Q(id_corporation=votante.plan.id_corporation) |
-                                                       Q(id_corporation=votante.plan.facultad.id_corporation))\
-                                                     .filter(id_corporation__in= corporaciones_habilitadas)
+            corporaciones_habilitadas = Jornada_Corporacion.objects.filter(jornada__is_active=True)
+            corporacion_candidato = corporaciones_habilitadas.filter(Q(corporacion__id_corporation=votante.plan.id_corporation) |
+                                                       Q(corporacion__id_corporation=votante.plan.facultad.id_corporation))
 
             form.fields["corporacion"].queryset = corporacion_candidato
 
-        except Candidato.DoesNotExist:
-            print("no existe")
+        except Votante.DoesNotExist:
+            print("Error")
+
         return render(request, 'editar_candidato.html', {'form': form})
 
 

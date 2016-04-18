@@ -1,5 +1,4 @@
 from django.db import models
-from candidatos.models import Candidato
 from corporaciones.models import Corporacion
 
 class Jornada(models.Model):
@@ -13,8 +12,8 @@ class Jornada(models.Model):
         db_table = 'jornadas'
 
     def __str__(self):
-        return '%s - %s   - %s  to  %s' % (self.nombrejornada, self.fecha_inicio_jornada.day,
-                                           self.fecha_inicio_jornada.hour , self.fecha_final_jornada.hour )
+        return '%s -   %s ' % (self.nombrejornada, self.fecha_inicio_jornada.date())
+
 
 class Jornada_Corporacion(models.Model):
     jornada = models.ForeignKey(Jornada, null=False)
@@ -25,4 +24,4 @@ class Jornada_Corporacion(models.Model):
         db_table = 'jornada_corporacion'
 
     def __str__(self):
-        return '%s - %s' % (self.jornada.nombrejornada, self.corporacion.name_corporation )
+        return '%s - %s el %s' % ( self.corporacion.name_corporation , self.jornada.nombrejornada , self.jornada.fecha_inicio_jornada.date())

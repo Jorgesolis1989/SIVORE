@@ -24,6 +24,7 @@
                     <th>Apellidos</th>
                     <th class="min-tablet">Tipo de Candidato</th>
                     <th class="min-tablet">Corporación</th>
+                    <th class="min-tablet">Jornada</th>
                     <th class="min-tablet">Acciones</th>
                 </tr>
             </thead>
@@ -34,7 +35,8 @@
                         <td>{{ candidato.votante.usuario.first_name}}</td>
                         <td>{{ candidato.votante.usuario.last_name}}</td>
                         <td>{{ candidato.tipo_candidato}}</td>
-                        <td>{{ candidato.corporacion}}</td>
+                        <td>{{ candidato.jornada_corporacion.corporacion}}</td>
+                        <td>{{ candidato.jornada_corporacion.jornada}}</td>
                         <td>
                             <!--acciones - boton editar y eliminar-->
                             <a class="btn btn-xs btn-default add-tooltip" data-toggle="tooltip" href="/candidatos/editar/{{ candidato.votante.codigo }}" data-original-title="Edit" data-container="body"><i class="fa fa-pencil"></i></a>
