@@ -2,24 +2,35 @@ from django import forms
 from candidatos.models import Candidato
 from corporaciones.models import Corporacion
 from votantes.models import Votante
-
+from jornadas.models import Jornada_Corporacion
+from django.db.models import Q
 """
 Este formulario se encuentran los datos para registrar un candidato
 """
 class FormularioRegistroCandidato(forms.Form):
 
+    ### Consulta corporaciones que se eligiran
+    corporaciones_que_se_eligiran = Corporacion.objects.filter(id_corporation__in= (Jornada_Corporacion.objects.filter(jornada__is_active=True).values_list("corporacion__id_corporation", flat=True)))
 
-    consulta = Votante.objects.exclude(codigo__in=Candidato.objects.all().values_list('votante__codigo', flat=True))
+    # votantes que pueden votar ser elegidos en las corporaciones que estan permitidas
+    votantes = Votante.objects.filter( (Q(plan__in= corporaciones_que_se_eligiran) | Q(plan__facultad__in=corporaciones_que_se_eligiran)) , is_active=True)
+
+    # excluimos los votantes que ya estan como candidatos
+    votantes = votantes.exclude(codigo__in=Candidato.objects.filter(is_active=True).values_list('votante__codigo', flat=True))
+
+
+    # Modulo votantes.
     votante = forms.ModelChoiceField(widget=forms.Select(attrs={'onchange':'this.form.submit()','class':'selectpicker', 'data-live-search':'true',
                                                                  'data-width':'100%'}),
-                                      queryset=consulta, required=True, empty_label=None )
+                                      queryset=votantes, required=True, empty_label=None)
+
     foto = forms.ImageField(label="Escoja la foto del candidato", required=False, widget=forms.FileInput(attrs={'class':'form-control', 'accept':".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|images/*"}))
 
     CHOICES = [('Principal','Principal'), ('Suplente','Suplente')]
     tipo_candidato = forms.ChoiceField(widget=forms.Select(attrs={'class': 'selectpicker', 'data-width':'100%'}),required=True, choices=CHOICES )
 
     corporacion = forms.ModelChoiceField( widget=forms.Select(attrs={'class':'selectpicker', 'data-live-search':'true'
-                                                                 ,'data-width':'100%'}), queryset=Corporacion.objects.all(), required=True, empty_label=None)
+                                                                ,'data-width':'100%'}), queryset=Corporacion.objects.all(), required=True, empty_label=None)
 
     def candidato_nulo(self):
         diccionario_limpio = self.cleaned_data
