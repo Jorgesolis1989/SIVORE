@@ -4,6 +4,7 @@ from django.db.models import Q
 from candidatos.models import Candidato
 from votantes.models import Votante
 from corporaciones.models import Corporacion
+from jornadas.models import Jornada_Corporacion
 from planchas.models import Plancha
 from planchas.forms import FormularioRegistroPlancha, FormularioEditarPlancha
 from itertools import chain
@@ -48,11 +49,13 @@ def registro_plancha(request):
 
         #si no es valido el formulario, crear
         else:
-            form = FormularioRegistroPlancha()
-            data = {
-                'form': form,
-            }
-            return render(request, 'registro_plancha.html', data)
+
+            mensaje = "El candidato principal no puede estar vacio"
+            llamarMensaje = "fracaso_usuario"
+
+            request.session["llamarMensaje"] = llamarMensaje
+            request.session["mensaje"] = mensaje
+            return redirect("listar_planchas")
 
     # Cambio de corporacion
     elif request.POST:
@@ -78,7 +81,8 @@ def registro_plancha(request):
     else:
         form = FormularioRegistroPlancha()
 
-        corporaciones = Corporacion.objects.filter(is_active=True)
+        # Corporaciones que se van a elegir
+        corporaciones = Jornada_Corporacion.objects.filter(jornada__is_active=True)
         print(corporaciones)
 
         if not corporaciones:
@@ -89,9 +93,13 @@ def registro_plancha(request):
 
             # Candidatos principales de una corporacion que no estan en alguna plancha
 
-            candidatosprin_sin_plancha = (Candidato.objects.filter(Q(corporacion=corporaciones[0].id_corporation) & Q(tipo_candidato="Principal") & Q(is_active=True))).exclude(corporacion__candidato__principal = Plancha.objects.filter(is_active=True).values_list('candidato_principal__votante__codigo', flat=True))
+            # Candidatos principales de la corporacion primera
+            candidatosprin_sin_plancha = (Candidato.objects.filter(Q(jornada_corporacion=corporaciones[0]) & Q(tipo_candidato="Principal") & Q(is_active=True)))
 
-            candidatossupl_sin_plancha = (Candidato.objects.filter(Q(corporacion=corporaciones[0].id_corporation) & Q(tipo_candidato="Suplente") & Q(is_active=True) )).exclude(votante__codigo__in = Plancha.objects.filter(is_active=True).values_list('candidato_suplente__votante__codigo', flat=True))
+            # Excluir a los candidatos que esten en una plancha
+            candidatosprin_sin_plancha = candidatosprin_sin_plancha.exclude(votante__codigo__in = (Plancha.objects.filter(is_active=True).values_list('candidato_principal__votante__codigo', flat=True)))
+
+            candidatossupl_sin_plancha = (Candidato.objects.filter(Q(jornada_corporacion=corporaciones[0]) & Q(tipo_candidato="Suplente") & Q(is_active=True) )).exclude(votante__codigo__in = Plancha.objects.filter(is_active=True).values_list('candidato_suplente__votante__codigo', flat=True))
 
             form.fields["candidato_principal"].queryset = candidatosprin_sin_plancha
             form.fields["candidato_suplente"].queryset = candidatossupl_sin_plancha
@@ -114,7 +122,7 @@ def listar_planchas(request):
 def editar_plancha(request, idcorporacion=None,numplancha=None):
 
     try:
-        plancha = Plancha.objects.get(corporacion=idcorporacion, numeroplancha=numplancha)
+        plancha = Plancha.objects.get(jornada_corporacion__corporacion__id_corporation=idcorporacion, numeroplancha=numplancha)
     except Plancha.DoesNotExist:
         # mensaje para redicionar si no existe la plancha de la URL
         mensaje = "La plancha" + str(numplancha) + " con corporacion "+ str(idcorporacion)+" No existe en la BD "
@@ -136,7 +144,7 @@ def editar_plancha(request, idcorporacion=None,numplancha=None):
             if numeroplancha == int(numplancha):
                 planchaBuscar = []
             else:
-                planchaBuscar = Plancha.objects.filter(corporacion=idcorporacion, numeroplancha=numeroplancha)
+                planchaBuscar = Plancha.objects.filter(jornada_corporacion__corporacion__id_corporation=idcorporacion, numeroplancha=numeroplancha)
 
             print(planchaBuscar)
 
@@ -153,7 +161,7 @@ def editar_plancha(request, idcorporacion=None,numplancha=None):
                 except Exception as e:
                     print(e)
 
-                mensaje = "La plancha #" + str(plancha.numeroplancha)+ "de la corporación "+ str(plancha.corporacion)+" fue modificada exitosamente."
+                mensaje = "La plancha #" + str(plancha.numeroplancha)+ "de la corporación "+ str(plancha.jornada_corporacion.corporacion)+" fue modificada exitosamente."
                 llamarMensaje = "exito_usuario"
 
             # Si la plancha ya existe en la BD
@@ -181,22 +189,22 @@ def editar_plancha(request, idcorporacion=None,numplancha=None):
         # Candidatos principales y suplentes de una corporacion que no estan en alguna plancha
 
         # Todos los candidatos a excluir que ya estan en una plancha de la corporacion, menos el candidato principal actual
-        candidatos_a_excluir_principales = (Plancha.objects.filter(is_active=True , corporacion__id_corporation=plancha.corporacion.id_corporation)\
+        candidatos_a_excluir_principales = (Plancha.objects.filter(is_active=True , jornada_corporacion__corporacion__id_corporation=plancha.jornada_corporacion.corporacion.id_corporation)\
                                 .exclude(candidato_principal__votante__codigo=plancha.candidato_principal.votante.codigo)).values_list('candidato_principal__votante__codigo')
 
         if plancha.candidato_suplente:
-            candidatos_a_excluir_suplentes = (Plancha.objects.filter(is_active=True , corporacion__id_corporation=plancha.corporacion.id_corporation)\
+            candidatos_a_excluir_suplentes = (Plancha.objects.filter(is_active=True , jornada_corporacion__corporacion__id_corporation=plancha.jornada_corporacion.corporacion.id_corporation)\
                                 .exclude(candidato_suplente__votante__codigo=plancha.candidato_suplente.votante.codigo)).values_list('candidato_suplente__votante__codigo')
             print(candidatos_a_excluir_suplentes)
         else:
-            candidatos_a_excluir_suplentes = (Plancha.objects.filter(is_active=True , corporacion__id_corporation=plancha.corporacion.id_corporation).values_list('candidato_suplente__votante__codigo')).exclude(candidato_suplente__votante__codigo=None)
+            candidatos_a_excluir_suplentes = (Plancha.objects.filter(is_active=True , jornada_corporacion__corporacion__id_corporation=plancha.jornada_corporacion.corporacion.id_corporation).values_list('candidato_suplente__votante__codigo')).exclude(candidato_suplente__votante__codigo=None)
             print("else")
             print(candidatos_a_excluir_suplentes)
 
-        candidatosprin_sin_plancha = Candidato.objects.filter(Q(corporacion__id_corporation=plancha.corporacion.id_corporation) & Q(tipo_candidato="Principal") & Q(is_active=True))\
+        candidatosprin_sin_plancha = Candidato.objects.filter(Q(jornada_corporacion__corporacion__id_corporation=plancha.jornada_corporacion.corporacion.id_corporation) & Q(tipo_candidato="Principal") & Q(is_active=True))\
         .exclude(votante__codigo__in=candidatos_a_excluir_principales)
 
-        candidatossupl_sin_plancha = Candidato.objects.filter(Q(corporacion__id_corporation=plancha.corporacion.id_corporation) & Q(tipo_candidato="Suplente") & Q(is_active=True))\
+        candidatossupl_sin_plancha = Candidato.objects.filter(Q(jornada_corporacion__corporacion__id_corporation=plancha.jornada_corporacion.corporacion.id_corporation) & Q(tipo_candidato="Suplente") & Q(is_active=True))\
         .exclude(votante__codigo__in=candidatos_a_excluir_suplentes)
 
 
@@ -204,7 +212,8 @@ def editar_plancha(request, idcorporacion=None,numplancha=None):
         form.fields["candidato_suplente"].queryset = candidatossupl_sin_plancha
 
         try:
-            form.initial = {'numeroplancha': plancha.numeroplancha, 'corporacion': plancha.corporacion}
+            form.initial = {'numeroplancha': plancha.numeroplancha, 'corporacion': plancha.jornada_corporacion,
+                            'candidato_principal':plancha.candidato_principal, 'candidato_suplente':plancha.candidato_suplente, }
 
         except Plancha.DoesNotExist:
             print("no existe plancha")
@@ -238,7 +247,7 @@ def plancha_create(plancha, form):
     corporacion = form.cleaned_data["corporacion"]
 
     plancha.numeroplancha= numplancha
-    plancha.corporacion= corporacion
+    plancha.jornada_corporacion= corporacion
     plancha.candidato_principal= candidatoprin
     plancha.candidato_suplente= candidatosupl
     plancha.is_active = True

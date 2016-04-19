@@ -1,6 +1,7 @@
 from django import forms
 from candidatos.models import Candidato
 from corporaciones.models import Corporacion
+from jornadas.models import Jornada_Corporacion
 from planchas.models import Plancha
 
 """
@@ -48,7 +49,7 @@ class FormularioEditarPlancha(forms.Form):
         widget=forms.NumberInput(attrs={'class': 'form-control', 'min':'1', 'required':'true'}))
 
     corporacion = forms.ModelChoiceField(widget=forms.Select(attrs={'disabled':'false','onchange':'this.form.submit()','class':'selectpicker', 'data-live-search':'true',
-                                                                 'data-width':'100%'}), queryset=Corporacion.objects.filter(is_active=True), required=False)
+                                                                 'data-width':'100%'}), queryset=Jornada_Corporacion.objects.filter(jornada__is_active=True), required=False)
 
     #las dos siguientes instrucciones son consultas de los candidatos (principal, suplente) asociados a una corporacion determinada
     consulta_candidato_principal = Candidato.objects.filter(tipo_candidato__exact='Principal')

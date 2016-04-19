@@ -30,7 +30,7 @@
                 {% for plancha in planchas %}
                     <tr>
 
-                        <td>{{ plancha.corporacion}}</td>
+                        <td>{{ plancha.jornada_corporacion.corporacion}}</td>
                         {% if plancha.candidato_principal.votante.codigo == 0 %}
                             <td> Voto en Blanco </td>
                         {% else %}
@@ -57,8 +57,8 @@
                         <td>
                             <!--acciones - boton editar y eliminar-->
                             {% if plancha.candidato_principal.votante.codigo != 0 %}
-                            <a class="btn btn-xs btn-default add-tooltip" data-toggle="tooltip" href="/planchas/editar/{{ plancha.corporacion.id_corporation }}/{{ plancha.numeroplancha }}" data-original-title="Edit" data-container="body"><i class="fa fa-pencil"></i></a>
-                            <a value="{{ plancha.corporacion.name_corporation }}"id="{{ plancha.corporacion.id_corporation }}" name="{{ plancha.numeroplancha }}" class="demo-bootbox-confirm-plancha"  data-toggle="tooltip" href="#" data-original-title="Delete" data-container="body"><i class="btn btn-xs btn-danger add-tooltip btn-info fa fa-times"></i></a>
+                            <a class="btn btn-xs btn-default add-tooltip" data-toggle="tooltip" href="/planchas/editar/{{ plancha.jornada_corporacion.corporacion.id_corporation }}/{{ plancha.numeroplancha }}" data-original-title="Edit" data-container="body"><i class="fa fa-pencil"></i></a>
+                            <a value="{{ plancha.jornada_corporacion.corporacion.name_corporation }}"id="{{ plancha.jornada_corporacion.corporacion.id_corporation }}" name="{{ plancha.numeroplancha }}" class="demo-bootbox-confirm-plancha"  data-toggle="tooltip" href="#" data-original-title="Delete" data-container="body"><i class="btn btn-xs btn-danger add-tooltip btn-info fa fa-times"></i></a>
                             {% endif %}
                         </td>
                     </tr>
