@@ -125,6 +125,13 @@ def registro_votante(request):
                     else:
                         if not usuario.is_active:
                             usuario.is_active = True
+                            votante = Votante.objects.get(usuario__cedula_usuario=usuario.cedula_usuario)
+                            votante.is_active = True
+                            try:
+                                votante.save()
+                            except Exception as e:
+                                print("No se pudo guardadr  " + e)
+
                             useredit +=1
                         else:
                             userexist +=1
@@ -187,6 +194,7 @@ def eliminar_votante(request, username=None):
                 votante[0].is_active = False
                 votante[0].usuario.is_active = False
                 votante[0].save()
+                votante[0].usuario.save()
 
                 # Si tiene candidatp
                 candidato = Candidato.objects.filter(votante= votante)

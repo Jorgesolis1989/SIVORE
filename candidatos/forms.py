@@ -16,7 +16,8 @@ class FormularioRegistroCandidato(forms.Form):
     corporaciones_que_se_eligiran = Corporacion.objects.filter(id_corporation__in= (Jornada_Corporacion.objects.filter(jornada__is_active=True).values_list("corporacion__id_corporation", flat=True)))
 
     # votantes que pueden votar ser elegidos en las corporaciones que estan permitidas
-    votantes_que_pueden_ser_candidatos = Votante.objects.filter((Q(plan__in= corporaciones_que_se_eligiran) | Q(plan__facultad__in=corporaciones_que_se_eligiran)) , is_active=True)
+    votantes_que_pueden_ser_candidatos = Votante.objects.filter(
+            (Q(plan__in= corporaciones_que_se_eligiran) | Q(plan__facultad__in=corporaciones_que_se_eligiran)) , Q(is_active=True))
 
     # excluimos los votantes que ya estan como candidatos
     votantes_que_pueden_ser_candidatos = votantes_que_pueden_ser_candidatos.exclude(codigo__in=Candidato.objects.filter(is_active=True).values_list('votante__codigo', flat=True))
@@ -39,9 +40,11 @@ class FormularioRegistroCandidato(forms.Form):
     """
     corporaciones_habilitadas = Jornada_Corporacion.objects.filter(jornada__is_active=True)
 
-    corporacion_candidato = corporaciones_habilitadas.filter(Q(corporacion__id_corporation=votantes_que_pueden_ser_candidatos[0].plan.id_corporation) |
-                                                             Q(corporacion__id_corporation=votantes_que_pueden_ser_candidatos[0].plan.facultad.id_corporation))
-
+    if votantes_que_pueden_ser_candidatos:
+        corporacion_candidato = corporaciones_habilitadas.filter(Q(corporacion__id_corporation=votantes_que_pueden_ser_candidatos[0].plan.id_corporation) |
+                                                                Q(corporacion__id_corporation=votantes_que_pueden_ser_candidatos[0].plan.facultad.id_corporation))
+    else:
+        corporacion_candidato = corporaciones_habilitadas
 
     corporacion = forms.ModelChoiceField( widget=forms.Select(attrs={'class':'selectpicker', 'data-live-search':'true'
                                                                 ,'data-width':'100%'}), queryset=corporacion_candidato, required=True, empty_label=None)

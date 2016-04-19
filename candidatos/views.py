@@ -90,10 +90,15 @@ def registro_candidato(request):
     else:
         form = FormularioRegistroCandidato()
 
+        print(form.votantes_que_pueden_ser_candidatos)
+
         if not form.votantes_que_pueden_ser_candidatos:
+
             mensaje = "Debe de haber votantes para crear candidatos, dirijase a votantes"
             llamarMensaje = "fracaso_usuario"
-            return render(request, 'registro_candidato.html', {'form': form, 'llamarMensaje':llamarMensaje , 'mensaje': mensaje})
+            request.session["llamarMensaje"] = llamarMensaje
+            request.session["mensaje"] = mensaje
+            return redirect("listar_votantes")
         else:
             votante_inicial = form.votantes_que_pueden_ser_candidatos[0]
             form.fields["votante"].initial = votante_inicial

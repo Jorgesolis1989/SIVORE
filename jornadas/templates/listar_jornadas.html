@@ -1,0 +1,52 @@
+{% extends "base-admin.html" %}
+{% block title %}Consultar, editar y eliminar jornada {% endblock title %}
+{% block content %}
+    <h1 class="page-header text-overflow">Consulta, edición y eliminación de jornadas</h1>
+<div class="panel">
+    <div class="panel panel-colorful panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Listar Jornadas</h3>
+        </div>
+    </div>
+
+    <div id="demo-custom-toolbar" class="table-toolbar-left">
+        <button id="demo-btn-addrow" class="btn btn-mint btn-labeled fa fa-plus" ><a href="{% url 'registro_jornada' %}" class="btn btn-mint">Crear Jornada</a></button>
+    </div>
+
+    <div class="panel-body">
+  <form name="formDelete" method="post">
+    {% csrf_token %}
+        <table id="demo-dt-delete" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>Nombre Jornada</th>
+                    <th>Fecha</th>
+                    <th class="min-tablet"> Corporación</th>
+                    <th class="min-desktop">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for corporacion_jornada in corporaciones_jornada %}
+                    <tr>
+                        <td>{{ corporacion_jornada.jornada.nombrejornada }}</td>
+                        <td>{{ corporacion_jornada.jornada.fecha_inicio_jornada.date }}</td>
+
+                            <td>{{ corporacion_jornada.corporacion.name_corporation }}</td>
+
+                        <td>
+                            <a class="btn btn-xs btn-default add-tooltip" data-toggle="tooltip" href="/jornadas/editar/{{ corporacion_jornada.corporacion.id_corporation }}/{{ corporacion_jornada.jornada.id_corporation }}" data-original-title="Edit" data-container="body"><i class="fa fa-pencil"></i></a>
+                            <a id="{{ corporacion.id_corporation }}" class="demo-bootbox-confirm-corp"  data-toggle="tooltip" href="#" data-original-title="Delete" data-container="body"><i class="btn btn-xs btn-danger add-tooltip btn-info fa fa-times"></i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </form>
+    </div>
+</div>
+<script>
+    window.onload = function() {
+    llamarMensajes( '{{ llamarMensaje }}' , '{{ mensaje }}');
+    };
+    </script>
+{% endblock %}
