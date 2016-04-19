@@ -1,7 +1,7 @@
 {% extends "base-admin.html" %}
 {% block title %}Crear Jornada Electoral{% endblock title %}
 {% block content %}
-<div class="panel">
+<div class="panel" xmlns="http://www.w3.org/1999/html">
         <div class="panel panel-colorful panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title">Registro jornada</h3>
@@ -10,10 +10,12 @@
         <!--Page content-->
         <!--===================================================-->
         <div id="page-content">
+            <form id="" name="FormularioRegistroJornada" class="form-horizontal" action="" method="post">
+                {% csrf_token %}
             <div class="panel">
                 <p class="text-thin mar-btm">Nombre Jornada</p>
                     <div class="col-sm-15">
-                        {{form.nombre_jornada  }}
+                        {{form.nombre_jornada }}
                     </div>
                 <br>
                 <br>
@@ -23,7 +25,7 @@
                 <!--===================================================-->
                 <div id="demo-dp-component">
                     <div class="input-group date">
-                        <input type="text" class="form-control">
+                        {{ form.fecha_jornada }}
                         <span class="input-group-addon"><i class="fa fa-calendar fa-lg"></i></span>
                     </div>
                 </div>
@@ -37,18 +39,16 @@
                 <!--Bootstrap Timepicker : Text Input-->
                 <!--===================================================-->
                  <div class="input-group date">
-                    <input id="demo-tp-com" type="text" class="form-control">
+                     {{form.hora_inicio}}
                     <span class="input-group-addon"><i class="fa fa-clock-o fa-lg"></i></span>
                 </div>
-
-                <br>
                 <br>
                 <p class="text-thin mar-btm">Hora final:</p>
 
                 <!--Bootstrap Timepicker : Component-->
                 <!--===================================================-->
                 <div class="input-group date">
-                    <input id="demo-tp-com-1" type="text" class="form-control">
+                    {{form.hora_final}}
                     <span class="input-group-addon"><i class="fa fa-clock-o fa-lg"></i></span>
                 </div>
                 <!--===================================================-->
@@ -57,28 +57,20 @@
             </div>
 
             <div class="panel">
-                <br>
                 <h5 class="text-thin mar-btm">Corporaciones:</h5>
-
                 <!-- Multiple Select Choosen -->
                 <!--===================================================-->
-                <select id="demo-cs-multiselect" data-placeholder="Choose a Country..." multiple tabindex="4">
-                    <option value="United States">United States</option>
-
-                    <option value="Romania">Romania</option>
-                    <option value="Russian Federation">Russian Federation</option>
-                    <option value="Rwanda">Rwanda</option>
-                    <option value="Saint Barthelemy">Saint Barthelemy</option>
-                    <option value="Seychelles">Seychelles</option>
-                    <option value="Wallis and Futuna">Wallis and Futuna</option>
-                    <option value="Western Sahara">Western Sahara</option>
-                    <option value="Yemen">Yemen</option>
-                    <option value="Zambia">Zambia</option>
-                    <option value="Zimbabwe">Zimbabwe</option>
-                </select>
-                    <!--===================================================-->
+                    {{form.corporaciones}}
+                <!--===================================================-->
             </div>
-
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-sm-7 col-sm-offset-3">
+                    <button class="btn btn-primary btn-labeled fa fa-send fa-lg" type="submit" name="btncreate">Crear</button>
+                    </div>
+                </div>
+            </div>
+            </form>
         </div>
         <!--===================================================-->
         <!--End page content-->
