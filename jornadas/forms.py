@@ -1,6 +1,7 @@
 from django import forms
 from corporaciones.models import Corporacion
-
+from jornadas.models import Jornada_Corporacion
+from django.db.models import Q
 """
 Este formulario se encuentran los datos para registrar una jornada
 """
@@ -9,7 +10,7 @@ class FormularioRegistroJornada(forms.Form):
     nombre_jornada = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí el nombre de la jornada', 'required':'true', 'data-width':'100%'}))
 
-    fecha_jornada = forms.DateField(input_formats='%d/%m/%y',widget=forms.DateInput(attrs={'type':'text', 'class':'form-control', 'required':'true'}))
+    fecha_jornada = forms.DateField( input_formats ='%d/%m/%Y',widget=forms.DateInput(attrs={'type':'text', 'class':'form-control', 'required':'true'}))
 
     hora_inicio = forms.TimeField(input_formats='%H:%M %p', widget=forms.TimeInput(attrs={'id':'demo-tp-com', 'type':'text', 'class':'form-control', 'required':'true'}))
 
@@ -17,6 +18,7 @@ class FormularioRegistroJornada(forms.Form):
 
     corporaciones = forms.ModelChoiceField(widget=forms.Select(attrs={'id':'demo-cs-multiselect', 'data-live-search':'true',
                                                                       'multiple tabindex':'4', 'data-placeholder':'Escoger las corporaciones'}),
-                                           queryset=Corporacion.objects.all(), required=True, empty_label=None)
+                                           queryset=Corporacion.objects.all().exclude(Q(id_corporation=0)  | Q(id_corporation__in
+                                           =Jornada_Corporacion.objects.filter(jornada__is_active=True).values_list("corporacion__id_corporation" , flat=True))), required=True, empty_label=None)
 
 

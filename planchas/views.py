@@ -113,7 +113,7 @@ def listar_planchas(request):
     planchas = Plancha.objects.filter(is_active=True)
     llamarMensaje = request.session.pop('llamarMensaje', None)
     mensaje = request.session.pop('mensaje', None)
-
+    print(planchas)
     return render(request,  'listar_planchas.html', {'planchas': planchas, 'llamarMensaje': llamarMensaje,'mensaje': mensaje})
 
 

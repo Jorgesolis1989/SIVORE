@@ -148,3 +148,13 @@ EMAIL_HOST_PASSWORD = 'sivore123@'
 
 
 MEDIA_ROOT = 'candidatos/media'
+
+DATE_INPUT_FORMATS=[
+    '%Y-%m-%d', '%m/%d/%Y', '%m/%d/%y',
+]
+
+TIME_INPUT_FORMATS= [
+    '%H:%M:%S',
+    '%H:%M',
+    '%I:%M %p',
+]

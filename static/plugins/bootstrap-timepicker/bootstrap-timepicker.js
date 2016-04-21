@@ -1089,6 +1089,7 @@
     showMeridian: true,
     template: 'dropdown',
     appendWidgetTo: 'body',
+    is24HourView:false,
     showWidgetOnAddonClick: true
   };
 
