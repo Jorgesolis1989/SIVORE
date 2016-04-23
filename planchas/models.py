@@ -5,7 +5,7 @@ from jornadas.models import Jornada_Corporacion
 class Plancha(models.Model):
     numeroplancha = models.IntegerField(null=False, unique=False)
     jornada_corporacion = models.ForeignKey(Jornada_Corporacion, null=False)
-    candidato_principal = models.ForeignKey(Candidato, null=False, related_name='principal')
+    candidato_principal = models.ForeignKey(Candidato, null=True, related_name='principal')
     candidato_suplente = models.ForeignKey(Candidato, null=True, blank=True, unique=False, default=None)
     is_active = models.BooleanField(default=True)
 
