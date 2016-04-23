@@ -29,16 +29,20 @@
             <tbody>
                 {% for plancha in planchas %}
                     <tr>
-
                         <td>{{ plancha.jornada_corporacion.corporacion}}</td>
-                        {% if plancha.candidato_principal.votante.codigo == 0 %}
-                            <td> Voto en Blanco </td>
-                        {% else %}
-                        <td>{{ plancha.candidato_principal.votante.codigo}} -
-                            {{plancha.candidato_principal.votante.usuario.first_name  }}
-                            {{plancha.candidato_principal.votante.usuario.last_name  }}
-                        </td>
-                        {% endif %}
+
+                             {% if plancha.candidato_principal.DoesNotExist %}
+
+                                <td>
+                                {{ plancha.candidato_principal.votante.codigo}}
+                                {{plancha.candidato_principal.votante.usuario.first_name  }}
+                                {{plancha.candidato_principal.votante.usuario.last_name  }}
+                                </td>
+
+                             {% else %}
+                                <td> Voto en blanco</td>
+                             {% endif %}
+
                         {% if plancha.candidato_suplente.DoesNotExist %}
                             <td>{{ plancha.candidato_suplente.votante.codigo}} -
                             {{plancha.candidato_suplente.votante.usuario.first_name  }}
@@ -49,7 +53,6 @@
                         {% endif %}
 
                         {% if plancha.numeroplancha == 0 %}
-
                             <td> </td>
                         {% else %}
                         <td>{{ plancha.numeroplancha}}</td>
@@ -57,8 +60,8 @@
                         <td>
                             <!--acciones - boton editar y eliminar-->
                             {% if plancha.candidato_principal.votante.codigo != 0 %}
-                            <a class="btn btn-xs btn-default add-tooltip" data-toggle="tooltip" href="/planchas/editar/{{ plancha.jornada_corporacion.corporacion.id_corporation }}/{{ plancha.numeroplancha }}" data-original-title="Edit" data-container="body"><i class="fa fa-pencil"></i></a>
-                            <a value="{{ plancha.jornada_corporacion.corporacion.name_corporation }}"id="{{ plancha.jornada_corporacion.corporacion.id_corporation }}" name="{{ plancha.numeroplancha }}" class="demo-bootbox-confirm-plancha"  data-toggle="tooltip" href="#" data-original-title="Delete" data-container="body"><i class="btn btn-xs btn-danger add-tooltip btn-info fa fa-times"></i></a>
+                            <a class="btn btn-xs btn-default add-tooltip" data-toggle="tooltip" href="/planchas/editar/{{ plancha.jornada_corporacion.id }}/{{ plancha.numeroplancha }}" data-original-title="Edit" data-container="body"><i class="fa fa-pencil"></i></a>
+                            <a value="{{ plancha.jornada_corporacion.corporacion.name_corporation }}"id="{{ plancha.jornada_corporacion.id }}" name="{{ plancha.numeroplancha }}" class="demo-bootbox-confirm-plancha"  data-toggle="tooltip" href="#" data-original-title="Delete" data-container="body"><i class="btn btn-xs btn-danger add-tooltip btn-info fa fa-times"></i></a>
                             {% endif %}
                         </td>
                     </tr>

@@ -77,6 +77,25 @@
 		});
 	});
 
+
+
+	 // BOOTBOX - CONFIRM MODAL - PARA ELIMINAR JORNADAS ELECTORALES
+	// =================================================================
+	// Require Bootbox
+	// http://bootboxjs.com/
+	// =================================================================
+	$('.demo-bootbox-confirm-jornada').on('click', function(){
+		var id = $(this).attr('id')
+		var value = $(this).attr('value')
+		bootbox.confirm("Esta seguro que desea eliminar la jornada "+value+"?", function(result) {
+			if (result) {
+				document.formDelete.action = "/jornadas/eliminar/"+id
+				document.formDelete.submit()
+
+			}
+		});
+	});
+
 	 // BOOTBOX - CONFIRM MODAL - PARA ELIMINAR CORPORACIONES
 	// =================================================================
 	// Require Bootbox
@@ -92,6 +111,23 @@
 				document.formDelete.action = "/planchas/eliminar/"+id+"/"+name+"/"
 				document.formDelete.submit()
 
+			}
+		});
+	});
+
+	 // BOOTBOX - CUSTOM HTML CONTENTS
+	// =================================================================
+	// Require Bootbox
+	// http://bootboxjs.com/
+	// =================================================================
+	$('.demo-bootbox-custom-h-jornada').on('click', function(){
+		bootbox.dialog({
+			title: "That html",
+			message: '<div class="media"><div class="media-left"><img class="media-object img-lg img-circle" src="img/av3.png" alt="Profile picture"></div><div class="media-body"><h4 class="text-thin">You can also use <strong>html</strong></h4>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</div></div>',
+			buttons: {
+				confirm: {
+					label: "Save"
+				}
 			}
 		});
 	});
