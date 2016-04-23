@@ -113,7 +113,6 @@ def listar_planchas(request):
     planchas = Plancha.objects.filter(is_active=True)
     llamarMensaje = request.session.pop('llamarMensaje', None)
     mensaje = request.session.pop('mensaje', None)
-    print(planchas)
     return render(request,  'listar_planchas.html', {'planchas': planchas, 'llamarMensaje': llamarMensaje,'mensaje': mensaje})
 
 
@@ -136,8 +135,6 @@ def editar_plancha(request, idcorporacion=None,numplancha=None):
 
         #Si el formulario es valido y tiene datos
         if form.is_valid():
-
-
             numeroplancha = form.cleaned_data["numeroplancha"]
 
             #Consulto en la BD si existe la plancha
@@ -211,12 +208,8 @@ def editar_plancha(request, idcorporacion=None,numplancha=None):
         form.fields["candidato_principal"].queryset = candidatosprin_sin_plancha
         form.fields["candidato_suplente"].queryset = candidatossupl_sin_plancha
 
-        try:
-            form.initial = {'numeroplancha': plancha.numeroplancha, 'corporacion': plancha.jornada_corporacion,
+        form.initial = {'numeroplancha': plancha.numeroplancha, 'corporacion': plancha.jornada_corporacion,
                             'candidato_principal':plancha.candidato_principal, 'candidato_suplente':plancha.candidato_suplente, }
-
-        except Plancha.DoesNotExist:
-            print("no existe plancha")
 
         return render(request, 'editar_plancha.html', {'form': form})
 

@@ -27,18 +27,19 @@
                 </tr>
             </thead>
             <tbody>
-                {% for corporacion_jornada in corporaciones_jornada %}
-                    <tr>
-                        <td>{{ corporacion_jornada.jornada.nombrejornada}}</td>
-                        <td>{{ corporacion_jornada.jornada.fecha_inicio_jornada }}</td>
-                        <td>{{ corporacion_jornada.jornada.fecha_final_jornada }}</td>
-                        <td>{{ corporacion_jornada.corporacion.name_corporation }}</td>
-                        <td>
-                            <!--acciones - boton editar y eliminar-->
-                            <a class="btn btn-xs btn-default add-tooltip" data-toggle="tooltip" href="/planchas/editar/{{ plancha.corporacion.id_corporation }}/{{ plancha.numeroplancha }}" data-original-title="Edit" data-container="body"><i class="fa fa-pencil"></i></a>
-                            <a value="{{ plancha.corporacion.name_corporation }}"id="{{ plancha.corporacion.id_corporation }}" name="{{ plancha.numeroplancha }}" class="demo-bootbox-confirm-plancha"  data-toggle="tooltip" href="#" data-original-title="Delete" data-container="body"><i class="btn btn-xs btn-danger add-tooltip btn-info fa fa-times"></i></a>
-                        </td>
-                    </tr>
+               {% for jornada in jornadas %}
+                <tr>
+                   <td>{{ jornada.nombrejornada}}</td>
+                   <td>{{ jornada.fecha_inicio_jornada }}</td>
+                   <td>{{ jornada.fecha_final_jornada }}</td>
+                   <td>
+                    <a class="btn btn-pink demo-bootbox-custom-h-jornada add-tooltip" data-toggle="tooltip" href="#" data-original-title="Edit" data-container="body"><i class="fa fa-pencil"></i></a>
+                   </td>
+                   <td>
+                       <!-acciones - boton editar y eliminar->
+                       <a class="btn btn-xs btn-default add-tooltip" data-toggle="tooltip" href="/jornadas/editar/{{jornada.id}}" data-original-title="Edit" data-container="body"><i class="fa fa-pencil"></i></a>
+                       <a value="{{ jornada.nombrejornada }} con inicio {{ jornada.fecha_inicio_jornada }}"id="{{ jornada.id}}" name="{{ plancha.numeroplancha }}" class="demo-bootbox-confirm-jornada"  data-toggle="tooltip" href="#" data-original-title="Delete" data-container="body"><i class="btn btn-xs btn-danger add-tooltip btn-info fa fa-times"></i></a>
+                   </td>
                 {% endfor %}
             </tbody>
         </table>
