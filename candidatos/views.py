@@ -90,7 +90,7 @@ def registro_candidato(request):
     else:
         form = FormularioRegistroCandidato()
 
-        print(form.votantes_que_pueden_ser_candidatos)
+        print(form.corporaciones_habilitadas)
 
         if not form.votantes_que_pueden_ser_candidatos:
 
