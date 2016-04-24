@@ -94,9 +94,11 @@ def registro_jornada(request):
 @permission_required("usuarios.Administrador", login_url="/")
 def listar_jornadas(request):
    jornadas = Jornada.objects.filter(is_active=True)
+   jornada_corporaciones = Jornada_Corporacion.objects.all()
    llamarMensaje = request.session.pop('llamarMensaje', None)
    mensaje = request.session.pop('mensaje', None)
-   return render(request,  'listar_jornadas.html', {'jornadas': jornadas, 'llamarMensaje': llamarMensaje,'mensaje': mensaje})
+   return render(request,  'listar_jornadas.html', {'jornadas': jornadas, 'llamarMensaje': llamarMensaje,'mensaje': mensaje,
+                                                    'jornada_corporaciones': jornada_corporaciones})
 
 # funcion que permite la edición de la jornada seleccionada
 @permission_required("usuarios.Administrador", login_url="/")

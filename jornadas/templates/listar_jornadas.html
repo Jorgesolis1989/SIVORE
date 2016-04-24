@@ -22,7 +22,7 @@
                     <th>Nombre Jornada</th>
                     <th>Fecha Inicio</th>
                     <th class="min-tablet">Fecha Final</th>
-                    <th>Corporación</th>
+                    <th>Corporaciones</th>
                     <th class="min-tablet">Acciones</th>
                 </tr>
             </thead>
@@ -33,7 +33,7 @@
                    <td>{{ jornada.fecha_inicio_jornada }}</td>
                    <td>{{ jornada.fecha_final_jornada }}</td>
                    <td>
-                    <a class="btn btn-pink demo-bootbox-custom-h-jornada add-tooltip" data-toggle="tooltip" href="#" data-original-title="Edit" data-container="body"><i class="fa fa-pencil"></i></a>
+                    <a id="{{jornada.id}}" value ="{{ jornada_corporaciones.values_list }}" class="btn btn-primary btn-rounded btn-labeled fa fa-search demo-bootbox-custom-h-jornada add-tooltip" data-toggle="tooltip" href="#" data-original-title="Consultar" data-container="body"><i> Consultar </i></a>
                    </td>
                    <td>
                        <!-acciones - boton editar y eliminar->

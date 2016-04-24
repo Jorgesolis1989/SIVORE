@@ -120,15 +120,36 @@
 	// Require Bootbox
 	// http://bootboxjs.com/
 	// =================================================================
-	$('.demo-bootbox-custom-h-jornada').on('click', function(){
+	var corporaciones="dd";
+	 $('.demo-bootbox-custom-h-jornada').on('click', function(){
+
+		var id = $(this).attr('id')
+		corporaciones = $(this).attr('value')
+		alert(id)
+		alert(corporaciones)
+
 		bootbox.dialog({
-			title: "That html",
-			message: '<div class="media"><div class="media-left"><img class="media-object img-lg img-circle" src="img/av3.png" alt="Profile picture"></div><div class="media-body"><h4 class="text-thin">You can also use <strong>html</strong></h4>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</div></div>',
-			buttons: {
-				confirm: {
-					label: "Save"
-				}
-			}
+			title: "Corporaciones asignadas para la jornada",
+			message: '<div class="media">' +
+			'<div class="media-left"><img class="media-object img-lg img-circle" src="img/av3.png" alt="Profile picture">' +
+			'</div>' +
+			'<div class="media-body">' +
+			'<h4 class="text-thin"><script>document.write(corporaciones)</script></h4>' + '<div class="col-md-6 col-lg-4 eq-box-lg">' +
+			'<div class="panel">' +
+			'<div class="panel-body">' +
+			'<div class="list-group">' +
+				'<a class="list-group-item  list-item-sm active" href="#"></a>'+
+				'</div>' +
+					'</div>' +
+				'</div>' +
+			'</div>' +
+			'</div>',
+
+			//buttons: {
+			//	confirm: {
+			//		label: "Save"
+			//	}
+			//}
 		});
 	});
 
