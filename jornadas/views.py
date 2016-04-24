@@ -181,3 +181,39 @@ def editar_jornada(request, id):
         form.initial = {'nombre_jornada' : jornada.nombrejornada, "fecha_jornada" : jornada.fecha_inicio_jornada.date().strftime("%m/%d/%Y"),
                         "hora_inicio" : timezone.localtime(jornada.fecha_inicio_jornada).strftime('%H:%M:%S'), "hora_final" : timezone.localtime(jornada.fecha_final_jornada).strftime('%H:%M:%S'), "corporaciones": [o for o in corporaciones_de_jornada]}
     return render(request, 'editar_jornada.html', {'form': form})
+
+# Este metodo no elimina en la base de datos, sino que desactiva la jornada con sus dependencias (Planchas y Candidatos)
+@permission_required("usuarios.Administrador", login_url="/")
+def eliminar_jornada(request, idjornada=None):
+    if request.method == 'POST':
+        # Desactivando la jornada de la tabla jornada
+        jornada=Jornada.objects.get(id=idjornada , is_active=True)
+        jornada.is_active = False
+        try:
+            jornada.save()
+        except Exception as e:
+            print(e)
+
+        # Desactivando las planchas de la tabla Jornada_Corporacion
+        planchas_jornada = Plancha.objects.filter(jornada_corporacion__jornada_id=idjornada , is_active=True)
+        for plancha_jornada in planchas_jornada:
+            plancha_jornada.is_active = False
+            try:
+                plancha_jornada.save()
+            except Exception as e:
+                print(e)
+
+        # Desactivando los candidatos
+        candidatos_jornada = Candidato.objects.filter(jornada_corporacion__jornada_id=idjornada , is_active=True)
+        for candidato_jornada in candidatos_jornada:
+            candidato_jornada.is_active = False
+            try:
+                candidato_jornada.save()
+            except Exception as e:
+                print(e)
+
+        llamarMensaje = "elimino_corporacion"
+        mensaje = "Se eliminó la jornada electoral  " +  str(jornada.nombrejornada) +" con sus candidatos y corporaciones asociadas sactisfactoriamente"
+        request.session['llamarMensaje'] = llamarMensaje
+        request.session['mensaje'] = mensaje
+    return redirect("listar_jornadas")
