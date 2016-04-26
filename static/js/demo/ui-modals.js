@@ -134,7 +134,7 @@
 			'<div class="media-left"><img class="media-object img-lg img-circle" src="img/av3.png" alt="Profile picture">' +
 			'</div>' +
 			'<div class="media-body">' +
-			'<h4 class="text-thin"><script>document.write(corporaciones)</script></h4>' + '<div class="col-md-6 col-lg-4 eq-box-lg">' +
+			'<h4 class="text-thin"></h4>' + '<div class="col-md-6 col-lg-4 eq-box-lg">' +
 			'<div class="panel">' +
 			'<div class="panel-body">' +
 			'<div class="list-group">' +
