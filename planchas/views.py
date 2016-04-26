@@ -110,7 +110,7 @@ def registro_plancha(request):
         if not jornada_corporaciones:
             mensaje = "Debe de haber corporaciones para crear las planchas, dirijase a corporaciones"
             llamarMensaje = "fracaso_usuario"
-            return render(request, 'registro_plancha.html', {'form': form, 'llamarMensaje':llamarMensaje , 'mensaje': mensaje})
+            return render(request, 'registro_plancha.html', {'form': form, 'llamarMensaje':llamarMensaje , 'mensaje': mensaje , "enabledCrear" : False})
         else:
             # Candidatos principales de la primera jornada_corporacion que esten activos
             candidatosprin_sin_plancha = Candidato.objects.filter(Q(jornada_corporacion=jornada_corporaciones[0]) & Q(tipo_candidato="Principal") & Q(is_active=True))

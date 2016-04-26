@@ -86,25 +86,30 @@ def registro_candidato(request):
 
             form.fields["corporacion"].queryset = corporacion_candidato
 
-    #Ninguno de los dos formularios crear  ni cargar Method GET
+    #Ninguno de los dos formularios crear  ni cargar Meth od GET
     else:
         form = FormularioRegistroCandidato()
-
         print(form.corporaciones_habilitadas)
-
-        if not form.votantes_que_pueden_ser_candidatos:
-
-            mensaje = "Debe de haber votantes para crear candidatos, dirijase a votantes"
+        llamarMensaje = request.session.pop('llamarMensaje', None)
+        mensaje = request.session.pop('mensaje', None)
+        if not form.corporaciones_habilitadas:
+            mensaje = "NO hay corporaciones habilitadas para votar Debe de CREAR JORNADA"
             llamarMensaje = "fracaso_usuario"
-            request.session["llamarMensaje"] = llamarMensaje
-            request.session["mensaje"] = mensaje
-            return redirect("listar_votantes")
+            enabledSiguiente = False
+
+        elif not form.votantes_que_pueden_ser_candidatos:
+            mensaje = "NO HAY VOTANTES en las corporaciones habilitadas Dirijase a CREAR VOTANTES"
+            llamarMensaje = "fracaso_usuario"
+            enabledSiguiente = False
+
+
         else:
             votante_inicial = form.votantes_que_pueden_ser_candidatos[0]
             form.fields["votante"].initial = votante_inicial
+            enabledSiguiente= True
+        return render(request, 'registro_candidato.html', {'form': form , 'mensaje': mensaje , 'llamarMensaje':llamarMensaje , 'enabledSiguiente':enabledSiguiente})
 
-
-    return render(request, 'registro_candidato.html', {'form': form})
+    return render(request, 'registro_candidato.html', {'form': form })
 
 # Vista para listar votantes
 @permission_required("usuarios.Administrador", login_url="/")

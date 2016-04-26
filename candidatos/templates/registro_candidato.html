@@ -122,7 +122,12 @@
                     <div class="panel-footer text-right">
                         <div class="box-inline">
                             <button type="button" class="previous btn btn-primary">Anterior paso</button>
-                            <button name ="btnsigu" type="button" class="next btn btn-primary">Siguiente paso</button>
+                            {% if enabledSigui %}
+                                <button name ="btnsigu" type="button" class="next btn btn-primary">Siguiente paso</button>
+                            {% else %}
+                                <button name ="btnsigu" disabled=True type="button" class="next btn btn-primary">Siguiente paso</button>
+                            {% endif %}
+
                             <button name="btnload" type="submit" class="finish btn btn-warning" disabled>Crear y finalizar</button>
                         </div>
                     </div>
