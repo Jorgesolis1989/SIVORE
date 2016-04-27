@@ -120,36 +120,15 @@
 	// Require Bootbox
 	// http://bootboxjs.com/
 	// =================================================================
-	var corporaciones="dd";
-	 $('.demo-bootbox-custom-h-jornada').on('click', function(){
-
-		var id = $(this).attr('id')
-		corporaciones = $(this).attr('value')
-		alert(id)
-		alert(corporaciones)
-
+	$('#demo-bootbox-custom-h-content').on('click', function(){
 		bootbox.dialog({
-			title: "Corporaciones asignadas para la jornada",
-			message: '<div class="media">' +
-			'<div class="media-left"><img class="media-object img-lg img-circle" src="img/av3.png" alt="Profile picture">' +
-			'</div>' +
-			'<div class="media-body">' +
-			'<h4 class="text-thin"><script>document.write(corporaciones)</script></h4>' + '<div class="col-md-6 col-lg-4 eq-box-lg">' +
-			'<div class="panel">' +
-			'<div class="panel-body">' +
-			'<div class="list-group">' +
-				'<a class="list-group-item  list-item-sm active" href="#"></a>'+
-				'</div>' +
-					'</div>' +
-				'</div>' +
-			'</div>' +
-			'</div>',
-
-			//buttons: {
-			//	confirm: {
-			//		label: "Save"
-			//	}
-			//}
+			title: "That html",
+			message: '<div class="media"><div class="media-left"><img class="media-object img-lg img-circle" src="img/av3.png" alt="Profile picture"></div><div class="media-body"><h4 class="text-thin">You can also use <strong>html</strong></h4>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</div></div>',
+			buttons: {
+				confirm: {
+					label: "Save"
+				}
+			}
 		});
 	});
 
@@ -264,41 +243,30 @@
 	// Require Bootbox
 	// http://bootboxjs.com/
 	// =================================================================
-	$('#demo-bootbox-custom-h-form').on('click', function(){
-		bootbox.dialog({
+	$('.demo-bootbox-custom-h-form').on('click', function(){
+		var corporaciones = $(this).attr('value')
+		var cantidad = corporaciones.charAt(3);
+		alert(cantidad)
+		var corporacion =0;
+		var i = 0;
+		bootbox.prompt({
 			title: "This is a form in a modal.",
-			message:'<div class="row"> ' + '<div class="col-md-12"> ' +
-					'<form class="form-horizontal"> ' + '<div class="form-group"> ' +
-					'<label class="col-md-4 control-label" for="name">Name</label> ' +
-					'<div class="col-md-4"> ' +
-					'<input id="name" name="name" type="text" placeholder="Your name" class="form-control input-md"> ' +
-					'<span class="help-block"><small>Here goes your name</small></span> </div> ' +
-					'</div> ' + '<div class="form-group"> ' +
-					'<label class="col-md-4 control-label" for="awesomeness">How awesome is this?</label> ' +
-					'<div class="col-md-8"> <div class="form-block"> ' +
-					'<label class="form-radio form-icon demo-modal-radio active"><input type="radio" autocomplete="off" name="awesomeness" value="Really awesome" checked> Really awesome</label>' +
-					'<label class="form-radio form-icon demo-modal-radio"><input type="radio" autocomplete="off" name="awesomeness" value="Super awesome"> Super awesome </label> </div>' +
-					'</div> </div>' + '</form> </div> </div><script></script>',
-			buttons: {
-				success: {
-					label: "Save",
-					className: "btn-purple",
-					callback: function() {
-						var name = $('#name').val();
-						var answer = $("input[name='awesomeness']:checked").val();
+			callback: function() {
 
-						$.niftyNoty({
-							type: 'purple',
-							icon : 'fa fa-check',
-							message : "Hello " + name + ".<br> You've chosen <strong>" + answer + "</strong>",
-							container : 'floating',
-							timer : 4000
-						});
-					}
+				for (i = 0; i < corporaciones<4; i++) {
+					corporacion += corporaciones[i]
+					//alert(corporacion)
 				}
+
+				//$.niftyNoty({
+				//	type: 'purple',
+				//	icon : 'fa fa-check',
+				//	message : "" + name + ".<br> <strong>" + corporacion + "</strong>",
+				//	container : 'floating',
+				//	timer : 4000
+				//});
 			}
 		});
-
 		$(".demo-modal-radio").niftyCheck();
 	});
 
