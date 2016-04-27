@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.decorators import resolve_url
 from django.shortcuts import render_to_response, render, redirect
 from jornadas.forms import FormularioRegistroJornada, FormularioEditarJornada
 from planchas.models import Plancha
@@ -13,7 +14,6 @@ from django.utils.timezone import activate
 from django.conf import settings
 activate(settings.TIME_ZONE)
 from jornadas.models import Jornada , Jornada_Corporacion
-
 
 def ingresar_plancha_voto_blanco(jornada_corporacion):
 
@@ -94,7 +94,7 @@ def registro_jornada(request):
 @permission_required("usuarios.Administrador", login_url="/")
 def listar_jornadas(request):
    jornadas = Jornada.objects.filter(is_active=True)
-   jornada_corporaciones = Jornada_Corporacion.objects.all()
+   jornada_corporaciones = Jornada_Corporacion.objects.filter(jornada__is_active=True).values_list('corporacion_id', flat=True)
    llamarMensaje = request.session.pop('llamarMensaje', None)
    mensaje = request.session.pop('mensaje', None)
    return render(request,  'listar_jornadas.html', {'jornadas': jornadas, 'llamarMensaje': llamarMensaje,'mensaje': mensaje,

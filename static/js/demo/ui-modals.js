@@ -122,15 +122,13 @@
 	// =================================================================
 	$('#demo-bootbox-custom-h-content').on('click', function(){
 		bootbox.dialog({
-<<<<<<< HEAD
 			title: "That html",
 			message: '<div class="media"><div class="media-left"><img class="media-object img-lg img-circle" src="img/av3.png" alt="Profile picture"></div><div class="media-body"><h4 class="text-thin">You can also use <strong>html</strong></h4>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</div></div>',
 			buttons: {
 				confirm: {
 					label: "Save"
 				}
-			}
-=======
+			},
 			title: "Corporaciones asignadas para la jornada",
 			message: '<div class="media">' +
 			'<div class="media-left"><img class="media-object img-lg img-circle" src="img/av3.png" alt="Profile picture">' +
@@ -152,7 +150,6 @@
 			//		label: "Save"
 			//	}
 			//}
->>>>>>> 6df6f34c368b56b77ec888f56e0cdacdd8df13c9
 		});
 	});
 
@@ -269,29 +266,12 @@
 	// =================================================================
 	$('.demo-bootbox-custom-h-form').on('click', function(){
 		var corporaciones = $(this).attr('value')
-		var cantidad = corporaciones.charAt(3);
-		alert(cantidad)
-		var corporacion =0;
-		var i = 0;
-		bootbox.prompt({
-			title: "This is a form in a modal.",
-			callback: function() {
-
-				for (i = 0; i < corporaciones<4; i++) {
-					corporacion += corporaciones[i]
-					//alert(corporacion)
-				}
-
-				//$.niftyNoty({
-				//	type: 'purple',
-				//	icon : 'fa fa-check',
-				//	message : "" + name + ".<br> <strong>" + corporacion + "</strong>",
-				//	container : 'floating',
-				//	timer : 4000
-				//});
-			}
+		alert(corporaciones)
+		bootbox.dialog({
+			title: "Corporaciones asociadas a la jornada elegida.",
+			message: '<div class="media"><div class="media-body">' + corporaciones  +
+			'</div></div>',
 		});
-		$(".demo-modal-radio").niftyCheck();
 	});
 
 

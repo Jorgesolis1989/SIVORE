@@ -28,7 +28,7 @@ def retornar_vista(request, usuario):
     elif usuario.has_perm("usuarios.Superior"):
         return superior_home(request, usuario)
     else:
-        return login_view()
+        return login_view(request)
 
 # Pagina principal para usuario Administrador
 @permission_required("usuarios.Administrador" , login_url="/")
@@ -61,7 +61,6 @@ def login_view(request):
             if usuario is not None:
                 if usuario.is_active:
                     login(request, usuario)
-
                     #Redireccionar
                     return retornar_vista(request, usuario)
                 else:
