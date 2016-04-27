@@ -409,6 +409,23 @@
 									</li>
 									<!--end Menu list item Corporación-->
 
+                                    <!--Menu list item Jornada Electoral-->
+                                    	<li>
+										<a href="#">
+											<i class="fa fa-briefcase"></i>
+											<span class="menu-title">Jornada Electoral</span>
+											<i class="arrow"></i>
+										</a>
+
+										<!--Submenu-->
+										<ul class="collapse">
+											<li><a href="{% url 'registro_jornada' %}">Crear jornada</a></li>
+											<li><a href="{% url 'listar_jornadas' %}">Listar jornadas</a></li>
+										</ul>
+									</li>
+                                    <!--end menu Jornada Electoral-->
+
+
 									<!--Menu list item votantes-->
 									<li>
 										<a href="/">
@@ -470,20 +487,6 @@
 									<!--Category name-->
 									<!--<li class="list-header">Components</li>-->
 
-									<!--Menu list item-->
-									<li>
-										<a href="#">
-											<i class="fa fa-briefcase"></i>
-											<span class="menu-title">Jornada Electoral</span>
-											<i class="arrow"></i>
-										</a>
-
-										<!--Submenu-->
-										<ul class="collapse">
-											<li><a href="{% url 'registro_jornada' %}">Crear jornada</a></li>
-											<li><a href="{% url 'listar_jornadas' %}">Listar jornadas</a></li>
-										</ul>
-									</li>
 
 									<li class="list-divider"></li>
 
