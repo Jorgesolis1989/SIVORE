@@ -1,0 +1,112 @@
+{% extends "base-votante.html" %}
+{% block title %} Votante -{% endblock title  %}
+{% block content %}
+    <!--===Lista de corporaciones habilitadas para el votante==-->
+        <div class="row">
+
+						<!--Tile with - (Por el Consejo Superior)-->
+						<!--===================================================-->
+						<div class="col-md-6 col-lg-3">
+							<a href="{% url 'mostrar_tarjeton' %}">
+							<div class="panel panel-success panel-colorful">
+								<div class="pad-all media">
+									<div class="media-left">
+										<span class="icon-wrap icon-wrap-xs">
+											<i class="fa fa-users fa-2x"></i>
+										</span>
+									</div>
+									<div class="media-body">
+										<p class="h3 text-thin media-heading">Por el Consejo Superior</p>
+										<small class="text-uppercase">3 planchas postuladas</small>
+									</div>
+								</div>
+
+								<div class="pad-all text-right">
+									<small><span class="text-semibold"></span></small>
+								</div>
+							</div>
+							</a>
+						</div>
+						<!--===================================================-->
+						<!--End Tile with - (Por el Consejo Superior)-->
+
+
+						<!--Tile with- (Por el Consejo Académico)-->
+						<!--===================================================-->
+						<div class="col-md-6 col-lg-3">
+							<a href="#">
+							<div class="panel panel-mint panel-colorful">
+								<div class="pad-all media">
+									<div class="media-left">
+										<span class="icon-wrap icon-wrap-xs">
+											<i class="fa fa-users fa-2x"></i>
+										</span>
+									</div>
+									<div class="media-body">
+										<p class="h3 text-thin media-heading">Por el Consejo Académico</p>
+										<small class="text-uppercase">3 planchas postuladas</small>
+									</div>
+								</div>
+								<div class="pad-all text-right">
+									<small><span class="text-semibold"><!--<i class="fa fa-unlock-alt fa-fw"</i>--></span></small>
+								</div>
+							</div>
+							</a>
+						</div>
+						<!--===================================================-->
+						<!--End Tile with - (Por el Consejo Académico)-->
+
+
+						<!--Tile with - (Por Facultades y Escuelas)-->
+						<!--===================================================-->
+						<div class="col-md-6 col-lg-3">
+							<a href="#">
+							<div class="panel panel-purple panel-colorful">
+								<div class="pad-all media">
+									<div class="media-left">
+										<span class="icon-wrap icon-wrap-xs">
+											<i class="fa fa-users fa-2x"></i>
+										</span>
+									</div>
+									<div class="media-body">
+										<p class="h3 text-thin media-heading">Por Facultades y Escuelas</p>
+										<small class="text-uppercase">4 Planchas</small>
+									</div>
+								</div>
+								<div class="pad-all text-right">
+									<small><span class="text-semibold"><!--<i class="fa fa-shopping-cart fa-fw"></i>--></span></small>
+								</div>
+							</div>
+							</a>
+						</div>
+						<!--===================================================-->
+						<!--End Tile with - (Por Facultades y Escuelas)-->
+
+
+						<!--Tile with  - (Por Programas Academicos)-->
+						<!--===================================================-->
+						<div class="col-md-6 col-lg-3">
+							<a href="#">
+							<div class="panel panel-pink panel-colorful">
+								<div class="pad-all media">
+									<div class="media-left">
+										<span class="icon-wrap icon-wrap-xs">
+											<i class="fa fa-users fa-2x"></i>
+										</span>
+									</div>
+									<div class="media-body">
+										<p class="h3 text-thin media-heading">Por Programas Académicos</p>
+										<small class="text-uppercase">3 Planchas</small>
+									</div>
+								</div>
+								<div class="pad-all text-right">
+									<small><span class="text-semibold"><!--<i class="fa fa-dollar fa-fw"></i>--></span></small>
+								</div>
+							</div>
+							</a>
+						</div>
+						<!--===================================================-->
+						<!--End Tile with- (Por Programas Academicos)-->
+
+					</div>
+ {% endblock content %}

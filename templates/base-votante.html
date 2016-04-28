@@ -18,11 +18,13 @@
     <!--Bootstrap Stylesheet [ REQUIRED ]-->
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
 
+    <!--Bootstrap Select [ OPTIONAL ]-->
+    <link href="{% static 'plugins/bootstrap-select/bootstrap-select.min.css' %}" rel="stylesheet">
 
     <!--Nifty Stylesheet [ REQUIRED ]-->
     <link href="{% static 'css/nifty.min.css' %}" rel="stylesheet">
 
-    
+
     <!--Font Awesome [ OPTIONAL ]-->
     <link href="{% static 'plugins/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
 
@@ -55,7 +57,7 @@
     <script src="{% static 'plugins/pace/pace.min.js' %}"></script>
 
 
-    
+
 	<!--
 
 	REQUIRED
@@ -77,7 +79,7 @@
 	Detailed information and more samples can be found in the document.
 
 	-->
-		
+
 
 </head>
 
@@ -86,7 +88,7 @@
 
 <body>
 	<div id="container" class="effect mainnav-lg">
-		
+
 		<!--NAVBAR-->
 		<!--===================================================-->
 		<header id="navbar">
@@ -322,143 +324,33 @@
 
 
 				<!--Breadcrumb-->
-				<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+				<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 				<ol class="breadcrumb">
 					<li><a href="#">Inicio</a></li>
 					<!--<li><a href="#">Library</a></li>
-					<li class="active">Data</li>-->
-				</ol>
+					<li class="active">Data</li>
+				</ol>-->
 				<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 				<!--End breadcrumb-->
 
-				<!--Page content-->
-				<div class="panel-heading">
-					<h1 class="panel-title">Bienvenido Votante</h1>
-				</div>
 
+				<!--Page content-->
+				<!--===================================================-->
 				<div id="page-content">
+
                     {% block content %}{% endblock content %}
 
-					<!--===Lista de corporaciones habilitadas para el votante==-->
-					<br>
-					<div class="row">
-
-						<!--Tile with - (Por el Consejo Superior)-->
-						<!--===================================================-->
-						<div class="col-md-6 col-lg-3">
-							<a href="#">
-							<div class="panel panel-success panel-colorful">
-								<div class="pad-all media">
-									<div class="media-left">
-										<span class="icon-wrap icon-wrap-xs">
-											<i class="fa fa-users fa-2x"></i>
-										</span>
-									</div>
-									<div class="media-body">
-										<p class="h3 text-thin media-heading">Por el Consejo Superior</p>
-										<small class="text-uppercase">3 planchas postuladas</small>
-									</div>
-								</div>
-
-								<div class="pad-all text-right">
-									<small><span class="text-semibold"></span></small>
-								</div>
-							</div>
-							</a>
-						</div>
-						<!--===================================================-->
-						<!--End Tile with - (Por el Consejo Superior)-->
-
-
-						<!--Tile with- (Por el Consejo Académico)-->
-						<!--===================================================-->
-						<div class="col-md-6 col-lg-3">
-							<a href="#">
-							<div class="panel panel-mint panel-colorful">
-								<div class="pad-all media">
-									<div class="media-left">
-										<span class="icon-wrap icon-wrap-xs">
-											<i class="fa fa-users fa-2x"></i>
-										</span>
-									</div>
-									<div class="media-body">
-										<p class="h3 text-thin media-heading">Por el Consejo Académico</p>
-										<small class="text-uppercase">3 planchas postuladas</small>
-									</div>
-								</div>
-								<div class="pad-all text-right">
-									<small><span class="text-semibold"><!--<i class="fa fa-unlock-alt fa-fw"</i>--></span></small>
-								</div>
-							</div>
-							</a>
-						</div>
-						<!--===================================================-->
-						<!--End Tile with - (Por el Consejo Académico)-->
-
-
-						<!--Tile with - (Por Facultades y Escuelas)-->
-						<!--===================================================-->
-						<div class="col-md-6 col-lg-3">
-							<a href="#">
-							<div class="panel panel-purple panel-colorful">
-								<div class="pad-all media">
-									<div class="media-left">
-										<span class="icon-wrap icon-wrap-xs">
-											<i class="fa fa-users fa-2x"></i>
-										</span>
-									</div>
-									<div class="media-body">
-										<p class="h3 text-thin media-heading">Por Facultades y Escuelas</p>
-										<small class="text-uppercase">4 Planchas</small>
-									</div>
-								</div>
-								<div class="pad-all text-right">
-									<small><span class="text-semibold"><!--<i class="fa fa-shopping-cart fa-fw"></i>--></span></small>
-								</div>
-							</div>
-							</a>
-						</div>
-						<!--===================================================-->
-						<!--End Tile with - (Por Facultades y Escuelas)-->
-
-
-						<!--Tile with  - (Por Programas Academicos)-->
-						<!--===================================================-->
-						<div class="col-md-6 col-lg-3">
-							<a href="#">
-							<div class="panel panel-pink panel-colorful">
-								<div class="pad-all media">
-									<div class="media-left">
-										<span class="icon-wrap icon-wrap-xs">
-											<i class="fa fa-users fa-2x"></i>
-										</span>
-									</div>
-									<div class="media-body">
-										<p class="h3 text-thin media-heading">Por Programas Académicos</p>
-										<small class="text-uppercase">3 Planchas</small>
-									</div>
-								</div>
-								<div class="pad-all text-right">
-									<small><span class="text-semibold"><!--<i class="fa fa-dollar fa-fw"></i>--></span></small>
-								</div>
-							</div>
-							</a>
-						</div>
-						<!--===================================================-->
-						<!--End Tile with- (Por Programas Academicos)-->
-
-					</div>
-					<br>
-
-				</div>
 				<!--===================================================-->
 				<!--End page content-->
-
 
 			</div>
 			<!--===================================================-->
 			<!--END CONTENT CONTAINER-->
 
+
+			</div>
+			<!--===================================================-->
+			<!--END CONTENT CONTAINER-->
 
 
 			<!--MAIN NAVIGATION-->
@@ -481,12 +373,20 @@
 								<ul id="mainnav-menu" class="list-group">
 
 									<li class="list-divider"></li>
-						
+
 									<!--Category name-->
 									<li class="list-header">JORNADA ELECTORAL - ELECCIONES 2016</li>
+                                    <!--Menu list item menu principal-->
+									<li>
+										<a href="{% url 'mostrar_corporaciones' %}">
+											<i class="fa fa-file"></i>
+											<span class="menu-title">Corporaciones para votar</span>
+										</a>
+									</li>
+									<!--end Menu list item menu principal-->
 									<!--Menu list item menu principal-->
 									<li>
-										<a href="#">
+										<a href="{% url 'mostrar_corporaciones' %}">
 											<i class="fa fa-file"></i>
 											<span class="menu-title">Programas y propuestas</span>
 										</a>
@@ -505,8 +405,8 @@
 
 												<!--Submenu-->
 												<ul class="collapse">
-													<li><a href="#">Plancha # 1</a></li>
-													<li><a href="#">Plancha # 2</a></li>
+													<li><a href="{% url 'mostrar_tarjeton' %}">Plancha # 1</a></li>
+													<li><a href="{% url 'mostrar_corporaciones' %}">Plancha # 2</a></li>
 													<li><a href="#">Plancha # 3</a></li>
 												</ul>
 											</li>
@@ -601,14 +501,14 @@
             </nav>
 			<!--===================================================-->
 			<!--END MAIN NAVIGATION-->
-			
+
 			<!--ASIDE-->
 			<!--===================================================-->
 			<aside id="aside-container">
 				<div id="aside">
 					<div class="nano">
 						<div class="nano-content">
-							
+
 							<!--Nav tabs-->
 							<!--================================-->
 							<ul class="nav nav-tabs nav-justified">
@@ -889,8 +789,6 @@
 
 		</div>
 
-		
-
         <!-- FOOTER -->
         <!--===================================================-->
         <footer id="footer">
@@ -922,7 +820,7 @@
 
             <!-- Visible when footer positions are static -->
             <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-            <div class="hide-fixed pull-right pad-rgt">Actualmente v1.0</div>
+            <!--<div class="hide-fixed pull-right pad-rgt">Actualmente v1.0</div>
 
 
 
@@ -930,10 +828,10 @@
             <!-- Remove the class name "show-fixed" and "hide-fixed" to make the content always appears. -->
             <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-            <p class="pad-lft">&#0169; 2016 Sistema de Votación por Internet para la Elección de Representantes Estudiantiles de la Universidad del Valle - SIVORE</p>
+            <!--<p class="pad-lft">&#0169; 2016 Sistema de Votación por Internet para la Elección de Representantes Estudiantiles de la Universidad del Valle - SIVORE</p>
 
 
-
+        -->
         </footer>
         <!--===================================================-->
         <!-- END FOOTER -->
@@ -951,8 +849,8 @@
 	<!-- END OF CONTAINER -->
 
 
-	
-	
+
+
 	<!-- SETTINGS - DEMO PURPOSE ONLY -->
 	<!--===================================================-->
 	<div id="demo-set" class="demo-set">
@@ -962,7 +860,7 @@
 	<!--===================================================-->
 	<!-- END SETTINGS -->
 
-	
+
     <!--JAVASCRIPT-->
     <!--=================================================-->
 
@@ -977,14 +875,9 @@
     <!--Fast Click [ OPTIONAL ]-->
     <script src="{% static 'plugins/fast-click/fastclick.min.js' %}"></script>
 
-    
+
     <!--Nifty Admin [ RECOMMENDED ]-->
     <script src="{% static 'js/nifty.min.js' %}"></script>
-
-
-    <!--Morris.js [ OPTIONAL ]-->
-    <script src="{% static 'plugins/morris-js/morris.min.js' %}"></script>
-	<script src="{% static 'plugins/morris-js/raphael-js/raphael.min.js' %}"></script>
 
 
     <!--Sparkline [ OPTIONAL ]-->
@@ -1010,7 +903,20 @@
     <!--Specify page [ SAMPLE ]-->
     <script src="{% static 'js/demo/dashboard.js' %}"></script>
 
-    
+    <!--Widget [ SAMPLE ]-->
+    <script src="{% static 'js/demo/widgets.js' %}"></script>
+
+
+
+    <!--Gauge js [ OPTIONAL ]-->
+    <script src="{% static 'plugins/gauge-js/gauge.min.js' %}"></script>
+
+
+    <!--Skycons [ OPTIONAL ]-->
+    <script src="{% static 'plugins/skycons/skycons.min.js' %}"></script>
+
+
+
 	<!--
 
 	REQUIRED
@@ -1032,7 +938,7 @@
 	Detailed information and more samples can be found in the document.
 
 	-->
-		
+
 
 </body>
 </html>
