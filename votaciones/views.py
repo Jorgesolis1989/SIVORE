@@ -18,7 +18,7 @@ def mostrar_corporaciones(request):
                                                               jornada__is_active=True,
                                                               jornada__fecha_final_jornada__gte = datetime.now())
 
-    print(corporaciones_activas_jornada)
+    #print(corporaciones_activas_jornada)
     # Corporaciones que estan permitidas por el usuario
     corporaciones = []
     for votante in votantes_asociados:
@@ -30,5 +30,5 @@ def mostrar_corporaciones(request):
             Q(corporacion__id_corporation=1) |
             Q(corporacion__id_corporation=2) |
             Q(corporacion__id_corporation__in=corporaciones)).order_by("corporacion__id_corporation")
-    print(corporaciones_activas_jornada)
+    #print(corporaciones_activas_jornada)
     return render(request, 'mostrar_corporaciones.html' , {'corporaciones_activas':corporaciones_activas_jornada})
