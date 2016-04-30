@@ -8,10 +8,13 @@ class Plancha(models.Model):
     candidato_principal = models.ForeignKey(Candidato, null=True, related_name='principal')
     candidato_suplente = models.ForeignKey(Candidato, null=True, blank=True, unique=False, default=None)
     is_active = models.BooleanField(default=True)
+    url_propuesta = models.URLField(null=True, blank=True)
+    num_votos = models.IntegerField(null=True)
 
     class Meta:
         ordering = ["numeroplancha"]
         db_table = 'planchas'
 
     def __str__(self):
-        return '%s - %s  %s - %s' % (self.numeroplancha, self.jornada_corporacion.corporacion, self.candidato_principal, self.candidato_suplente)
+        return '%s - %s  %s - %s - %s' % (self.numeroplancha, self.jornada_corporacion.corporacion, self.candidato_principal,
+                                     self.candidato_suplente, self.url_propuesta)

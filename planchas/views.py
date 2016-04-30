@@ -17,13 +17,14 @@ def plancha_create(plancha, form):
     candidatoprin = form.cleaned_data["candidato_principal"]
     candidatosupl = form.cleaned_data["candidato_suplente"]
     jornada_corporacion = form.cleaned_data["jornada_corporacion"]
+    url_plan_trabajo = form.cleaned_data["url_propuesta"]
 
     plancha.numeroplancha= numplancha
     plancha.jornada_corporacion= jornada_corporacion
     plancha.candidato_principal= candidatoprin
     plancha.candidato_suplente= candidatosupl
     plancha.is_active = True
-
+    plancha.url_propuesta = url_plan_trabajo
 
     try:
         plancha.save()
@@ -163,7 +164,6 @@ def editar_plancha(request, idcorporacion=None,numplancha=None):
         #Si el formulario es valido y tiene datos
         if form.is_valid():
 
-
             numeroplancha = form.cleaned_data["numeroplancha"]
 
             #Consulto en la BD si existe la plancha
@@ -171,8 +171,6 @@ def editar_plancha(request, idcorporacion=None,numplancha=None):
                 planchaBuscar = []
             else:
                 planchaBuscar = Plancha.objects.filter(jornada_corporacion__id=idcorporacion, numeroplancha=numeroplancha)
-
-            print(planchaBuscar)
 
             #Si la plancha no existe y los candidatos no estan asignados, crea la plancha
             if not planchaBuscar:
@@ -243,7 +241,8 @@ def editar_plancha(request, idcorporacion=None,numplancha=None):
 
         try:
             form.initial = {'numeroplancha': plancha.numeroplancha, 'corporacion': plancha.jornada_corporacion,
-                            'candidato_principal':plancha.candidato_principal, 'candidato_suplente':plancha.candidato_suplente, }
+                            'candidato_principal':plancha.candidato_principal, 'candidato_suplente':plancha.candidato_suplente,
+                            'url_propuesta': plancha.url_propuesta}
 
         except Plancha.DoesNotExist:
             print("no existe plancha")
@@ -261,7 +260,7 @@ def eliminar_plancha(request, idjornada=None, numplancha=None):
         except Exception as e:
             print(e)
     llamarMensaje = "elimino_corporacion"
-    mensaje = "Se eliminó la plancha #" +  str(plancha.numeroplancha) +" de la corporacion "+ str(plancha.jornada_corporacion.corporacion.name_corporation)+" sactisfactoriamente"
+    mensaje = "Se eliminó la plancha #" + str(plancha.numeroplancha) +" de la corporacion "+ str(plancha.jornada_corporacion.corporacion.name_corporation)+" sactisfactoriamente"
     request.session['llamarMensaje'] = llamarMensaje
     request.session['mensaje'] = mensaje
 

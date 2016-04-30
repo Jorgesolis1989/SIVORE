@@ -89,10 +89,10 @@ def registro_candidato(request):
     #Ninguno de los dos formularios crear  ni cargar Meth od GET
     else:
         form = FormularioRegistroCandidato()
-        print(form.corporaciones_habilitadas)
+        print(form.corporaciones_que_se_eligiran)
         llamarMensaje = request.session.pop('llamarMensaje', None)
         mensaje = request.session.pop('mensaje', None)
-        if not form.corporaciones_habilitadas:
+        if not form.corporaciones_que_se_eligiran:
             mensaje = "NO hay corporaciones habilitadas para votar Debe de CREAR JORNADA"
             llamarMensaje = "fracaso_usuario"
             enabledSiguiente = False
@@ -102,11 +102,11 @@ def registro_candidato(request):
             llamarMensaje = "fracaso_usuario"
             enabledSiguiente = False
 
-
         else:
             votante_inicial = form.votantes_que_pueden_ser_candidatos[0]
             form.fields["votante"].initial = votante_inicial
             enabledSiguiente= True
+            print(form.votantes_que_pueden_ser_candidatos)
         return render(request, 'registro_candidato.html', {'form': form , 'mensaje': mensaje , 'llamarMensaje':llamarMensaje , 'enabledSiguiente':enabledSiguiente})
 
     return render(request, 'registro_candidato.html', {'form': form })

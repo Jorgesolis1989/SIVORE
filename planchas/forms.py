@@ -25,6 +25,8 @@ class FormularioRegistroPlancha(forms.Form):
     candidato_suplente = forms.ModelChoiceField(widget=forms.Select(attrs={'class':'selectpicker', 'data-live-search':'true',
                                                                             'data-width':'100%'}), queryset=consulta_candidato_suplente, required=False)
 
+    url_propuesta = forms.URLField(widget=forms.URLInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese aquí el enlace web de la propuesta de trabajo'}))
+
     def plancha_nulo(self):
         diccionario_limpio = self.cleaned_data
         candidato = diccionario_limpio.get('candidato')
@@ -60,3 +62,5 @@ class FormularioEditarPlancha(forms.Form):
 
     candidato_suplente = forms.ModelChoiceField(widget=forms.Select(attrs={'class':'selectpicker', 'data-live-search':'true',
                                                                             'data-width':'100%'}), queryset=consulta_candidato_suplente, required=False)
+
+    url_propuesta = forms.URLField(widget=forms.URLInput(attrs={'class': 'form-control'}))
