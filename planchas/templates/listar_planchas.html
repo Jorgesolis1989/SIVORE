@@ -58,16 +58,22 @@
                         {% else %}
                         <td>{{ plancha.numeroplancha}}</td>
                         {% endif %}
-                        {% if plancha.url_propuesta %}
-                        <td><a href="{{plancha.url_propuesta}}" target="_blank">Ver propuesta</a></td>
-                         {% else %}
+
+                        {% if not plancha.candidato_principal %}
+                            <td></td>
+                        {% elif plancha.url_propuesta %}
+                            <td><a href="{{plancha.url_propuesta}}" target="_blank">Ver propuesta</a></td>
+                        {% else %}
                             <td>No tiene</td>
                         {% endif %}
+
                         <td>
                             <!--acciones - boton editar y eliminar-->
                             {% if plancha.candidato_principal.votante.codigo != 0 %}
-                            <a class="btn btn-xs btn-default add-tooltip" data-toggle="tooltip" href="/planchas/editar/{{ plancha.jornada_corporacion.id }}/{{ plancha.numeroplancha }}" data-original-title="Edit" data-container="body"><i class="fa fa-pencil"></i></a>
-                            <a value="{{ plancha.jornada_corporacion.corporacion.name_corporation }}"id="{{ plancha.jornada_corporacion.id }}" name="{{ plancha.numeroplancha }}" class="demo-bootbox-confirm-plancha"  data-toggle="tooltip" href="#" data-original-title="Delete" data-container="body"><i class="btn btn-xs btn-danger add-tooltip btn-info fa fa-times"></i></a>
+                                {% if plancha.candidato_principal.DoesNotExist %}
+                                    <a class="btn btn-xs btn-default add-tooltip" data-toggle="tooltip" href="/planchas/editar/{{ plancha.jornada_corporacion.id }}/{{ plancha.numeroplancha }}" data-original-title="Edit" data-container="body"><i class="fa fa-pencil"></i></a>
+                                    <a value="{{ plancha.jornada_corporacion.corporacion.name_corporation }}"id="{{ plancha.jornada_corporacion.id }}" name="{{ plancha.numeroplancha }}" class="demo-bootbox-confirm-plancha"  data-toggle="tooltip" href="#" data-original-title="Delete" data-container="body"><i class="btn btn-xs btn-danger add-tooltip btn-info fa fa-times"></i></a>
+                                 {% endif %}
                             {% endif %}
                         </td>
                     </tr>
