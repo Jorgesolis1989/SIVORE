@@ -37,7 +37,6 @@ def registro_plancha(request):
     if request.method == 'POST' and "btnload" in request.POST:
         form = FormularioRegistroPlancha(request.POST)
 
-        print(form)
         #Si el formulario es valido y tiene datos
         if form.is_valid():
 
@@ -111,6 +110,7 @@ def registro_plancha(request):
         if not jornada_corporaciones:
             mensaje = "Debe de haber corporaciones habilitapara crear las planchas, dirijase a corporaciones"
             llamarMensaje = "fracaso_usuario"
+            print("btncreadt")
             return render(request, 'registro_plancha.html', {'form': form, 'llamarMensaje':llamarMensaje , 'mensaje': mensaje , "enabledCrear" : False})
 
         else:
@@ -132,7 +132,7 @@ def registro_plancha(request):
             form.fields["candidato_suplente"].queryset = candidatossupl_sin_plancha
             form.fields["jornada_corporacion"].queryset = jornada_corporaciones
 
-    return render(request, 'registro_plancha.html', {'form': form})
+    return render(request, 'registro_plancha.html', {'form': form, 'enabledCrear': True})
 
 # Vista para listar votantes
 @permission_required("usuarios.Administrador", login_url="/")
@@ -140,7 +140,6 @@ def listar_planchas(request):
     planchas = Plancha.objects.filter(is_active=True)
     llamarMensaje = request.session.pop('llamarMensaje', None)
     mensaje = request.session.pop('mensaje', None)
-    print(planchas)
     return render(request,  'listar_planchas.html', {'planchas': planchas, 'llamarMensaje': llamarMensaje,'mensaje': mensaje})
 
 
@@ -179,6 +178,7 @@ def editar_plancha(request, idcorporacion=None,numplancha=None):
                 plancha.numeroplancha = numeroplancha
                 plancha.candidato_principal = form.cleaned_data["candidato_principal"]
                 plancha.candidato_suplente = form.cleaned_data["candidato_suplente"]
+                plancha.url_propuesta = form.cleaned_data["url_propuesta"]
                 try:
                     plancha.save()
                 except Exception as e:
@@ -213,7 +213,6 @@ def editar_plancha(request, idcorporacion=None,numplancha=None):
         # Todos los candidatos a excluir que ya estan en una plancha de la corporacion, menos el candidato principal actual
         candidatos_a_excluir_principales = (Plancha.objects.filter(is_active=True , jornada_corporacion=plancha.jornada_corporacion)\
                                 .exclude(Q(candidato_principal=None) | Q(candidato_principal__votante__codigo=plancha.candidato_principal.votante.codigo))).values_list('candidato_principal__votante__codigo')
-
 
 
         # Si la plancha tiene candidato suplente

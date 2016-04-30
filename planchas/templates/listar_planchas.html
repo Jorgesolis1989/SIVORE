@@ -23,6 +23,7 @@
                     <th>Candidato principal</th>
                     <th class="min-tablet">Candidato Suplente</th>
                     <th>Número de plancha</th>
+                    <th>Propuesta</th>
                     <th class="min-tablet">Acciones</th>
                 </tr>
             </thead>
@@ -56,6 +57,11 @@
                             <td> </td>
                         {% else %}
                         <td>{{ plancha.numeroplancha}}</td>
+                        {% endif %}
+                        {% if plancha.url_propuesta %}
+                        <td><a href="{{plancha.url_propuesta}}" target="_blank">Ver propuesta</a></td>
+                         {% else %}
+                            <td>No tiene</td>
                         {% endif %}
                         <td>
                             <!--acciones - boton editar y eliminar-->

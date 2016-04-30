@@ -85,11 +85,11 @@ def registro_candidato(request):
                                                                     Q(corporacion__id_corporation=votante.plan.facultad.id_corporation))
 
             form.fields["corporacion"].queryset = corporacion_candidato
+            return render(request, 'registro_candidato.html', {'form': form, 'enabledSiguiente': True })
 
     #Ninguno de los dos formularios crear  ni cargar Meth od GET
     else:
         form = FormularioRegistroCandidato()
-        print(form.corporaciones_que_se_eligiran)
         llamarMensaje = request.session.pop('llamarMensaje', None)
         mensaje = request.session.pop('mensaje', None)
         if not form.corporaciones_que_se_eligiran:
@@ -106,7 +106,6 @@ def registro_candidato(request):
             votante_inicial = form.votantes_que_pueden_ser_candidatos[0]
             form.fields["votante"].initial = votante_inicial
             enabledSiguiente= True
-            print(form.votantes_que_pueden_ser_candidatos)
         return render(request, 'registro_candidato.html', {'form': form , 'mensaje': mensaje , 'llamarMensaje':llamarMensaje , 'enabledSiguiente':enabledSiguiente})
 
     return render(request, 'registro_candidato.html', {'form': form })
@@ -144,8 +143,6 @@ def editar_candidato(request, codigo=None):
             # Foto del candidato
             if request.FILES:
                 candidato.foto = request.FILES['foto']
-
-            print("entro hasta guara")
             #Actualiza  el usuario en la BD si hay excepcion
             try:
                 candidato.save()
@@ -200,7 +197,6 @@ def eliminar_candidato(request, username=None):
             plancha = Plancha.objects.filter(Q(candidato_principal=candidato) | Q(candidato_suplente=candidato))
 
             if plancha:
-                print("encontre plancha")
                 plancha[0].is_active = False
                 plancha[0].save()
 
