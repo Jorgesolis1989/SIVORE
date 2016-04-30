@@ -2,18 +2,21 @@
 {% block title %} Votante -{% endblock title  %}
 {% block content %}
     <!--===Lista de corporaciones habilitadas para el votante==-->
-
+        <form method="post">
+        {% csrf_token %}
         <script>
             counter = 0
         </script>
         {% for corporacion_activa in corporaciones_activas %}
         <script>
-            if (counter % 4 == 0){document.write("<div class='row'>")}
+            if (counter % 2 == 0){document.write("<div class='row panel-body demo-nifty-btn'>")}
             counter++
         </script>
             <!--Tile with - (Por el Consejo Superior)-->
             <!--===================================================-->
-                <button class="btn btn-mint btn-rounded col-md-7 col-lg-3">
+                <div>
+
+                <button type="submit" name="btnCorporacion" class="btn btn-mint btn-rounded col-md-6 col-lg-6" value="{{ corporacion_activa.id }}">
                     <a href="{% url 'mostrar_tarjeton' %}">
                         <div class="pad-all media">
                             <div class="media-left">
@@ -28,11 +31,13 @@
                         </div>
                     </a>
                 </button>
+                </div>
             <!--===================================================-->
             <!--End Tile with - (Por el Consejo Superior)-->
         <script>
-            if (counter % 4 == 0){document.write("</div>")}
+            if (counter % 2 == 0){document.write("</div>")}
         </script>
         {% endfor %}
+        </form>
 
  {% endblock content %}
