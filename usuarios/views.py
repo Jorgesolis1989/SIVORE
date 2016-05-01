@@ -14,6 +14,7 @@ from candidatos.models import Candidato
 from corporaciones.models import Corporacion
 from planchas.models import Plancha
 from jornadas.models import Jornada , Jornada_Corporacion
+from django.core.urlresolvers import reverse_lazy
 
 from datetime import datetime
 
@@ -73,9 +74,6 @@ def votante_home(request, usuario):
         if ( utc_to_local(timezone.now()) >= utc_to_local(jornada_acceso.jornada.fecha_inicio_jornada)
              and utc_to_local(timezone.now()) <= utc_to_local(jornada_acceso.jornada.fecha_final_jornada)):
             return  mostrar_corporaciones(request,usuario,votantes_asociados,jornada_acceso.jornada)
-            #"return  render (request, "votante.html" , {"usuario":usuario,
-            #                                          "votantes_asociados":votantes_asociados,
-            #                                           "jornada":jornada_acceso.jornada})
 
 
     form = FormularioLogin()
