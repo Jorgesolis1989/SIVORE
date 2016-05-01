@@ -60,11 +60,22 @@ def votante_home(request, usuario):
 
 
     # La fecha de inicio es mayor a la fecha actual y la fecha final es menor a la fecha final de la jornada
+
+
+
+
+
     for jornada_acceso in jornadas_acceso:
-        if (utc_to_local(timezone.now()) >= utc_to_local(jornada_acceso.jornada.fecha_inicio_jornada)
-             and utc_to_local(timezone.now() <= utc_to_local(jornada_acceso.jornada.fecha_final_jornada))):
-            #print(jornada_acceso)
-            mostrar_corporaciones(request, usuario, votantes_asociados, jornada_acceso.jornada)
+        print(utc_to_local(timezone.now()))
+        print(utc_to_local(jornada_acceso.jornada.fecha_inicio_jornada))
+        print(utc_to_local(jornada_acceso.jornada.fecha_final_jornada))
+
+        if ( utc_to_local(timezone.now()) >= utc_to_local(jornada_acceso.jornada.fecha_inicio_jornada)
+             and utc_to_local(timezone.now()) <= utc_to_local(jornada_acceso.jornada.fecha_final_jornada)):
+            return  mostrar_corporaciones(request,usuario,votantes_asociados,jornada_acceso.jornada)
+            #"return  render (request, "votante.html" , {"usuario":usuario,
+            #                                          "votantes_asociados":votantes_asociados,
+            #                                           "jornada":jornada_acceso.jornada})
 
 
     form = FormularioLogin()
