@@ -2,72 +2,126 @@
 {% block title %} Votante -{% endblock title  %}
 {% block content %}
     <div class="row">
-    <div class="col-lg-8">
+    <div class="col-lg-12">
     <!--planchas-->
     <!--===================================================-->
     <div class="panel panel-colorful panel-primary">
-        <h3 class="panel-title">Consejo Superior</h3>
+        <h3 class="panel-title">{{jornada_corporacion.corporacion.name_corporation }}</h3>
     </div>
     <hr>
-    <div class="panel text-center">
-    <br>
-        <div class="col-lg-1">
-            <label class="label-important ">Plancha N° 1</label>
-        </div>
-        <div class="col-lg-4">
-            <img alt="Avatar" class="img-lg img-circle img-border mar-btm" src="img/av5.png">
-            <h4 class="mar-no">Brenda Lopez</h4>
-            <p>Principal</p>
-        </div>
-        <div class="col-lg-4">
-            <img alt="Avatar" class="img-lg img-circle img-border mar-btm" src="img/av5.png">
-            <h4 class="mar-no">Carlos Ruiz</h4>
-            <p>Suplente</p>
-        </div>
-        <div class="pad-all">
-            <p class="text-muted"></p>
-            <a href="#" class="btn-link">Ver propuesta</a>
-            <div class="pad-ver">
-                <button class="btn btn-success">Votar</button>
-                <br>
-                <br>
-                <br>
-                <br>
+    {% for plancha in planchas %}
+        {% if plancha.candidato_principal.DoesNotExist %}
+            <div class="panel text-center">
+        <br>
+            <div class="col-lg-1">
+                <label class="label-important ">{{ plancha.numeroplancha }}</label>
             </div>
-        </div>
-        <br>
-    </div>
-    <!--===================================================-->
-    <div class="panel text-center">
-         <hr>
-        <br>
-        <div class="col-lg-1">
-            <label class="label-important ">Plancha N° 2</label>
-        </div>
-        <div class="col-lg-4">
-            <img alt="Avatar" class="img-lg img-circle img-border mar-btm" src="img/av5.png">
-            <h4 class="mar-no">Brenda Lopez</h4>
-            <p>Principal</p>
-        </div>
 
-        <div class="col-lg-4">
-            <img alt="Avatar" class="img-lg img-circle img-border mar-btm" src="img/av5.png">
-            <h4 class="mar-no">Carlos Ruiz</h4>
-            <p>Suplente</p>
-        </div>
-        <div class="pad-all">
-            <p class="text-muted"></p>
-            <a href="#" class="btn-link">Ver propuesta</a>
-            <div class="pad-ver">
-                <button class="btn btn-success">Votar</button>
-                <br>
-                <br>
-                <br>
-                <br>
+            <div class="col-lg-4">
+                {% if plancha.candidato_principal.foto %}
+                    <img alt="Avatar" class="img-lg img-circle img-border mar-btm" src="{{ MEDIA_URL }}{{ plancha.candidato_principal.foto.url}}">
+                {% else %}
+                    <img alt="Avatar" class="img-lg img-circle img-border mar-btm" src="">
+                {% endif %}
+                <h4 class="mar-no">{{ plancha.candidato_principal.votante.usuario.first_name }}
+                {{ plancha.candidato_principal.votante.usuario.last_name}}
+                </h4>
+                <p>{{ plancha.candidato_principal.tipo_candidato }}</p>
             </div>
+            <div class="col-lg-4">
+                {% if plancha.candidato_suplente.foto %}
+                    <img alt="Avatar" class="img-lg img-circle img-border mar-btm" src="{{ MEDIA_URL }}{{ plancha.candidato_suplente.foto.url}}">
+                {% else %}
+                    <img alt="Avatar" class="img-lg img-circle img-border mar-btm" src="">
+                {% endif %}
+                    <h4 class="mar-no">{{ plancha.candidato_suplente.votante.usuario.first_name }}
+                {{ plancha.candidato_suplente.votante.usuario.last_name}}
+                </h4>
+                <p>{{ plancha.candidato_suplente.tipo_candidato }}</p>
+            </div>
+            <div class="pad-all">
+                <p class="text-muted"></p>
+                <a href="#" class="btn-link">Ver propuesta</a>
+                <div class="pad-ver">
+                    <button class="btn btn-success">Votar</button>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                </div>
+            </div>
+            <br>
         </div>
-    </div>
-    <!--===================================================-->
+            {% if plancha.candidato_suplente.DoesNotExist %}
+               <div class="panel text-center">
+        <br>
+            <div class="col-lg-1">
+                <label class="label-important ">{{ plancha.numeroplancha }}</label>
+            </div>
+            <div class="col-lg-4">
+                 {% if plancha.candidato_suplente.foto %}
+                    <img alt="Avatar" class="img-lg img-circle img-border mar-btm" src="{{ MEDIA_URL }}{{ plancha.candidato_principal.foto.url }}">
+                {% else %}
+                     <img alt="Avatar" class="img-lg img-circle img-border mar-btm" src="">
+                {% endif %}
+                <h4 class="mar-no">{{ plancha.candidato_principal.votante.usuario.first_name }}
+                {{ plancha.candidato_principal.votante.usuario.last_name}}
+                </h4>
+                <p>{{ plancha.candidato_principal.tipo_candidato }}</p>
+            </div>
+            <div class="col-lg-4">
+                <img alt="Avatar" class="img-lg img-circle img-border mar-btm" src="{{ MEDIA_URL }}{{ plancha.candidato_suplente.foto.url }}">
+                <h4 class="mar-no">
+                </h4>
+                <p></p>
+            </div>
+            <div class="pad-all">
+                <p class="text-muted"></p>
+                <a href="#" class="btn-link">Ver propuesta</a>
+                <div class="pad-ver">
+                    <button class="btn btn-success">Votar</button>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                </div>
+            </div>
+            <br>
+        </div>
+            {% endif%}
+        {% endif %}
+
+        <!--===================================================-->
+    {%endfor%}
+     <div class="panel text-center">
+        <br>
+            <div class="col-lg-1">
+                <label class="label-important "></label>
+            </div>
+            <div class="col-lg-4">
+                <img alt="Avatar" class="img-lg img-circle img-border mar-btm" src="">
+                <h4 class="mar-no">VOTO EN BLANCO</h4>
+                <p></p>
+            </div>
+            <div class="col-lg-4">
+                <!--<img alt="Avatar" class="img-lg img-circle img-border mar-btm" src="img/av5.png">-->
+                <h4 class="mar-no">
+                </h4>
+                <p></p>
+            </div>
+            <div class="pad-all">
+                <p class="text-muted"></p>
+                <!--<a href="#" class="btn-link"></a>-->
+                <div class="pad-ver">
+                    <button class="btn btn-success">Votar</button>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                </div>
+            </div>
+            <br>
+        </div>
 
     </div>
 </div>

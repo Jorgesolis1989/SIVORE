@@ -2,6 +2,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth.views import logout
 from usuarios import views
+import os
 
 
 urlpatterns = [
@@ -18,4 +19,5 @@ urlpatterns = [
 	url(r'^planchas/', include('planchas.urls')),
 	url(r'^jornadas/', include('jornadas.urls')),
 	url(r'^votaciones/', include('votaciones.urls')),
+	url(r'^SIVORE/media/(.*)$', 'django.views.static.serve', {'document_root' : os.path.join(os.path.dirname(__file__), 'media')}),
 ]

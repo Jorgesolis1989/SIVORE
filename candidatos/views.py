@@ -92,6 +92,7 @@ def registro_candidato(request):
         form = FormularioRegistroCandidato()
         llamarMensaje = request.session.pop('llamarMensaje', None)
         mensaje = request.session.pop('mensaje', None)
+        print(form.votantes_que_pueden_ser_candidatos)
         if not form.corporaciones_que_se_eligiran:
             mensaje = "NO hay corporaciones habilitadas para votar Debe de CREAR JORNADA"
             llamarMensaje = "fracaso_usuario"

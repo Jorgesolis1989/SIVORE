@@ -92,14 +92,18 @@ def registro_plancha(request):
         # Cambio de corporacion y cargar candidatos de esa corporacion
         else:
             jornada_corporacion =  request.POST['jornada_corporacion']
-            candidatosprin_sin_plancha = (Candidato.objects.filter(Q(jornada_corporacion=jornada_corporacion) & Q(tipo_candidato="Principal") & Q(is_active=True))).exclude(votante__codigo__in = Plancha.objects.filter(is_active=True).values_list('candidato_principal__votante__codigo', flat=True))
+            print(jornada_corporacion)
+            candidatosprin_sin_plancha = (Candidato.objects.filter(Q(jornada_corporacion_id=jornada_corporacion) & Q(tipo_candidato="Principal") & Q(is_active=True)))\
+                .exclude(votante__codigo__in = Plancha.objects.filter(~Q(numeroplancha=0) & Q(is_active=True)).values_list('candidato_principal__votante__codigo', flat=True))
 
-            candidatossupl_sin_plancha = (Candidato.objects.filter(Q(jornada_corporacion=jornada_corporacion) & Q(tipo_candidato="Suplente") & Q(is_active=True) ))
+            candidatossupl_sin_plancha = (Candidato.objects.filter(Q(jornada_corporacion_id=jornada_corporacion) & Q(tipo_candidato="Suplente") & Q(is_active=True) ))
 
-            candidatossupl_sin_plancha.exclude(votante__codigo__in = Plancha.objects.filter(is_active=True).values_list('candidato_suplente__votante__codigo', flat=True))
+            candidatossupl_sin_plancha.exclude(votante__codigo__in = Plancha.objects.filter(~Q(numeroplancha=0) & Q(is_active=True)).values_list('candidato_suplente__votante__codigo', flat=True))
 
             form.fields["candidato_principal"].queryset = candidatosprin_sin_plancha
             form.fields["candidato_suplente"].queryset = candidatossupl_sin_plancha
+
+            print(candidatosprin_sin_plancha)
     #Ninguno de los dos formularios crear  ni cargar Method GET
     else:
         form = FormularioRegistroPlancha()

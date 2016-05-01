@@ -15,11 +15,11 @@ def mostrar_corporaciones(request):
 
     if request.POST and "btnCorporacion" in request.POST:
         print("es post")
-        jornada_corporacion = request.POST["btnCorporacion"]
-        print(jornada_corporacion)
-        planchas = Plancha.objects.filter(is_active=True, jornada_corporacion_id=jornada_corporacion)
+        id_jornada_corporacion = request.POST["btnCorporacion"]
+        planchas = Plancha.objects.filter(is_active=True, jornada_corporacion_id=id_jornada_corporacion)
         print(planchas)
-        return render(request, "mostrar_tarjeton.html" , {"jornada_corporacion": jornada_corporacion, 'planchas':planchas })
+        jornada_corporacion = Jornada_Corporacion.objects.get(id=id_jornada_corporacion)
+        return render(request, "mostrar_tarjeton.html" , {"jornada_corporacion": jornada_corporacion, 'planchas':planchas})
 
 
     else:
