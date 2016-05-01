@@ -1,18 +1,18 @@
 from django.contrib.auth.decorators import permission_required
-from django.contrib.auth.decorators import resolve_url
+
 from django.shortcuts import render_to_response, render, redirect
 from jornadas.forms import FormularioRegistroJornada, FormularioEditarJornada
 from planchas.models import Plancha
 from candidatos.models import Candidato
-from votantes.models import Votante
-from usuarios.models import Usuario
+
 from corporaciones.models import Corporacion
 from datetime import datetime
 from django.utils import timezone
-from time import strptime
+
 from django.utils.timezone import activate
 from django.conf import settings
 activate(settings.TIME_ZONE)
+
 from jornadas.models import Jornada , Jornada_Corporacion
 
 def ingresar_plancha_voto_blanco(jornada_corporacion):

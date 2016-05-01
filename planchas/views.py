@@ -62,7 +62,7 @@ def registro_plancha(request):
 
                 else:
                     plancha_create(plancha,form)
-                    mensaje = "La plancha N° " + str(plancha.numeroplancha)+ " corporacion "+str(plancha.corporacion.name_corporation)+" fue creada exitosamente."
+                    mensaje = "La plancha N° " + str(plancha.numeroplancha)+ " corporacion "+str(plancha.jornada_corporacion.corporacion.name_corporation)+" fue creada exitosamente."
                     llamarMensaje = "exito_usuario"
 
             request.session["llamarMensaje"] = llamarMensaje

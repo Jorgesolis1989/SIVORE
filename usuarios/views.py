@@ -7,20 +7,26 @@ from django.template.context import RequestContext
 from django.db.models import Q
 import csv
 from io import StringIO
-
+import json
 from usuarios.models import Usuario
 from votantes.models import Votante
 from candidatos.models import Candidato
 from corporaciones.models import Corporacion
 from planchas.models import Plancha
+from jornadas.models import Jornada , Jornada_Corporacion
+
+from datetime import datetime
+
+from django.utils import timezone
+from django.conf import settings
+timezone.activate(settings.TIME_ZONE)
 
 from usuarios.forms import FormularioLogin
 from usuarios.forms import FormularioRegistroUsuario, FormularioEditarUsuario, FormularioCargar
-
+from votaciones.views import mostrar_corporaciones
 
 #Método auxiliar para encontrar la vista del usuario
 def retornar_vista(request, usuario):
-    print(usuario.get_all_permissions())
     if usuario.has_perm("usuarios.Administrador"):
         return administrador_home(request, usuario)
     elif usuario.has_perm("usuarios.Votante"):
@@ -38,13 +44,46 @@ def administrador_home(request , usuario):
 # Pagina del home  para usuario Votante
 @permission_required("usuarios.Votante" , login_url="/")
 def votante_home(request, usuario):
-    return render(request , 'votante.html', {'usuario': usuario})
+
+    # Obteniendo los votantes asociados al usuario "Puede tener dos carreras"
+    votantes_asociados = Votante.objects.filter(usuario__cedula_usuario=request.user.username)
+
+    # Jornadas de acceso a las cuales el tiene acceso el/los votantes asociado
+    jornadas_acceso = []
+    for votante in votantes_asociados:
+        jornadas_acceso += Jornada_Corporacion.objects.filter(Q(jornada__is_active=True) &
+                                                (Q(corporacion__id_corporation=votante.plan.id_corporation) |
+                                                Q(corporacion__id_corporation=votante.plan.facultad.id_corporation)))
+
+    # Ordenando la lista por fecha de inicio
+    jornadas_acceso.sort(key=lambda Jornada_Corporacion: Jornada_Corporacion.jornada.fecha_inicio_jornada)
+
+
+    # La fecha de inicio es mayor a la fecha actual y la fecha final es menor a la fecha final de la jornada
+    for jornada_acceso in jornadas_acceso:
+        if (utc_to_local(timezone.now()) >= utc_to_local(jornada_acceso.jornada.fecha_inicio_jornada)
+             and utc_to_local(timezone.now() <= utc_to_local(jornada_acceso.jornada.fecha_final_jornada))):
+            #print(jornada_acceso)
+            mostrar_corporaciones(request, usuario, votantes_asociados, jornada_acceso.jornada)
+
+
+    form = FormularioLogin()
+
+    if not jornadas_acceso:
+        mensaje = "Usted no tiene jornadas electorales cerca"
+    else:
+        mensaje = "No puede acceder todavía al sistema, su acceso es el " +str(jornadas_acceso[0].jornada.fecha_inicio_jornada) +\
+                  " para la jornada "+str(jornadas_acceso[0].jornada.nombrejornada)
+
+    return render(request , 'login.html', {"form":form , "mensaje": mensaje  })
 
 # Pagina del home  para usuario Superior
 @permission_required("usuarios.Superior" , login_url="/")
 def superior_home(request, usuario):
     return render(request , 'superior.html', {'usuario': usuario})
 
+def utc_to_local(utc_dt):
+    return utc_dt.replace(tzinfo=timezone.utc).astimezone(tz=None)
 
 #Pagina de login
 def login_view(request):
