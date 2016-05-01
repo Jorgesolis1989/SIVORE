@@ -36,5 +36,6 @@ def mostrar_corporaciones(request, usuario, votantes, jornada):
                 Q(corporacion__id_corporation=1) |
                 Q(corporacion__id_corporation=2) |
                 Q(corporacion__id_corporation__in=corporaciones)).order_by("corporacion__id_corporation")
-        #print(corporaciones_activas_jornada)
-        return render(request, 'votante.html', {'corporaciones_activas':corporaciones_activas_jornada})
+
+        print(corporaciones_activas_jornada)
+        return render(request, 'votacion.html', {'corporaciones_activas':corporaciones_activas_jornada})

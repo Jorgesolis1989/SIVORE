@@ -67,10 +67,6 @@ def votante_home(request, usuario):
 
 
     for jornada_acceso in jornadas_acceso:
-        print(utc_to_local(timezone.now()))
-        print(utc_to_local(jornada_acceso.jornada.fecha_inicio_jornada))
-        print(utc_to_local(jornada_acceso.jornada.fecha_final_jornada))
-
         if ( utc_to_local(timezone.now()) >= utc_to_local(jornada_acceso.jornada.fecha_inicio_jornada)
              and utc_to_local(timezone.now()) <= utc_to_local(jornada_acceso.jornada.fecha_final_jornada)):
             return  mostrar_corporaciones(request,usuario,votantes_asociados,jornada_acceso.jornada)
