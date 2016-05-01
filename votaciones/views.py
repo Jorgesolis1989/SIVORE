@@ -8,20 +8,15 @@ from datetime import datetime
 from django.shortcuts import render_to_response, render, redirect
 
 def mostrar_tarjeton(request):
-
     return render(request, 'mostrar_tarjeton.html')
 
-def mostrar_corporaciones(request):
+def mostrar_corporaciones(request, usuario, votantes, jornada):
 
     if request.POST and "btnCorporacion" in request.POST:
-        print("es post")
         id_jornada_corporacion = request.POST["btnCorporacion"]
         planchas = Plancha.objects.filter(is_active=True, jornada_corporacion_id=id_jornada_corporacion)
-        print(planchas)
         jornada_corporacion = Jornada_Corporacion.objects.get(id=id_jornada_corporacion)
-        return render(request, "mostrar_tarjeton.html" , {"jornada_corporacion": jornada_corporacion, 'planchas':planchas})
-
-
+        return render(request, "mostrar_tarjeton.html", {"jornada_corporacion": jornada_corporacion, 'planchas':planchas})
     else:
         votantes_asociados = Votante.objects.filter(usuario__cedula_usuario=request.user.username)
 
@@ -34,7 +29,6 @@ def mostrar_corporaciones(request):
         # Corporaciones que estan permitidas por el usuario
         corporaciones = []
         for votante in votantes_asociados:
-                print(votante.plan.id_corporation  , votante.plan.facultad.id_corporation)
                 corporaciones += (Corporacion.objects.filter(Q(id_corporation=votante.plan.facultad.id_corporation) |
                                          Q(id_corporation=votante.plan.id_corporation)).values_list("id_corporation" , flat=True))
 
@@ -43,4 +37,4 @@ def mostrar_corporaciones(request):
                 Q(corporacion__id_corporation=2) |
                 Q(corporacion__id_corporation__in=corporaciones)).order_by("corporacion__id_corporation")
         #print(corporaciones_activas_jornada)
-        return render(request, 'mostrar_corporaciones.html' , {'corporaciones_activas':corporaciones_activas_jornada})
+        return render(request, 'votante.html', {'corporaciones_activas':corporaciones_activas_jornada})

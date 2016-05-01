@@ -97,7 +97,7 @@
 				<!--Brand logo & name-->
 				<!--================================-->
 				<div class="navbar-header">
-					<a href="base-admin.html" class="navbar-brand">
+					<a href="http://localhost:8000/" class="navbar-brand">
 						<img src="{% static 'img/logo.png' %}" alt="SIVORE" class="brand-icon">
 						<div class="brand-title">
 							<span class="brand-text" title="Sistema de Votación por Internet para la Elección de Representantes Estudiantiles Universidad del Valle">SIVORE</span>
@@ -333,13 +333,11 @@
 				<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 				<!--End breadcrumb-->
 
-
 				<!--Page content-->
 				<!--===================================================-->
 				<div id="page-content">
-
-                    {% block content %}{% endblock content %}
-
+                 {% block content %}
+                 {% endblock content %}
 				<!--===================================================-->
 				<!--End page content-->
 
@@ -370,7 +368,7 @@
 									<li class="list-header">JORNADA ELECTORAL - ELECCIONES 2016</li>
                                     <!--Menu list item menu principal-->
 									<li>
-										<a href="{% url 'mostrar_corporaciones' %}">
+										<a href="#">
 											<i class="fa fa-file"></i>
 											<span class="menu-title">Corporaciones para votar</span>
 										</a>
@@ -378,7 +376,7 @@
 									<!--end Menu list item menu principal-->
 									<!--Menu list item menu principal-->
 									<li>
-										<a href="{% url 'mostrar_corporaciones' %}">
+										<a href="#">
 											<i class="fa fa-file"></i>
 											<span class="menu-title">Programas y propuestas</span>
 										</a>
@@ -398,7 +396,7 @@
 												<!--Submenu-->
 												<ul class="collapse">
 													<li><a href="{% url 'mostrar_tarjeton' %}">Plancha # 1</a></li>
-													<li><a href="{% url 'mostrar_corporaciones' %}">Plancha # 2</a></li>
+													<li><a href="">Plancha # 2</a></li>
 													<li><a href="#">Plancha # 3</a></li>
 												</ul>
 											</li>
