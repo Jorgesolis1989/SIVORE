@@ -8,15 +8,27 @@ from datetime import datetime
 from django.shortcuts import render_to_response, render, redirect
 
 def mostrar_tarjeton(request):
-    return render(request, 'mostrar_tarjeton.html')
+    # Votar
+
+    id_jornada_corporacion = request.session.pop("id_jornada_corporacion", None)
+    if request.POST:
+        print("voy a votar")
+
+    elif id_jornada_corporacion:
+        planchas = Plancha.objects.filter(is_active=True, jornada_corporacion_id=id_jornada_corporacion)
+        jornada_corporacion = Jornada_Corporacion.objects.get(id=id_jornada_corporacion)
+        return render(request, "mostrar_tarjeton.html", {"jornada_corporacion": jornada_corporacion, 'planchas':planchas})
+
+    else:
+        return redirect('login')
+
 
 def mostrar_corporaciones(request, usuario, votantes, jornada):
 
     if request.POST and "btnCorporacion" in request.POST:
         id_jornada_corporacion = request.POST["btnCorporacion"]
-        planchas = Plancha.objects.filter(is_active=True, jornada_corporacion_id=id_jornada_corporacion)
-        jornada_corporacion = Jornada_Corporacion.objects.get(id=id_jornada_corporacion)
-        return render(request, "mostrar_tarjeton.html", {"jornada_corporacion": jornada_corporacion, 'planchas':planchas})
+        request.session['id_jornada_corporacion'] = id_jornada_corporacion
+        return redirect('mostrar_tarjeton')
     else:
         votantes_asociados = Votante.objects.filter(usuario__cedula_usuario=request.user.username)
 

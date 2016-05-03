@@ -39,6 +39,9 @@ def registro_jornada(request):
         if form.is_valid():
             jornada = Jornada()
             jornada.nombrejornada =  form.cleaned_data["nombre_jornada"]
+             # Creando la jornada electoral y habilitando las corporaciones.
+            corporaciones = form.cleaned_data["corporaciones"]
+
 
             hora_completa = form.cleaned_data["fecha_jornada"] +   " "+  form.cleaned_data["hora_inicio"]
             jornada.fecha_inicio_jornada = datetime.strptime(hora_completa, "%m/%d/%Y %I:%M %p")
@@ -49,13 +52,18 @@ def registro_jornada(request):
             jornada.fecha_final_jornada = datetime.strptime(hora_completa, "%m/%d/%Y %I:%M %p")
             jornada.fecha_final_jornada = timezone.make_aware(jornada.fecha_final_jornada,
                                                                timezone.get_current_timezone())
+
             try:
                 jornada.save()
             except Exception as e:
                 print(e)
-            # Creando la jornada electoral y habilitando las corporaciones.
-            corporaciones = form.cleaned_data["corporaciones"]
-            print(corporaciones)
+            jornada.corporaciones = corporaciones
+
+            try:
+                jornada.save()
+            except Exception as e:
+                print(e)
+
 
             for corporacion in corporaciones:
                 jornada_corporacion = Jornada_Corporacion()
@@ -128,12 +136,19 @@ def editar_jornada(request, id):
             jornada.fecha_final_jornada = datetime.strptime(hora_completa, "%m/%d/%Y %I:%M %p")
             jornada.fecha_final_jornada = timezone.make_aware(jornada.fecha_final_jornada,
                                                                timezone.get_current_timezone())
+
+            # Creando la jornada electoral y habilitando las corporaciones.
+            corporaciones = form.cleaned_data["corporaciones"]
             try:
                 jornada.save()
             except Exception as e:
                 print(e)
-            # Creando la jornada electoral y habilitando las corporaciones.
-            corporaciones = form.cleaned_data["corporaciones"]
+
+            jornada.corporaciones = corporaciones
+            try:
+                jornada.save()
+            except Exception as e:
+                print(e)
 
             for corporacion in corporaciones:
                 jornada_corporacion = Jornada_Corporacion()
@@ -141,6 +156,7 @@ def editar_jornada(request, id):
                 jornada_corporacion.jornada = jornada
                 #guardamos corporacion
                 jornada_corporacion.corporacion = corporacion
+
                 try:
                     jornada_corporacion.save()
                 except Exception as e:
