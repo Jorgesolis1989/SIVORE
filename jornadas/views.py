@@ -113,12 +113,12 @@ def listar_jornadas(request):
 def editar_jornada(request, id):
     try:
         jornada = Jornada.objects.get(id = id)
-    except jornada.DoesNotExist:
+    except Jornada.DoesNotExist:
         llamarmensaje = "fracaso_usuario"
         mensaje = "La jornada #" + str(id)+ " no existe en el sistema."
-        request.session["llamarmensaje"] = llamarmensaje
+        request.session["llamarMensaje"] = llamarmensaje
         request.session["mensaje"] = mensaje
-        return redirect("listar_jornadas.html")
+        return redirect("listar_jornadas")
 
     if request.method == 'POST' and "btncreate" in request.POST:
         form = FormularioEditarJornada(request.POST)
@@ -189,6 +189,8 @@ def editar_jornada(request, id):
                     except Exception as e:
                         print(e)
 
+                    ingresar_plancha_voto_blanco(jornada_corporacion)
+
 
             jornada.corporaciones = corporaciones
             try:
@@ -214,8 +216,8 @@ def editar_jornada(request, id):
         form = FormularioEditarJornada()
 
         # corporaciones de la jornada
-        corporaciones_de_jornada = Corporacion.objects.filter(id_corporation__in=Jornada_Corporacion.objects.filter(jornada_id= jornada.id, jornada__is_active=True).values_list("corporacion__id_corporation" , flat=True))
-        print(jornada)
+        corporaciones_de_jornada = Corporacion.objects.filter(id_corporation__in=Jornada_Corporacion.objects.filter(jornada_id= jornada.id, is_active=True, ).values_list("corporacion__id_corporation" , flat=True))
+        print(corporaciones_de_jornada)
         # lista de ids Corporaciones ocupadas
         corporaciones_ocupadas = Corporacion.objects.filter(id_corporation__in=Jornada_Corporacion.objects.filter(jornada__is_active=True).values_list("corporacion__id_corporation", flat=True))
 
