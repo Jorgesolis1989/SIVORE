@@ -16,8 +16,8 @@ def mostrar_tarjeton(request):
 
     id_jornada_corporacion = request.session.pop("id_jornada_corporacion", None)
     if request.POST:
-        print("voy a votar")
-
+        print("Voté")
+        return redirect('login')
     elif id_jornada_corporacion:
         planchas = Plancha.objects.filter(is_active=True, jornada_corporacion_id=id_jornada_corporacion)
         jornada_corporacion = Jornada_Corporacion.objects.get(id=id_jornada_corporacion)
@@ -41,7 +41,7 @@ def mostrar_corporaciones(request, usuario, votantes_asociados, jornada):
         #votantes_asociados = Votante.objects.filter(usuario__cedula_usuario=request.user.username)
 
         # Corporaciones activas de la jornada
-        corporaciones_activas_jornada = Jornada_Corporacion.objects.filter(jornada_id=jornada.id)
+        corporaciones_activas_jornada = Jornada_Corporacion.objects.filter(jornada_id=jornada.id, is_active=True)
         print(corporaciones_activas_jornada)
 
         #print(corporaciones_activas_jornada)
