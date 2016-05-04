@@ -23,6 +23,7 @@ class Jornada(models.Model):
 class Jornada_Corporacion(models.Model):
     jornada = models.ForeignKey(Jornada, null=False)
     corporacion = models.ForeignKey(Corporacion, null=False)
+    is_active = models.BooleanField(default=True)
 
     class Meta:
         ordering = ["jornada"]

@@ -131,11 +131,14 @@ def editar_jornada(request, id):
             jornada.fecha_inicio_jornada = datetime.strptime(hora_completa, "%m/%d/%Y %I:%M %p")
             jornada.fecha_inicio_jornada = timezone.make_aware(jornada.fecha_inicio_jornada,
                                                                timezone.get_current_timezone())
+            print(hora_completa)
 
             hora_completa = form.cleaned_data["fecha_jornada"] +   " "+  form.cleaned_data["hora_final"]
             jornada.fecha_final_jornada = datetime.strptime(hora_completa, "%m/%d/%Y %I:%M %p")
             jornada.fecha_final_jornada = timezone.make_aware(jornada.fecha_final_jornada,
                                                                timezone.get_current_timezone())
+
+            print(jornada.fecha_final_jornada)
 
             # Creando la jornada electoral y habilitando las corporaciones.
             corporaciones = form.cleaned_data["corporaciones"]
@@ -144,26 +147,55 @@ def editar_jornada(request, id):
             except Exception as e:
                 print(e)
 
+            # Trabajar con las corporaciones
+            jornadas_activas = Jornada_Corporacion.objects.filter(jornada_id = jornada.id , is_active=True)
+
+
+            for jornada_activa in jornadas_activas:
+                # Verificando las corporaciones de la lista de jornadas
+                if jornada_activa.corporacion not in corporaciones:
+
+                    # Desactivamos los candidatos de esa jornada
+                    candidatos_a_desactivar = Candidato.objects.filter(jornada_corporacion__jornada_id=jornada_activa.jornada.id ,
+                                                                       jornada_corporacion__corporacion__id_corporation=jornada_activa.corporacion.id_corporation,
+                                                                       is_active=True)
+                    #Guardando los candidatos
+                    for candidato in candidatos_a_desactivar:
+                        candidato.is_active = False
+                        candidato.save()
+
+                    # Desactivamos las planchas de la jornada
+                    planchas_a_desactivar = Plancha.objects.filter(jornada_corporacion__jornada_id=jornada_activa.jornada.id ,
+                                                                       jornada_corporacion__corporacion__id_corporation=jornada_activa.corporacion.id_corporation,
+                                                                       is_active=True)
+                    #Guardando los planchas
+                    for plancha in planchas_a_desactivar:
+                        plancha.is_active = False
+                        plancha.save()
+
+                    # Desactivamos la jornada
+                    jornada_activa.is_active = False
+                    try:
+                        jornada_activa.save()
+                    except Exception as e:
+                        print(e)
+
+            #Para agregar las corporaciones faltantes
+            for corporacion in corporaciones:
+                if corporacion.id_corporation not in jornadas_activas.values_list('corporacion__id_corporation' , flat=True):
+                    jornada_corporacion = Jornada_Corporacion(jornada=jornada , corporacion=corporacion , is_active=True)
+                    try:
+                        jornada_corporacion.save()
+                    except Exception as e:
+                        print(e)
+
+
             jornada.corporaciones = corporaciones
             try:
                 jornada.save()
             except Exception as e:
                 print(e)
 
-            for corporacion in corporaciones:
-                jornada_corporacion = Jornada_Corporacion()
-                #guardamos jornada
-                jornada_corporacion.jornada = jornada
-                #guardamos corporacion
-                jornada_corporacion.corporacion = corporacion
-
-                try:
-                    jornada_corporacion.save()
-                except Exception as e:
-                    print(e)
-
-                # Ingresando candidato voto en blanco a la corporacion a elegir
-                ingresar_plancha_voto_blanco(jornada_corporacion)
 
             mensaje = "Se editó la jornada " + jornada.nombrejornada + " exitosamente "
             llamarMensaje = "exito_usuario"
@@ -182,8 +214,8 @@ def editar_jornada(request, id):
         form = FormularioEditarJornada()
 
         # corporaciones de la jornada
-        corporaciones_de_jornada = Corporacion.objects.filter(id_corporation__in=Jornada_Corporacion.objects.filter(jornada__id = jornada.id, jornada__is_active=True).values_list("corporacion__id_corporation" , flat=True))
-
+        corporaciones_de_jornada = Corporacion.objects.filter(id_corporation__in=Jornada_Corporacion.objects.filter(jornada_id= jornada.id, jornada__is_active=True).values_list("corporacion__id_corporation" , flat=True))
+        print(jornada)
         # lista de ids Corporaciones ocupadas
         corporaciones_ocupadas = Corporacion.objects.filter(id_corporation__in=Jornada_Corporacion.objects.filter(jornada__is_active=True).values_list("corporacion__id_corporation", flat=True))
 
@@ -195,7 +227,8 @@ def editar_jornada(request, id):
 
         #envio de datos al formulario editar
         form.initial = {'nombre_jornada' : jornada.nombrejornada, "fecha_jornada" : jornada.fecha_inicio_jornada.date().strftime("%m/%d/%Y"),
-                        "hora_inicio" : timezone.localtime(jornada.fecha_inicio_jornada).strftime('%H:%M:%S'), "hora_final" : timezone.localtime(jornada.fecha_final_jornada).strftime('%H:%M:%S'), "corporaciones": [o for o in corporaciones_de_jornada]}
+                        "hora_inicio" : timezone.localtime(jornada.fecha_inicio_jornada).strftime('%I:%M %p'),
+                        "hora_final" : timezone.localtime(jornada.fecha_final_jornada).strftime('%I:%M %p'), "corporaciones": [o for o in corporaciones_de_jornada]}
     return render(request, 'editar_jornada.html', {'form': form})
 
 # Este metodo no elimina en la base de datos, sino que desactiva la jornada con sus dependencias (Planchas y Candidatos)
