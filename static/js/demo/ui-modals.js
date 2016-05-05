@@ -121,16 +121,15 @@
 	// http://bootboxjs.com/
 	// =================================================================
 	$('.demo-bootbox-confirm-voto').on('click', function(){
-		alert('joselito')
 		// id el numero de la plancha
-		var id = $(this).attr('id')
+		var numeroplancha = $(this).attr('id')
 		// name= nombre de la corporacion
-		var name = $(this).attr('name')
-		alert(name)
-		bootbox.confirm("Esta seguro que desea votar por la plancha No "+id+" en "+id+" ?", function(result) {
+		var namecorporation = $(this).attr('data-target')
+
+		bootbox.confirm("Esta seguro que desea votar por la plancha No " + numeroplancha + " en " + namecorporation + "?", function(result) {
 			if (result) {
-				document.formVotacion.action = "/votaciones/tarjeton/"
-				document.formVotacion.submit()
+				document.formshowcard.action = "/votaciones/tarjeton/"
+				document.formshowcard.submit()
 			}
 		});
 	});

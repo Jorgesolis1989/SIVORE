@@ -2,7 +2,7 @@
 {% block title %}Votante -{% endblock title  %}
 {% block content %}
     <!--===Lista de corporaciones habilitadas para el votante==-->
-        <form method="post">
+        <form method="post" name="formvotaciones">
         {% csrf_token %}
         <script>
             counter = 0
