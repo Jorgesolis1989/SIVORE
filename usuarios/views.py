@@ -13,6 +13,7 @@ from votantes.models import Votante
 from candidatos.models import Candidato
 from corporaciones.models import Corporacion
 from planchas.models import Plancha
+from django.contrib.auth import logout
 from jornadas.models import Jornada , Jornada_Corporacion
 from django.core.urlresolvers import reverse_lazy
 
@@ -73,6 +74,11 @@ def votante_home(request, usuario):
     else:
         mensaje = "No puede acceder todavía al sistema, su acceso es el " +str(jornadas_acceso[0].jornada.fecha_inicio_jornada) +\
                   " para la jornada "+str(jornadas_acceso[0].jornada.nombrejornada)
+
+    try:
+        logout(request)
+    except KeyError:
+       pass
 
     return render(request , 'login.html', {"form":form , "mensaje": mensaje  })
 
