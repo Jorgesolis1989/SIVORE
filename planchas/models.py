@@ -9,7 +9,7 @@ class Plancha(models.Model):
     candidato_suplente = models.ForeignKey(Candidato, null=True, blank=True, unique=False, default=None)
     is_active = models.BooleanField(default=True)
     url_propuesta = models.URLField(null=True, blank=True)
-    num_votos = models.IntegerField(null=True)
+    num_votos = models.IntegerField(null=True, default= 0)
 
     class Meta:
         ordering = ["numeroplancha"]

@@ -6,6 +6,7 @@ from jornadas.models import Jornada_Corporacion
 from corporaciones.models import Corporacion
 from datetime import datetime
 
+
 from django.shortcuts import render_to_response, render, redirect
 from django.utils import timezone
 from django.conf import settings
@@ -16,21 +17,43 @@ def mostrar_tarjeton(request):
 
     id_jornada_corporacion = request.session.pop("id_jornada_corporacion", None)
     if request.POST:
-        print("Voté")
+
+        # Sumando el voto a la plancha
+        value_plancha = request.POST['value_plancha']
+        print("plancha a votar : " , value_plancha)
+        plancha_a_sumar_voto = Plancha.objects.get(id=value_plancha)
+        plancha_a_sumar_voto.num_votos += 1
+        try:
+            plancha_a_sumar_voto.save()
+        except Exception as e:
+            print(e)
+
+        # Creando el LOG
+
+
+
+
         return redirect('login')
     elif id_jornada_corporacion is not None:
         planchas = Plancha.objects.filter(is_active=True, jornada_corporacion_id=id_jornada_corporacion)
+        print(planchas)
+        try:
+            plancha_voto_en_blanco = planchas.get(numeroplancha=0)
+        except Exception as e:
+            return redirect("login")
+
+        print(plancha_voto_en_blanco)
         jornada_corporacion = Jornada_Corporacion.objects.get(id=id_jornada_corporacion)
-        return render(request, "mostrar_tarjeton.html", {"jornada_corporacion": jornada_corporacion, 'planchas':planchas})
+        return render(request, "mostrar_tarjeton.html", {"jornada_corporacion": jornada_corporacion, 'planchas':planchas , 'plancha_voto_en_blanco':plancha_voto_en_blanco})
     else:
         return redirect('login')
 
 
 def mostrar_corporaciones(request, usuario, votantes_asociados, jornada):
 
-    print('votantes' , votantes_asociados.values_list('plan' , flat=True))
-    print('usuario' , usuario)
-    print('jornada' ,jornada)
+    #print('votantes' , votantes_asociados.values_list('plan' , flat=True))
+    #print('usuario' , usuario)
+    #print('jornada' ,jornada)
 
     if request.POST and "btnCorporacion" in request.POST:
         id_jornada_corporacion = request.POST["btnCorporacion"]
@@ -58,6 +81,7 @@ def mostrar_corporaciones(request, usuario, votantes_asociados, jornada):
                 Q(corporacion__id_corporation=2) |
                 # las que el puede
                 Q(corporacion__id_corporation__in=corporaciones)).order_by("corporacion__id_corporation")
+
 
 
         return render(request, 'votacion.html', {'jornada_corporaciones_activas':jornada_corporaciones_activas})

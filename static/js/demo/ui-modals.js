@@ -35,6 +35,7 @@
 	$('.demo-bootbox-confirm').on('click', function(){
 		var id = $(this).attr('id')
 		var name = $(this).attr('name')
+
 		bootbox.confirm("Esta seguro que desea eliminar el "+name+" con cédula "+id+" ?", function(result) {
 			if (result) {
 				document.formDelete.action = "/usuarios/eliminar/"+id
@@ -122,9 +123,13 @@
 	// =================================================================
 	$('.demo-bootbox-confirm-voto').on('click', function(){
 		// id el numero de la plancha
-		var numeroplancha = $(this).attr('id')
+		var numeroplancha = $(this).attr('id');
 		// name= nombre de la corporacion
-		var namecorporation = $(this).attr('data-target')
+		var namecorporation = $(this).attr('data-target');
+
+		var value_plancha  = $(this).attr('value');
+
+		$("#id_plancha").val(value_plancha);
 
 		bootbox.confirm("Esta seguro que desea votar por la plancha No " + numeroplancha + " en " + namecorporation + "?", function(result) {
 			if (result) {
