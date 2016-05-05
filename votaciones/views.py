@@ -40,24 +40,27 @@ def mostrar_corporaciones(request, usuario, votantes_asociados, jornada):
         #votantes_asociados = Votante.objects.filter(usuario__cedula_usuario=request.user.username)
 
         # Corporaciones activas de la jornada
-        corporaciones_activas_jornada = Jornada_Corporacion.objects.filter(jornada_id=jornada.id, is_active=True)
-        print(corporaciones_activas_jornada)
+        jornada_corporaciones_activas = Jornada_Corporacion.objects.filter(jornada_id=jornada.id, is_active=True)
+        print(jornada_corporaciones_activas)
 
         #print(corporaciones_activas_jornada)
-        # Corporaciones que estan permitidas por el usuario
+        #Jornada Corporaciones que estan permitidas por el usuario
         corporaciones = []
         for votante in votantes_asociados:
                 corporaciones += (Corporacion.objects.filter(Q(id_corporation=votante.plan.facultad.id_corporation) |
                                          Q(id_corporation=votante.plan.id_corporation)).values_list("id_corporation" , flat=True))
 
 
-        corporaciones_activas_jornada = corporaciones_activas_jornada.filter(
+        jornada_corporaciones_activas = jornada_corporaciones_activas.filter(
+                # La de consejo superior
                 Q(corporacion__id_corporation=1) |
+                # Consejo académico
                 Q(corporacion__id_corporation=2) |
+                # las que el puede
                 Q(corporacion__id_corporation__in=corporaciones)).order_by("corporacion__id_corporation")
 
 
-        return render(request, 'votacion.html', {'corporaciones_activas':corporaciones_activas_jornada})
+        return render(request, 'votacion.html', {'jornada_corporaciones_activas':jornada_corporaciones_activas})
 
 def utc_to_local(utc_dt):
     return utc_dt.replace(tzinfo=timezone.utc).astimezone(tz=None)

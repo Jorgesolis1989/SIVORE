@@ -7,7 +7,7 @@
         <script>
             counter = 0
         </script>
-        {% for corporacion_activa in corporaciones_activas %}
+        {% for jornada_corporacion_activa in jornada_corporaciones_activas %}
         <script>
             if (counter % 2 == 0){document.write("<div class='row panel-body demo-nifty-btn'>")}
             counter++
@@ -15,7 +15,7 @@
         <!--Tile with - (Por el Consejo Superior)-->
         <!--===================================================-->
         <div>
-        <button type="submit" name="btnCorporacion" class="btn btn-mint btn-rounded col-md-6 col-lg-6" value="{{ corporacion_activa.id }}">
+        <button type="submit" name="btnCorporacion" class="btn btn-primary btn-rounded col-md-6 col-lg-6" value="{{ jornada_corporacion_activa.id }}">
             <a href="{% url 'mostrar_tarjeton' %}">
                 <div class="pad-all media">
                     <div class="media-left">
@@ -24,8 +24,8 @@
                         </span>
                     </div>
                     <div class="media-body">
-                        <p class="h4 text-thin media-heading">{{corporacion_activa.corporacion.name_corporation}}</p>
-                        <small class="text-uppercase">3 planchas</small>
+                        <p class="h4 text-thin media-heading">{{jornada_corporacion_activa.corporacion.name_corporation}}</p>
+                        <small class="text-uppercase">{{ jornada_corporacion_activa.cantidad_planchas }} Planchas</small>
                     </div>
                 </div>
             </a>

@@ -53,11 +53,11 @@
                         <h4 class="mar-no"></h4>
                 {% endif %}
                 </div>
-
             <!--fin seccion candidato suplente -->
+
             <div class="pad-all">
                 <p class="text-muted"></p>
-                <a href="#" class="btn-link">Ver propuesta</a>
+                <a href="{{ plancha.url_propuesta }}" target="_blank" class="btn-link">Ver propuesta</a>
                 <div class="pad-ver">
                     <button value="{{ plancha.id }}" name="{{ plancha.numeroplancha }}
                     id={{ plancha.jornada_corporacion.corporacion.name_corporation }}" class="btn btn-lg btn-info demo-bootbox-confirm-voto">Votar</button>
@@ -65,12 +65,13 @@
                     <br>
                     <br>
                     <br>
+                    <br>
+                </div>
                 <br>
             </div>
+        </div>
             <!--fin generacion plancha -->
-
             {% endif %}
-
             <!--===================================================-->
         {%endfor%}
 

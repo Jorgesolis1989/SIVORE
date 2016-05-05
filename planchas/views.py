@@ -31,6 +31,14 @@ def plancha_create(plancha, form):
     except Exception as e:
         print(e)
 
+    jornada_corporacion.cantidad_planchas += 1
+
+    try:
+        jornada_corporacion.save()
+    except Exception as e:
+        print(e)
+
+
 @permission_required("usuarios.Administrador", login_url="/")
 def registro_plancha(request):
     #Verificación para crear una plancha
@@ -258,10 +266,12 @@ def eliminar_plancha(request, idjornada=None, numplancha=None):
     if request.method == 'POST':
         plancha=Plancha.objects.get(jornada_corporacion__id=idjornada, numeroplancha = numplancha , is_active=True)
         plancha.is_active = False
+        plancha.jornada_corporacion.cantidad_planchas -=1
         try:
             plancha.save()
         except Exception as e:
             print(e)
+
     llamarMensaje = "elimino_corporacion"
     mensaje = "Se eliminó la plancha #" + str(plancha.numeroplancha) +" de la corporacion "+ str(plancha.jornada_corporacion.corporacion.name_corporation)+" sactisfactoriamente"
     request.session['llamarMensaje'] = llamarMensaje
