@@ -13,11 +13,11 @@ class FormularioRegistroCandidato(forms.Form):
     *******************************************  Consultas para el campo votantes **********************
     """
     ### Consulta corporaciones que se eligiran
-    corporaciones_que_se_eligiran = Corporacion.objects.filter(id_corporation__in= (Jornada_Corporacion.objects.filter(jornada__is_active=True).values_list("corporacion__id_corporation", flat=True)))
+    corporaciones_que_se_eligiran = Corporacion.objects.filter(id_corporation__in= (Jornada_Corporacion.objects.filter(jornada__is_active=True , is_active=True).values_list("corporacion__id_corporation", flat=True)))
 
     # votantes que pueden votar ser elegidos en las corporaciones que estan permitidas
     votantes_que_pueden_ser_candidatos = Votante.objects.filter(
-            (Q(plan__in= corporaciones_que_se_eligiran) | Q(plan__facultad__in=corporaciones_que_se_eligiran)) , Q(is_active=True))
+            (Q(plan__id_corporation__in= corporaciones_que_se_eligiran) | Q(plan__facultad__id_corporation__in=corporaciones_que_se_eligiran)) & Q(is_active=True))
 
     # excluimos los votantes que ya estan como candidatos
     votantes_que_pueden_ser_candidatos = votantes_que_pueden_ser_candidatos.exclude(codigo__in=Candidato.objects.filter(is_active=True).values_list('votante__codigo', flat=True))

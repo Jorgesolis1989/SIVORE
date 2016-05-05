@@ -16,7 +16,6 @@ from planchas.models import Plancha
 from jornadas.models import Jornada , Jornada_Corporacion
 from django.core.urlresolvers import reverse_lazy
 
-from datetime import datetime
 
 from django.utils import timezone
 from django.conf import settings
@@ -61,11 +60,6 @@ def votante_home(request, usuario):
 
 
     # La fecha de inicio es mayor a la fecha actual y la fecha final es menor a la fecha final de la jornada
-
-
-
-
-
     for jornada_acceso in jornadas_acceso:
         if ( utc_to_local(timezone.now()) >= utc_to_local(jornada_acceso.jornada.fecha_inicio_jornada)
              and utc_to_local(timezone.now()) <= utc_to_local(jornada_acceso.jornada.fecha_final_jornada)):
