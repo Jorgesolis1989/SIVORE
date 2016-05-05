@@ -115,6 +115,27 @@
 		});
 	});
 
+	 // BOOTBOX - CONFIRM MODAL - PARA CONFIMAR VOTO
+	// =================================================================
+	// Require Bootbox
+	// http://bootboxjs.com/
+	// =================================================================
+	$('.demo-bootbox-confirm-voto').on('click', function(){
+		alert('joselito')
+		// id el numero de la plancha
+		var id = $(this).attr('id')
+		// name= nombre de la corporacion
+		var name = $(this).attr('name')
+		alert(name)
+		bootbox.confirm("Esta seguro que desea votar por la plancha No "+id+" en "+id+" ?", function(result) {
+			if (result) {
+				document.formVotacion.action = "/votaciones/tarjeton/"
+				document.formVotacion.submit()
+			}
+		});
+	});
+
+
 	 // BOOTBOX - CUSTOM HTML CONTENTS
 	// =================================================================
 	// Require Bootbox
