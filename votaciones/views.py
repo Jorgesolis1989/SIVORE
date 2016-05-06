@@ -1,10 +1,12 @@
 from django.contrib.auth.decorators import permission_required
 from planchas.models import Plancha
+from usuarios.models import Usuario
 from votantes.models import Votante
 from django.db.models import Q
 from jornadas.models import Jornada_Corporacion
 from corporaciones.models import Corporacion
 from datetime import datetime
+from votaciones.models import Votacion_Log
 
 
 from django.shortcuts import render_to_response, render, redirect
@@ -16,6 +18,8 @@ def mostrar_tarjeton(request):
     # Votar
 
     id_jornada_corporacion = request.session.pop("id_jornada_corporacion", None)
+    print("id_jornada_corporacion:" , id_jornada_corporacion)
+
     if request.POST:
 
         # Sumando el voto a la plancha
@@ -29,17 +33,25 @@ def mostrar_tarjeton(request):
             print(e)
 
         # Creando el LOG
+        votante_log = Votacion_Log()
+        votante_log.jornada_corporacion = plancha_a_sumar_voto.jornada_corporacion
+        votante_log.usuario = Usuario.objects.get(cedula_usuario =request.user.username)
 
+        try:
+            votante_log.save()
+        except Exception as e:
+            print(e)
 
 
 
         return redirect('login')
     elif id_jornada_corporacion is not None:
         planchas = Plancha.objects.filter(is_active=True, jornada_corporacion_id=id_jornada_corporacion)
-        print(planchas)
+
         try:
             plancha_voto_en_blanco = planchas.get(numeroplancha=0)
         except Exception as e:
+            print("voto en blanco")
             return redirect("login")
 
         print(plancha_voto_en_blanco)
@@ -64,7 +76,7 @@ def mostrar_corporaciones(request, usuario, votantes_asociados, jornada):
 
         # Corporaciones activas de la jornada
         jornada_corporaciones_activas = Jornada_Corporacion.objects.filter(jornada_id=jornada.id, is_active=True)
-        print(jornada_corporaciones_activas)
+        #print(jornada_corporaciones_activas)
 
         #print(corporaciones_activas_jornada)
         #Jornada Corporaciones que estan permitidas por el usuario
@@ -83,8 +95,13 @@ def mostrar_corporaciones(request, usuario, votantes_asociados, jornada):
                 Q(corporacion__id_corporation__in=corporaciones)).order_by("corporacion__id_corporation")
 
 
+        corporaciones_ya_votadas = Votacion_Log.objects.filter(is_active=True,
+                                    usuario__cedula_usuario=request.user.username).values_list('jornada_corporacion__corporacion__id_corporation' , flat=True)
 
-        return render(request, 'votacion.html', {'jornada_corporaciones_activas':jornada_corporaciones_activas})
+        #print(corporaciones_ya_votadas)
+
+        return render(request, 'votacion.html', {'jornada_corporaciones_activas':jornada_corporaciones_activas ,
+                                                 'corporaciones_ya_votadas':corporaciones_ya_votadas })
 
 def utc_to_local(utc_dt):
     return utc_dt.replace(tzinfo=timezone.utc).astimezone(tz=None)

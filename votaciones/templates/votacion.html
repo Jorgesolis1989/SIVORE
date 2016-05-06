@@ -15,7 +15,9 @@
         <!--Tile with - (Por el Consejo Superior)-->
         <!--===================================================-->
         <div>
-        <button type="submit" name="btnCorporacion" class="btn btn-primary btn-rounded col-md-6 col-lg-6" value="{{ jornada_corporacion_activa.id }}">
+
+        {% if  jornada_corporacion_activa.corporacion.id_corporation  in corporaciones_ya_votadas%}
+        <button disabled type="submit" name="btnCorporacion" class="btn btn-primary btn-rounded col-md-6 col-lg-6" value="{{ jornada_corporacion_activa.id }}">
             <a href="{% url 'mostrar_tarjeton' %}">
                 <div class="pad-all media">
                     <div class="media-left">
@@ -30,6 +32,28 @@
                 </div>
             </a>
         </button>
+
+
+        {% else %}
+            <button type="submit" name="btnCorporacion" class="btn btn-primary btn-rounded col-md-6 col-lg-6" value="{{ jornada_corporacion_activa.id }}">
+            <a href="{% url 'mostrar_tarjeton' %}">
+                <div class="pad-all media">
+                    <div class="media-left">
+                        <span class="icon-wrap icon-wrap-xs">
+                            <i class="fa fa-users fa-3x"></i>
+                        </span>
+                    </div>
+                    <div class="media-body">
+                        <p class="h4 text-thin media-heading">{{jornada_corporacion_activa.corporacion.name_corporation}}</p>
+                        <small class="text-uppercase">{{ jornada_corporacion_activa.cantidad_planchas }} Planchas</small>
+                    </div>
+                </div>
+            </a>
+        </button>
+        {% endif %}
+
+
+
         </div>
         <!--===================================================-->
         <!--End Tile with - (Por el Consejo Superior)-->
