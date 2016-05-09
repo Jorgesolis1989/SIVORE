@@ -2,22 +2,17 @@
 {% block title %}Votante -{% endblock title  %}
 {% block content %}
     <!--===Lista de corporaciones habilitadas para el votante==-->
-        <form method="post" name="formvotaciones">
+    <form method="post" name="formvotaciones">
         {% csrf_token %}
         <script>
             counter = 0
         </script>
         {% for jornada_corporacion_activa in jornada_corporaciones_activas %}
-        <script>
-            if (counter % 2 == 0){document.write("<div class='row panel-body demo-nifty-btn'>")}
-            counter++
-        </script>
         <!--Tile with - (Por el Consejo Superior)-->
         <!--===================================================-->
-        <div>
-
         {% if  jornada_corporacion_activa.corporacion.id_corporation  in corporaciones_ya_votadas%}
-        <button disabled type="submit" name="btnCorporacion" class="btn btn-primary btn-rounded col-md-6 col-lg-6" value="{{ jornada_corporacion_activa.id }}">
+        <div class="col-md-6 col-lg-4">
+        <button disabled type="submit" name="btnCorporacion" class="btn btn-primary btn-block" value="{{ jornada_corporacion_activa.id }}">
             <a href="{% url 'mostrar_tarjeton' %}">
                 <div class="pad-all media">
                     <div class="media-left">
@@ -26,41 +21,42 @@
                         </span>
                     </div>
                     <div class="media-body">
-                        <p class="h4 text-thin media-heading">{{jornada_corporacion_activa.corporacion.name_corporation}}</p>
-                        <small class="text-uppercase">{{ jornada_corporacion_activa.cantidad_planchas }} Planchas</small>
+                        <p class="h4 media-heading text-bold">{{jornada_corporacion_activa.corporacion.name_corporation}}</p>
+                        <p class="text-semibold ">{{ jornada_corporacion_activa.cantidad_planchas }} Planchas</p>
                     </div>
                 </div>
             </a>
         </button>
-
-
+        <br>
+        </div>
         {% else %}
-            <button type="submit" name="btnCorporacion" class="btn btn-primary btn-rounded col-md-6 col-lg-6" value="{{ jornada_corporacion_activa.id }}">
-            <a href="{% url 'mostrar_tarjeton' %}">
-                <div class="pad-all media">
-                    <div class="media-left">
-                        <span class="icon-wrap icon-wrap-xs">
-                            <i class="fa fa-users fa-3x"></i>
-                        </span>
-                    </div>
-                    <div class="media-body">
-                        <p class="h4 text-thin media-heading">{{jornada_corporacion_activa.corporacion.name_corporation}}</p>
-                        <small class="text-uppercase">{{ jornada_corporacion_activa.cantidad_planchas }} Planchas</small>
-                    </div>
+        <div class="col-md-6 col-lg-4">
+        <button type="submit" name="btnCorporacion" class="btn btn-primary btn-block" value="{{ jornada_corporacion_activa.id }}">
+        <a href="{% url 'mostrar_tarjeton' %}">
+            <div class="pad-all media">
+                <div class="media-left">
+                    <span class="icon-wrap icon-wrap-xs">
+                        <i class="fa fa-users fa-3x"></i>
+                    </span>
                 </div>
-            </a>
+                <div class="media-body">
+                    <p class="h4 media-heading text-bold">{{jornada_corporacion_activa.corporacion.name_corporation}}</p>
+                    <p class="text-semibold">{{ jornada_corporacion_activa.cantidad_planchas }} Planchas</p>
+                </div>
+            </div>
+        </a>
         </button>
+        <br>
         {% endif %}
-
-
-
         </div>
         <!--===================================================-->
         <!--End Tile with - (Por el Consejo Superior)-->
-        <script>
-            if (counter % 2 == 0){document.write("</div>")}
-        </script>
+
         {% endfor %}
         </form>
-
+<script>
+    window.onload = function() {
+    llamarMensajes( '{{ llamarMensaje }}' , '{{ mensaje }}');
+    };
+</script>
  {% endblock content %}

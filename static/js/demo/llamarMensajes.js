@@ -20,7 +20,7 @@ function llamarMensajes	(llamada, mensaje){
 			timer : 5000
 		});
 
-	} else if(  "fracaso_usuario".localeCompare(llamada) == 0){
+	} else if("fracaso_usuario".localeCompare(llamada) == 0){
 
 		$.niftyNoty({
 			type: 'danger',
@@ -94,6 +94,17 @@ function llamarMensajes	(llamada, mensaje){
 	else if("elimino_corporacion".localeCompare(llamada) == 0){
 		$.niftyNoty({
 			type: 'danger',
+			icon : 'fa fa-info',
+			message : mensaje,
+			container : 'floating',
+			timer : 5000
+		});
+	}
+
+	// Voto registrado
+	else if("voto_por_corporaciones".localeCompare(llamada) == 0){
+		$.niftyNoty({
+			type: 'success',
 			icon : 'fa fa-info',
 			message : mensaje,
 			container : 'floating',
