@@ -76,7 +76,7 @@ class FormularioEditarUsuario(forms.Form):
         widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí su correo electronico', 'required':'true'}))
 
     codigo_estudiante = forms.IntegerField(
-       required=False,  widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí el códido de estudiante', 'min':'1', 'required':'false'}))
+       required=False,  widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí el códido de estudiante', 'min':'1', 'disabled':'true'}))
 
     plan_estudiante = forms.ModelChoiceField(queryset=Corporacion.objects.filter(facultad__isnull=False), required=False, empty_label=None)
 

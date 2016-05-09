@@ -289,60 +289,52 @@ def editar_usuario(request, username=None):
         request.session["mensaje"] = mensaje
         return redirect("listar_usuario")
 
+    # codigo de votante preliminar
+    codigo_votante_entrada = request.session.pop("codigo_votante", None)
+
     if request.method == 'POST':
         form = FormularioEditarUsuario(request.POST)
         #Si el formulario es valido y tiene datos
 
-        print(form)
         if form.is_valid():
 
             #Capture la cedula del usuario
             usuario.first_name = form.cleaned_data["nombre_usuario"]
             usuario.last_name = form.cleaned_data["apellido_usuario"]
             usuario.email = form.cleaned_data["email"]
-            usuario.is_active = form.cleaned_data["esta_activo"]
+            #usuario.is_active = form.cleaned_data["esta_activo"]
 
-             #Actualiza  el usuario en la BD si hay excepcion
             try:
                 usuario.save()
             except Exception as e:
                 print(e)
 
-             # Si es votante, mostrar los campos facultad y codigo estudiante
-            if form.cleaned_data["rol"] == "Votante":
-                votante = Votante.objects.get(usuario__cedula_usuario=usuario.cedula_usuario)
-                votante.codigo = form.cleaned_data["codigo_estudiante"]
-                votante.plan = form.cleaned_data["plan_estudiante"]
-
-                #Actualiza el votante en la BD
-                try:
-                    votante.save()
-                except Exception as e:
-                    print(e)
-
-            #redireccionando a la vista
+                #redireccionando a la vista
             llamarMensaje = "edito_usuario"
             mensaje = "Se editó el usuario " +  str(usuario.cedula_usuario) +" sactisfactoriamente"
             request.session['llamarMensaje'] = llamarMensaje
             request.session['mensaje'] = mensaje
-            print("a listar votantes")
+            #print("a listar votantes")
             return redirect("listar_votantes")
     else:
         es_votante = False
         if username is None:
             return render(request, 'administrador.html')
+        elif not codigo_votante_entrada:
+            return redirect("listar_usuario")
         else:
             form = FormularioEditarUsuario()
             permissions = Permission.objects.filter(user=usuario)
 
             if usuario.has_perm('usuarios.Votante'):
                 try:
-                    codigo = request.session.pop("codigo_votante", None)
-                    print(codigo)
-                    votante = Votante.objects.get(codigo=codigo, is_active=True)
+                    votante_entrada = Votante.objects.get(codigo=codigo_votante_entrada, is_active=True)
                     es_votante = True
                     form.initial = {'cedula_usuario': usuario.cedula_usuario, 'nombre_usuario': usuario.first_name, 'apellido_usuario': usuario.last_name,
-                            'rol': permissions[0].codename, 'codigo_estudiante': votante.codigo, 'plan_estudiante': votante.plan, 'email': usuario.email, 'esta_activo': usuario.is_active}
+                            'rol': permissions[0].codename, 'codigo_estudiante': votante_entrada.codigo, 'plan_estudiante': votante_entrada.plan, 'email': usuario.email, 'esta_activo': usuario.is_active}
+                    form.fields['plan_estudiante'].widget.attrs['disabled'] = True
+                    form.fields['codigo_estudiante'].widget.attrs['readonly'] = True
+
                 except Votante.DoesNotExist as e:
                     print("error" , e)
                     return redirect("listar_usuario")
@@ -350,10 +342,9 @@ def editar_usuario(request, username=None):
                 form.initial = {'cedula_usuario': usuario.cedula_usuario, 'nombre_usuario': usuario.first_name, 'apellido_usuario': usuario.last_name,
                             'rol': permissions[0].codename, 'email': usuario.email, 'esta_activo': usuario.is_active}
 
-                form.fields['cedula_usuario'].widget.attrs['readonly'] = True
+            form.fields['cedula_usuario'].widget.attrs['readonly'] = True
 
         return render(request, 'editar_usuario.html', {'form': form , 'votante': es_votante})
-
 
 @permission_required("usuarios.Administrador", login_url="/")
 def eliminar_usuario(request, username=None):
