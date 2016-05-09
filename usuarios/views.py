@@ -320,8 +320,7 @@ def editar_usuario(request, username=None):
         es_votante = False
         if username is None:
             return render(request, 'administrador.html')
-        elif not codigo_votante_entrada:
-            return redirect("listar_usuario")
+
         else:
             form = FormularioEditarUsuario()
             permissions = Permission.objects.filter(user=usuario)
