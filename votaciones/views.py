@@ -42,7 +42,10 @@ def mostrar_tarjeton(request):
         except Exception as e:
             print(e)
 
-
+        llamarMensaje = "voto_por_corporaciones"
+        mensaje = "Voto registrado en el sistema sactisfactoriamente"
+        request.session['llamarMensaje'] = llamarMensaje
+        request.session['mensaje'] = mensaje
 
         return redirect('login')
     elif id_jornada_corporacion is not None:
@@ -51,7 +54,6 @@ def mostrar_tarjeton(request):
         try:
             plancha_voto_en_blanco = planchas.get(numeroplancha=0)
         except Exception as e:
-            print("voto en blanco")
             return redirect("login")
 
         print(plancha_voto_en_blanco)
@@ -71,7 +73,13 @@ def mostrar_corporaciones(request, usuario, votantes_asociados, jornada):
         id_jornada_corporacion = request.POST["btnCorporacion"]
         request.session['id_jornada_corporacion'] = id_jornada_corporacion
         return redirect('mostrar_tarjeton')
+
+    # method GET
     else:
+
+        llamarMensaje = request.session.pop('llamarMensaje', None)
+        mensaje = request.session.pop('mensaje', None)
+
         #votantes_asociados = Votante.objects.filter(usuario__cedula_usuario=request.user.username)
 
         # Corporaciones activas de la jornada
@@ -101,7 +109,7 @@ def mostrar_corporaciones(request, usuario, votantes_asociados, jornada):
         #print(corporaciones_ya_votadas)
 
         return render(request, 'votacion.html', {'jornada_corporaciones_activas':jornada_corporaciones_activas ,
-                                                 'corporaciones_ya_votadas':corporaciones_ya_votadas })
+                                                 'corporaciones_ya_votadas':corporaciones_ya_votadas, 'llamarMensaje': llamarMensaje ,'mensaje': mensaje})
 
 def utc_to_local(utc_dt):
     return utc_dt.replace(tzinfo=timezone.utc).astimezone(tz=None)

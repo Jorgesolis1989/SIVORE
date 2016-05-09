@@ -15,7 +15,6 @@ def registro_corporacion(request):
     mensaje = ""
     if request.method == 'POST':
         form = FormularioRegistroCorporacion(request.POST)
-        print("Es Post")
 
         #Si el formulario es valido y tiene datos
         if form.is_valid():
@@ -87,7 +86,7 @@ def editar_corporacion(request, id_corporation=None):
 
             #Consultando la corporacion en la base de datos.
             llamarMensaje = "edito_corporacion"
-            mensaje = "Se editó la corporacion " +  str(corporacion.id_corporation) +" sactisfactoriamente"
+            mensaje = "Se editó la corporacion " +str(corporacion.id_corporation) +"sactisfactoriamente"
             request.session['llamarMensaje'] = llamarMensaje
             request.session['mensaje'] = mensaje
 

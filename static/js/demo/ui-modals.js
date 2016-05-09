@@ -131,12 +131,22 @@
 
 		$("#id_plancha").val(value_plancha);
 
-		bootbox.confirm("Esta seguro que desea votar por la plancha No " + numeroplancha + " en " + namecorporation + "?", function(result) {
+		if (numeroplancha =='0'){
+			bootbox.confirm("Esta seguro que desea votar en blanco en " + namecorporation + "?", function(result) {
 			if (result) {
 				document.formshowcard.action = "/votaciones/tarjeton/"
 				document.formshowcard.submit()
 			}
 		});
+		}
+		else {
+			bootbox.confirm("Esta seguro que desea votar por la plancha No " + numeroplancha + " en " + namecorporation + "?", function (result) {
+				if (result) {
+					document.formshowcard.action = "/votaciones/tarjeton/"
+					document.formshowcard.submit()
+				}
+			});
+		}
 	});
 
 
@@ -291,7 +301,6 @@
 	// =================================================================
 	$('.demo-bootbox-custom-h-form').on('click', function(){
 		var corporaciones = $(this).attr('value')
-		alert(corporaciones)
 		bootbox.dialog({
 			title: "Corporaciones asociadas a la jornada elegida.",
 			message: '<div class="media"><div class="media-body">' + corporaciones  +
