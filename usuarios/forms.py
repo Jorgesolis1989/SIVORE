@@ -57,7 +57,7 @@ class FormularioRegistroUsuario(forms.Form):
 class FormularioEditarUsuario(forms.Form):
 
     cedula_usuario = forms.IntegerField(
-        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí la cedula de usuario', 'min':'1' , 'required':'true'}))
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí la cedula de usuario', 'min':'1' }), required=False)
 
     nombre_usuario = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí el nombre del usuario', 'required':'true'}))

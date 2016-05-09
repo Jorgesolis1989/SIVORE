@@ -187,16 +187,19 @@ def listar_votantes(request):
     llamarMensaje = request.session.pop('llamarMensaje', None)
     mensaje = request.session.pop('mensaje', None)
     varvotante ="votante"
-
     return render(request, 'listar_votantes.html', {'votantes': votantes,'llamarMensaje': llamarMensaje,'mensaje': mensaje, 'varvotante' : varvotante})
 
 
 @permission_required("usuarios.Administrador", login_url="/")
-def eliminar_votante(request, username=None):
+def editar_votante(request, username=None, codigo=None):
+    request.session["codigo_votante"] = codigo
+    return redirect("/usuarios/editar/"+username)
+
+@permission_required("usuarios.Administrador", login_url="/")
+def eliminar_votante(request, codigo=None):
     if request.method == 'POST':
         try:
-            votante = Votante.objects.filter(usuario__cedula_usuario=username)
-
+            votante = Votante.objects.filter(codigo=codigo)
             if votante:
                 votante[0].is_active = False
                 votante[0].usuario.is_active = False
@@ -219,12 +222,12 @@ def eliminar_votante(request, username=None):
 
         except Exception as e:
             llamarMensaje = "fracaso_usuario"
-            mensaje = "Hubo un eror, no se eliminó el votante " +  str(username) +" sactisfactoriamente."
+            mensaje = "Hubo un eror, no se eliminó el votante con codigo  " +  str(codigo) +" sactisfactoriamente."
 
         else:
         #redireccionando a la vista
             llamarMensaje = "elimino_usuario"
-            mensaje = "Se eliminó el votante " +  str(username) +" sactisfactoriamente."
+            mensaje = "Se eliminó el votante con código " +  str(codigo) +" sactisfactoriamente."
 
         request.session['llamarMensaje'] = llamarMensaje
         request.session['mensaje'] = mensaje

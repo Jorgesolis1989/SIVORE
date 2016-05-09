@@ -33,8 +33,8 @@
                         <td>{{ votante.plan_id}} -  {{ votante.plan.name_corporation }}</td>
                         <td>
                             <!--acciones - boton editar y eliminar-->
-                            <a class="btn btn-xs btn-default add-tooltip" data-toggle="tooltip" href="/usuarios/editar/{{ votante.usuario_id }}" data-original-title="Edit" data-container="body"><i class="fa fa-pencil"></i></a>
-                            <a id="{{ votante.usuario_id }}" name="votante" class="demo-bootbox-confirm-delete"  data-toggle="tooltip" href="#" data-original-title="Delete" data-container="body"><i class="btn btn-xs btn-danger add-tooltip btn-info fa fa-times"></i></a>
+                            <a class="btn btn-xs btn-default add-tooltip" data-toggle="tooltip" href="/votantes/editar/{{ votante.usuario.cedula_usuario }}/{{ votante.codigo }}" data-original-title="Edit" data-container="body"><i class="fa fa-pencil"></i></a>
+                            <a id="{{ votante.codigo }}" name="votante" class="demo-bootbox-confirm-delete"  data-toggle="tooltip" href="#" data-original-title="Delete" data-container="body"><i class="btn btn-xs btn-danger add-tooltip btn-info fa fa-times"></i></a>
                         </td>
                     </tr>
                 {% endfor %}
