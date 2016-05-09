@@ -3,12 +3,13 @@
 {% block content %}
     <!--<h1 class="page-header text-overflow">Corporación</h1>-->
 <div class="panel">
-        <div class="panel panel-colorful panel-primary">
-            <div class="panel-heading">
-                <h3 class="panel-title">Registro corporación</h3>
-            </div>
+        <div class="panel-colorful panel-primary">
+            <h3 class="panel-title">Registro corporación</h3>
         </div>
         <div class="panel-body">
+            <div id="demo-custom-toolbar" class="table-toolbar-right">
+            <button id="demo-btn-addrow" class="btn btn-mint btn-labeled fa fa-plus"><a id="users-create" href="{% url 'listar_corporacion' %}" class="btn btn-mint">Listar corporaciones</a></button>
+            </div>
             <!--<ul class="nav nav-tabs">
                 <li class="active"><a href="#demo-bsc-tab-1" data-toggle="tab"><i class="fa"></i> Crear corporación</a></li>
             </ul>-->

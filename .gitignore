@@ -21,6 +21,7 @@ parts/
 sdist/
 var/
 .idea/
+.migrations/
 *.egg-info/
 .installed.cfg
 *.egg

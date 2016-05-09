@@ -2,12 +2,13 @@
 {% block title %}Crear plancha{% endblock title %}
 {% block content %}
 <div class="panel">
-        <div class="panel panel-colorful panel-primary">
-            <div class="panel-heading">
-                <h3 class="panel-title">Registro plancha</h3>
-            </div>
+        <div class="panel-colorful panel-primary">
+            <h3 class="panel-title">Registro plancha</h3>
         </div>
         <div class="panel-body">
+            <div id="demo-custom-toolbar" class="table-toolbar-right">
+            <button id="demo-btn-addrow" class="btn btn-mint btn-labeled fa fa-plus"><a id="users-create" href="{% url 'listar_planchas' %}" class="btn btn-mint">Listar planchas</a></button>
+            </div>
             <form id="demo-bv-bsc-tabs" class="form-horizontal" action="" method="post">
                     <div class="tab-pane pad-btm fade in active" id="demo-bsc-tab-1">
                         <hr>
@@ -60,10 +61,10 @@
                     <div class="panel-footer">
                         <div class="row">
                             <div class="col-sm-7 col-sm-offset-3">
-                                {% if  enabledCrear %}
-                                    <button name="btnload" class="btn btn-primary btn-labeled fa fa-send fa-lg" type="submit">Crear</button>
+                                {% if   disabledBtnCrear %}
+                                    <button name="btnload" disabled class="btn btn-primary btn-labeled fa fa-send fa-lg" type="submit">Crear</button>
                                 {% else %}
-                                    <button name="btnload" disabled=True class="btn btn-primary btn-labeled fa fa-send fa-lg" type="submit">Crear</button>
+                                    <button name="btnload"  class="btn btn-primary btn-labeled fa fa-send fa-lg" type="submit">Crear</button>
                                 {% endif %}
 
                             </div>

@@ -16,9 +16,7 @@ timezone.activate(settings.TIME_ZONE)
 
 def mostrar_tarjeton(request):
     # Votar
-
     id_jornada_corporacion = request.session.pop("id_jornada_corporacion", None)
-    print("id_jornada_corporacion:" , id_jornada_corporacion)
 
     if request.POST:
 
@@ -56,7 +54,6 @@ def mostrar_tarjeton(request):
         except Exception as e:
             return redirect("login")
 
-        print(plancha_voto_en_blanco)
         jornada_corporacion = Jornada_Corporacion.objects.get(id=id_jornada_corporacion)
         return render(request, "mostrar_tarjeton.html", {"jornada_corporacion": jornada_corporacion, 'planchas':planchas , 'plancha_voto_en_blanco':plancha_voto_en_blanco})
     else:
@@ -65,10 +62,6 @@ def mostrar_tarjeton(request):
 
 def mostrar_corporaciones(request, usuario, votantes_asociados, jornada):
 
-    #print('votantes' , votantes_asociados.values_list('plan' , flat=True))
-    #print('usuario' , usuario)
-    #print('jornada' ,jornada)
-
     if request.POST and "btnCorporacion" in request.POST:
         id_jornada_corporacion = request.POST["btnCorporacion"]
         request.session['id_jornada_corporacion'] = id_jornada_corporacion
@@ -76,10 +69,6 @@ def mostrar_corporaciones(request, usuario, votantes_asociados, jornada):
 
     # method GET
     else:
-
-        llamarMensaje = request.session.pop('llamarMensaje', None)
-        mensaje = request.session.pop('mensaje', None)
-
         #votantes_asociados = Votante.objects.filter(usuario__cedula_usuario=request.user.username)
 
         # Corporaciones activas de la jornada
@@ -106,7 +95,8 @@ def mostrar_corporaciones(request, usuario, votantes_asociados, jornada):
         corporaciones_ya_votadas = Votacion_Log.objects.filter(is_active=True,
                                     usuario__cedula_usuario=request.user.username).values_list('jornada_corporacion__corporacion__id_corporation' , flat=True)
 
-        #print(corporaciones_ya_votadas)
+        llamarMensaje = request.session.pop('llamarMensaje', None)
+        mensaje = request.session.pop('mensaje', None)
 
         return render(request, 'votacion.html', {'jornada_corporaciones_activas':jornada_corporaciones_activas ,
                                                  'corporaciones_ya_votadas':corporaciones_ya_votadas, 'llamarMensaje': llamarMensaje ,'mensaje': mensaje})

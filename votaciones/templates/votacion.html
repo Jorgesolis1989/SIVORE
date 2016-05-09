@@ -4,11 +4,7 @@
     <!--===Lista de corporaciones habilitadas para el votante==-->
     <form method="post" name="formvotaciones">
         {% csrf_token %}
-        <script>
-            counter = 0
-        </script>
         {% for jornada_corporacion_activa in jornada_corporaciones_activas %}
-        <!--Tile with - (Por el Consejo Superior)-->
         <!--===================================================-->
         {% if  jornada_corporacion_activa.corporacion.id_corporation  in corporaciones_ya_votadas%}
         <div class="col-md-6 col-lg-4">
@@ -30,28 +26,26 @@
         <br>
         </div>
         {% else %}
-        <div class="col-md-6 col-lg-4">
-        <button type="submit" name="btnCorporacion" class="btn btn-primary btn-block" value="{{ jornada_corporacion_activa.id }}">
-        <a href="{% url 'mostrar_tarjeton' %}">
-            <div class="pad-all media">
-                <div class="media-left">
-                    <span class="icon-wrap icon-wrap-xs">
-                        <i class="fa fa-users fa-3x"></i>
-                    </span>
+            <div class="col-md-6 col-lg-4">
+            <button type="submit" name="btnCorporacion" class="btn btn-primary btn-block" value="{{ jornada_corporacion_activa.id }}">
+            <a href="{% url 'mostrar_tarjeton' %}">
+                <div class="pad-all media">
+                    <div class="media-left">
+                        <span class="icon-wrap icon-wrap-xs">
+                            <i class="fa fa-users fa-3x"></i>
+                        </span>
+                    </div>
+                    <div class="media-body">
+                        <p class="h4 media-heading text-bold">{{jornada_corporacion_activa.corporacion.name_corporation}}</p>
+                        <p class="text-semibold">{{ jornada_corporacion_activa.cantidad_planchas }} Planchas</p>
+                    </div>
                 </div>
-                <div class="media-body">
-                    <p class="h4 media-heading text-bold">{{jornada_corporacion_activa.corporacion.name_corporation}}</p>
-                    <p class="text-semibold">{{ jornada_corporacion_activa.cantidad_planchas }} Planchas</p>
-                </div>
+            </a>
+            </button>
+            <br>
             </div>
-        </a>
-        </button>
-        <br>
         {% endif %}
-        </div>
         <!--===================================================-->
-        <!--End Tile with - (Por el Consejo Superior)-->
-
         {% endfor %}
         </form>
 <script>
