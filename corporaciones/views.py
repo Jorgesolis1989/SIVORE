@@ -98,6 +98,12 @@ def editar_corporacion(request, id_corporation=None):
             form = FormularioEditarCorporacion()
 
             form.initial = {'id_corporation': corporacion.id_corporation, 'name_corporation': corporacion.name_corporation, 'facultad': corporacion.facultad}
+
+            if corporacion.facultad is not None:
+                form.fields["facultad"].empty_label = None
+            else:
+                form.fields['facultad'].widget.attrs['disabled'] = True
+
         return render(request, 'editar_corporacion.html', {'form': form})
 
 
