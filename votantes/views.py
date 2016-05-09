@@ -27,34 +27,41 @@ def registro_votante(request):
 
         #Si el formulario es valido y tiene datos
         if form.is_valid():
-            #Capture la cedula del votante
+
+            #Capture el codigo del votante
             cedula_votante = form.cleaned_data["cedula_usuario"]
+
+            ## Verificando si el usuario existe o no existe
+            try:
+                usuario = Usuario.objects.get(cedula_usuario=cedula_votante)
+            except Usuario.DoesNotExist:
+                usuario = Usuario()
+
+            codigo = form.cleaned_data["codigo_estudiante"]
 
             try:
                 #Consultando el votante en la base de datos.
-                votante = Votante.objects.get(usuario__cedula_usuario=cedula_votante)
-
+                votante = Votante.objects.get(codigo=codigo)
             #Si el votante no existe, lo crea
             except Votante.DoesNotExist:
+
                 # Creando el usuario votante
-                usuario = Usuario()
-                createuservotante(usuario, form)
+                votante = Votante()
+                createuservotante(usuario, votante, form)
                 # Borrando los datos del formulario y enviando el mensaje de sactisfacion
-                form = FormularioRegistroVotante()
+                #form = FormularioRegistroVotante()
                 mensaje = "El votante se guardo correctamente, la contraseña se envío al correo " + usuario.email
                 llamarMensaje = "exito_usuario"
             else:
                 # Si el votante esta en la BD y no esta activo
-
-                if not Usuario.is_active:
-                    usuario = Usuario()
-                    createuservotante(usuario, form)
+                if not votante.is_active:
+                    createuservotante(usuario, votante, form)
                     mensaje = "El votante se guardo correctamente, la contraseña se envío al correo " + usuario.email
                     llamarMensaje = "exito_usuario"
 
                 # Si el votante ya existe en la BD y esta activo
                 else:
-                    mensaje = "El votante " + str(cedula_votante)+ " ya esta registrado"
+                    mensaje = "El votante con código " + str(votante.codigo)+ " ya esta registrado en el sistema"
                     llamarMensaje = "fracaso_usuario"
 
             request.session['llamarMensaje'] = llamarMensaje
@@ -223,7 +230,7 @@ def eliminar_votante(request, username=None):
         request.session['mensaje'] = mensaje
         return redirect("listar_votantes")
 
-def createuservotante(usuario, form):
+def createuservotante(usuario, votante, form):
     usuario.cedula_usuario = form.cleaned_data["cedula_usuario"]
     usuario.first_name = form.cleaned_data["nombre_usuario"]
     usuario.last_name = form.cleaned_data["apellido_usuario"]
@@ -248,10 +255,10 @@ def createuservotante(usuario, form):
     usuario.user_permissions.add(Permission.objects.get(codename='Votante'))
 
     #Creando en la tabla votante
-    votante = Votante()
     votante.usuario = usuario
     votante.codigo = form.cleaned_data["codigo_estudiante"]
     votante.plan = form.cleaned_data["plan_estudiante"]
+    votante.is_active = True
 
     #Crea el votante en la BD si hay excepcion
     try:
