@@ -4,7 +4,7 @@ from corporaciones.models import Corporacion
 from jornadas.models import Jornada_Corporacion
 
 class Candidato(models.Model):
-    votante = models.OneToOneField(Votante, null=False)
+    votante = models.ForeignKey(Votante, null=False)
     foto = models.ImageField(upload_to='fotos_candidatos/')
     tipo_candidato = models.CharField(max_length=45, blank=True, null=False)
     jornada_corporacion = models.ForeignKey(Jornada_Corporacion, null=False)

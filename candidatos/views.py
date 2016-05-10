@@ -27,7 +27,7 @@ def registro_candidato(request):
             #Capture la cedula del usuario
             votante = form.cleaned_data["votante"]
 
-            candidato =Candidato.objects.filter(votante__usuario__cedula_usuario=votante.usuario.cedula_usuario)
+            candidato =Candidato.objects.filter(votante__usuario__cedula_usuario=votante.usuario.cedula_usuario , is_active=True)
 
             #Si el candidato no existe, lo crea
             if not candidato:
@@ -82,7 +82,9 @@ def registro_candidato(request):
 
             corporaciones_habilitadas = Jornada_Corporacion.objects.filter(jornada__is_active=True)
             corporacion_candidato = corporaciones_habilitadas.filter(Q(corporacion__id_corporation=votante.plan.id_corporation) |
-                                                                    Q(corporacion__id_corporation=votante.plan.facultad.id_corporation))
+                                                                    Q(corporacion__id_corporation=votante.plan.facultad.id_corporation) |
+                                                                    Q(corporacion__id_corporation=1) |
+                                                                    Q(corporacion__id_corporation=2) )
 
             form.fields["corporacion"].queryset = corporacion_candidato
             return render(request, 'registro_candidato.html', {'form': form, 'enabledSiguiente': True })
@@ -92,12 +94,15 @@ def registro_candidato(request):
         form = FormularioRegistroCandidato()
         llamarMensaje = request.session.pop('llamarMensaje', None)
         mensaje = request.session.pop('mensaje', None)
+        print(form.corporaciones_que_se_eligiran)
         print(form.votantes_que_pueden_ser_candidatos)
         if not form.corporaciones_que_se_eligiran:
             mensaje = "NO hay corporaciones habilitadas para votar Debe de CREAR JORNADA"
             llamarMensaje = "fracaso_usuario"
             enabledSiguiente = False
 
+
+        #print(form.votantes_que_pueden_ser_candidatos)
         elif not form.votantes_que_pueden_ser_candidatos:
             mensaje = "NO HAY VOTANTES en las corporaciones habilitadas Dirijase a CREAR VOTANTES"
             llamarMensaje = "fracaso_usuario"

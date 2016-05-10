@@ -13,10 +13,17 @@ class FormularioRegistroCandidato(forms.Form):
     *******************************************  Consultas para el campo votantes **********************
     """
     ### Consulta corporaciones que se eligiran
-    corporaciones_que_se_eligiran = Corporacion.objects.filter(id_corporation__in= (Jornada_Corporacion.objects.filter(jornada__is_active=True , is_active=True).values_list("corporacion__id_corporation", flat=True)))
+
+    corporaciones_habilitadas = Jornada_Corporacion.objects.filter(jornada__is_active=True)
+
+    corporaciones_que_se_eligiran = corporaciones_habilitadas.values_list("corporacion__id_corporation", flat=True)
 
     # votantes que pueden votar ser elegidos en las corporaciones que estan permitidas
-    votantes_que_pueden_ser_candidatos = Votante.objects.filter(
+
+    if 1 or 2  in corporaciones_que_se_eligiran:
+        votantes_que_pueden_ser_candidatos = Votante.objects.filter(is_active=True)
+    else:
+        votantes_que_pueden_ser_candidatos = Votante.objects.filter(
             (Q(plan__id_corporation__in= corporaciones_que_se_eligiran) | Q(plan__facultad__id_corporation__in=corporaciones_que_se_eligiran)) & Q(is_active=True))
 
     # excluimos los votantes que ya estan como candidatos
@@ -38,11 +45,12 @@ class FormularioRegistroCandidato(forms.Form):
     """
     *******************************************  Consultas para el campo corporaciones **********************
     """
-    corporaciones_habilitadas = Jornada_Corporacion.objects.filter(jornada__is_active=True)
 
     if votantes_que_pueden_ser_candidatos:
         corporacion_candidato = corporaciones_habilitadas.filter(Q(corporacion__id_corporation=votantes_que_pueden_ser_candidatos[0].plan.id_corporation) |
-                                                                Q(corporacion__id_corporation=votantes_que_pueden_ser_candidatos[0].plan.facultad.id_corporation))
+                                                                Q(corporacion__id_corporation=votantes_que_pueden_ser_candidatos[0].plan.facultad.id_corporation) |
+                                                                Q(corporacion__id_corporation=1) |
+                                                                Q(corporacion__id_corporation=2))
     else:
         corporacion_candidato = corporaciones_habilitadas
 
