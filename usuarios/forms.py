@@ -33,7 +33,7 @@ class FormularioRegistroUsuario(forms.Form):
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí el apellido  del usuario', 'required':'true'}))
 
     CHOICES = [('Administrador','Administrador'), ('Votante','Votante'), ('Superior','Superior') ]
-    rol = forms.ChoiceField(widget=forms.RadioSelect(attrs={'onClick': "showfieldvotantes('FormularioRegistroUsuario')"}), choices=CHOICES)
+    rol = forms.ChoiceField(widget=forms.RadioSelect(attrs={'onClick': "showfieldvotantes('FormularioRegistroUsuario')"}), choices=CHOICES, initial='Administrador')
 
 
     email = forms.EmailField(

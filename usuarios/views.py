@@ -49,7 +49,7 @@ def votante_home(request, usuario):
     # Obteniendo los votantes asociados al usuario "Puede tener dos carreras"
     votantes_asociados = Votante.objects.filter(usuario__cedula_usuario=request.user.username)
 
-    # Jornadas de acceso a las cuales el tiene acceso el/los votantes asociado
+    # Jornadas de acceso a las cuales el tiene acceso el/los votantes asociados
     jornadas_acceso = []
     for votante in votantes_asociados:
         jornadas_acceso += Jornada_Corporacion.objects.filter(Q(jornada__is_active=True) &
@@ -70,7 +70,7 @@ def votante_home(request, usuario):
     form = FormularioLogin()
 
     if not jornadas_acceso:
-        mensaje = "Usted no tiene jornadas electorales cerca"
+        mensaje = "No hay jornada electoral asignadas para usted"
     else:
         mensaje = "No puede acceder todavía al sistema, su acceso es el " +str(jornadas_acceso[0].jornada.fecha_inicio_jornada) +\
                   " para la jornada "+str(jornadas_acceso[0].jornada.nombrejornada)
@@ -80,7 +80,7 @@ def votante_home(request, usuario):
     except KeyError:
        pass
 
-    return render(request , 'login.html', {"form":form , "mensaje": mensaje  })
+    return render(request, 'login.html', {"form":form , "mensaje": mensaje  })
 
 # Pagina del home  para usuario Superior
 @permission_required("usuarios.Superior" , login_url="/")

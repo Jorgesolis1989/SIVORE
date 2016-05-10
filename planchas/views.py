@@ -85,7 +85,7 @@ def registro_plancha(request):
         else:
             form = FormularioRegistroPlancha()
             llenarformplancha(form , form.jornada_corporaciones[0])
-            mensaje = "No hay candidatos para la corporación seleccionada"
+            mensaje = "No hay candidatos seleccionados para la corporación"
             llamarMensaje = "fracaso_usuario"
             return render(request,'registro_plancha.html', {'form':form, 'llamarMensaje':llamarMensaje, 'mensaje': mensaje})
 

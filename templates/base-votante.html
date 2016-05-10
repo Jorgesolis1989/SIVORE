@@ -295,7 +295,7 @@
 				<!--Page Title-->
 				<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 				<div id="page-title">
-					<h1 class="page-header text-overflow text-bold">Elecciones de Representantes Estudiantiles Universidad del Valle 2016</h1>
+					<h1 class="page-header text-overflow text-bold">Elecciones de Representantes Estudiantiles Universidad del Valle</h1>
 
 					<!--Searchbox-->
 					<!--<div class="searchbox">
@@ -352,12 +352,12 @@
 									<li class="list-divider"></li>
 
 									<!--Category name-->
-									<li class="list-header">JORNADA ELECTORAL - ELECCIONES 2016</li>
+									<li class="list-header">JORNADA ELECTORAL</li>
                                     <!--Menu list item menu principal-->
 									<li>
-										<a href="#">
+										<a href="{% url 'login' %}">
 											<i class="fa fa-file"></i>
-											<span class="menu-title">Corporaciones para votar</span>
+											<span class="menu-title">Corporaciones para elegir</span>
 										</a>
 									</li>
 									<!--end Menu list item menu principal-->
@@ -365,11 +365,12 @@
 									<li>
 										<a href="#">
 											<i class="fa fa-file"></i>
-											<span class="menu-title">Programas y propuestas</span>
+											<span class="menu-title">Cómo votar ?</span>
 										</a>
 
 										<!--Submenu-->
-										<ul>
+										<!--
+                                        <ul>
 											<li class="list-divider"></li>
 											<li>
 												<a href="#">
@@ -380,64 +381,14 @@
 													<i class="arrow"></i>
 												</a>
 
-												<!--Submenu-->
+												<!--Submenu
 												<ul class="collapse">
 													<li><a href="{% url 'mostrar_tarjeton' %}">Plancha # 1</a></li>
 													<li><a href="">Plancha # 2</a></li>
 													<li><a href="#">Plancha # 3</a></li>
-												</ul>
-											</li>
-											<li>
-												<a href="#">
-													<i class=""></i>
-													<span class="menu-title">
-													<strong>Consejo Académico</strong>
-													</span>
-													<i class="arrow"></i>
-												</a>
+												</ul>-->
+                                        </li>
 
-												<!--Submenu-->
-												<ul class="collapse">
-													<li><a href="#">Plancha # 1</a></li>
-													<li><a href="#">Plancha # 2</a></li>
-													<li><a href="#">Plancha # 3</a></li>
-													<li class="list-divider"></li>
-												</ul>
-											</li>
-											<li>
-												<a href="#">
-													<i class=""></i>
-													<span class="menu-title">
-													<strong>Facultades y Escuelas</strong>
-													</span>
-													<i class="arrow"></i>
-												</a>
-
-												<!--Submenu-->
-												<ul class="collapse">
-													<li><a href="#">Plancha # 1</a></li>
-													<li><a href="#">Plancha # 2</a></li>
-													<li><a href="#">Plancha # 3</a></li>
-													<li class="list-divider"></li>
-												</ul>
-											</li>
-											<li>
-												<a href="#">
-													<i class=""></i>
-													<span class="menu-title">
-													<strong>Programas Académicos</strong>
-													</span>
-													<i class="arrow"></i>
-												</a>
-
-												<!--Submenu-->
-												<ul class="collapse">
-													<li><a href="#">Plancha # 1</a></li>
-													<li><a href="#">Plancha # 2</a></li>
-													<li><a href="#">Plancha # 3</a></li>
-													<li class="list-divider"></li>
-												</ul>
-											</li>
 										</ul>
 									</li>
 									<!--end Menu list item menu principal-->
@@ -456,14 +407,9 @@
 									</div>
 
 									<!-- Hide the content on collapsed navigation -->
-									<div id="demo-wg-server" class="hide-small mainnav-widget-content">
-										<ul class="list-group">
-											<li class="list-header pad-no pad-ver">JORNADA ACTUAL</li>
-											<li class="mar-btm">
-												<span class="label label-primary pull-right">Representantes estudiantiles</span>
-											</li>
-
-										</ul>
+									<div id="demo-wg-server" class="hide-lg mainnav-widget-content">
+										{% block jornada %}
+                                        {% endblock jornada %}
 									</div>
 								</div>
 								<!--================================-->

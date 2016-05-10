@@ -99,7 +99,8 @@ def mostrar_corporaciones(request, usuario, votantes_asociados, jornada):
         mensaje = request.session.pop('mensaje', None)
 
         return render(request, 'votacion.html', {'jornada_corporaciones_activas':jornada_corporaciones_activas ,
-                                                 'corporaciones_ya_votadas':corporaciones_ya_votadas, 'llamarMensaje': llamarMensaje ,'mensaje': mensaje})
+                                                 'corporaciones_ya_votadas':corporaciones_ya_votadas, 'llamarMensaje': llamarMensaje ,'mensaje': mensaje,
+                                                 'jornada':jornada})
 
 def utc_to_local(utc_dt):
     return utc_dt.replace(tzinfo=timezone.utc).astimezone(tz=None)
