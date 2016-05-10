@@ -14,7 +14,7 @@ class FormularioRegistroCorporacion(forms.Form):
     facultad = forms.ModelChoiceField(queryset=Corporacion.objects.filter(is_active=True, facultad=None).exclude
     (Q(id_corporation=1) | Q(id_corporation=2) ), required=False, initial=None)
 
-    sede = forms.ModelChoiceField(queryset=Sede.objects.filter(is_active=True), empty_label=None)
+    sede = forms.ModelChoiceField(queryset=Sede.objects.filter(is_active=True),required=False,)
 
     def corporacion_existe(self):
         diccionario_limpio = self.cleaned_data
