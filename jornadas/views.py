@@ -157,7 +157,7 @@ def editar_jornada(request, id):
 
                     # Desactivamos los candidatos de esa jornada
                     candidatos_a_desactivar = Candidato.objects.filter(jornada_corporacion__jornada_id=jornada_activa.jornada.id ,
-                                                                       jornada_corporacion__corporacion__id_corporation=jornada_activa.corporacion.id_corporation,
+                                                                       jornada_corporacion__corporacion__id=jornada_activa.corporacion.id,
                                                                        is_active=True)
                     #Guardando los candidatos
                     for candidato in candidatos_a_desactivar:
@@ -166,7 +166,7 @@ def editar_jornada(request, id):
 
                     # Desactivamos las planchas de la jornada
                     planchas_a_desactivar = Plancha.objects.filter(jornada_corporacion__jornada_id=jornada_activa.jornada.id ,
-                                                                       jornada_corporacion__corporacion__id_corporation=jornada_activa.corporacion.id_corporation,
+                                                                       jornada_corporacion__corporacion__id=jornada_activa.corporacion.id,
                                                                        is_active=True)
                     #Guardando los planchas
                     for plancha in planchas_a_desactivar:
@@ -182,7 +182,7 @@ def editar_jornada(request, id):
 
             #Para agregar las corporaciones faltantes
             for corporacion in corporaciones:
-                if corporacion.id_corporation not in jornadas_activas.values_list('corporacion__id_corporation' , flat=True):
+                if corporacion.id not in jornadas_activas.values_list('corporacion__id' , flat=True):
                     jornada_corporacion = Jornada_Corporacion(jornada=jornada , corporacion=corporacion , is_active=True)
                     try:
                         jornada_corporacion.save()
@@ -216,13 +216,14 @@ def editar_jornada(request, id):
         form = FormularioEditarJornada()
 
         # corporaciones de la jornada
-        corporaciones_de_jornada = Corporacion.objects.filter(id_corporation__in=Jornada_Corporacion.objects.filter(jornada_id= jornada.id, is_active=True, ).values_list("corporacion__id_corporation" , flat=True))
+        corporaciones_de_jornada = Corporacion.objects.filter(id__in=Jornada_Corporacion.objects.filter(jornada_id= jornada.id, is_active=True, ).values_list("corporacion__id" , flat=True))
         print(corporaciones_de_jornada)
+
         # lista de ids Corporaciones ocupadas
-        corporaciones_ocupadas = Corporacion.objects.filter(id_corporation__in=Jornada_Corporacion.objects.filter(jornada__is_active=True).values_list("corporacion__id_corporation", flat=True))
+        corporaciones_ocupadas = Corporacion.objects.filter(id__in=Jornada_Corporacion.objects.filter(jornada__is_active=True).values_list("corporacion__id", flat=True))
 
         # Corporaciones libres
-        corporaciones_libres= Corporacion.objects.all().exclude(id_corporation__in=corporaciones_ocupadas.exclude(id_corporation__in=corporaciones_de_jornada.values_list("id_corporation", flat=True)).values_list("id_corporation", flat=True))
+        corporaciones_libres= Corporacion.objects.all().exclude(id__in=corporaciones_ocupadas.exclude(id__in=corporaciones_de_jornada.values_list("id", flat=True)).values_list("id", flat=True))
 
         # Agregando las corporaciones de la jornada porque aparecen ocupadas
         form.fields["corporaciones"].queryset = corporaciones_libres

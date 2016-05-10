@@ -114,7 +114,7 @@ def registro_votante(request):
                         votante.codigo = row[4]
                         crearVotante = True
                         try:
-                            plan = Corporacion.objects.get(id_corporation=row[5])
+                            plan = Corporacion.objects.get(id_corporation=row[5], sede__codigo=row[6] )
                             votante.plan = plan
                         except Corporacion.DoesNotExist:
                             mensaje = "ERROR el plan " + str(row[5]) + "No está creado en el sistema, debe de crearlo para continuar.... Votantes creados "+ str(usercreate)

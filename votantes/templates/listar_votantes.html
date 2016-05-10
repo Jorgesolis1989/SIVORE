@@ -30,7 +30,7 @@
                     <tr>
                         <td>{{ votante.codigo}}</td>
                         <td>{{ votante.usuario.first_name}} {{ votante.usuario.last_name}} </td>
-                        <td>{{ votante.plan_id}} -  {{ votante.plan.name_corporation }}</td>
+                        <td>{{ votante.plan }}</td>
                         <td>
                             <!--acciones - boton editar y eliminar-->
                             <a class="btn btn-xs btn-default add-tooltip" data-toggle="tooltip" href="/votantes/editar/{{ votante.usuario.cedula_usuario }}/{{ votante.codigo }}" data-original-title="Edit" data-container="body"><i class="fa fa-pencil"></i></a>
