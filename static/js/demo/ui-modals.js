@@ -60,6 +60,22 @@
 		});
 	});
 
+	 // BOOTBOX - CONFIRM MODAL - PARA ELIMINAR USUARIOS CANDIDATOS
+	// =================================================================
+	// Require Bootbox
+	// http://bootboxjs.com/
+	// =================================================================
+	$('.demo-bootbox-confirm-delete-candidato').on('click', function(){
+		var id = $(this).attr('id')
+		var name = $(this).attr('name')
+
+		bootbox.confirm("Esta seguro que desea eliminar el candidato  "+name+" con código "+id+" ?", function(result) {
+			if (result) {
+				document.formDelete.action = "/candidatos/eliminar/"+id
+				document.formDelete.submit()
+			}
+		});
+	});
 
 
 	 // BOOTBOX - CONFIRM MODAL - PARA ELIMINAR CORPORACIONES
