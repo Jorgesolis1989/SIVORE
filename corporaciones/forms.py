@@ -1,6 +1,7 @@
 from django import forms
 from django.db.models import Q
-from corporaciones.models import Corporacion
+from corporaciones.models import Corporacion , Sede
+
 
 class FormularioRegistroCorporacion(forms.Form):
 
@@ -12,6 +13,8 @@ class FormularioRegistroCorporacion(forms.Form):
 
     facultad = forms.ModelChoiceField(queryset=Corporacion.objects.filter(is_active=True, facultad=None).exclude
     (Q(id_corporation=1) | Q(id_corporation=2) ), required=False, initial=None)
+
+    sede = forms.ModelChoiceField(queryset=Sede.objects.filter(is_active=True), empty_label=None)
 
     def corporacion_existe(self):
         diccionario_limpio = self.cleaned_data
@@ -30,3 +33,5 @@ class FormularioEditarCorporacion(forms.Form):
             widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Escriba aquí el nombre de la corporación', 'required':'true'}))
 
     facultad = forms.ModelChoiceField(queryset=Corporacion.objects.filter(name_corporation__contains="Facultad"), required=False)
+
+    sede = forms.ModelChoiceField(queryset=Sede.objects.filter(is_active=True))

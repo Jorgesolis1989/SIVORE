@@ -67,7 +67,7 @@ def listar_corporacion(request):
 #Edicion usuarios
 @permission_required("usuarios.Administrador" , login_url="/")
 def editar_corporacion(request, id_corporation=None):
-    corporacion = Corporacion.objects.get(id_corporation=id_corporation)
+    corporacion = Corporacion.objects.get(id=id_corporation)
     if request.method == 'POST':
         form = FormularioEditarCorporacion(request.POST)
         #Si el formulario es valido y tiene datos
@@ -76,6 +76,7 @@ def editar_corporacion(request, id_corporation=None):
             corporacion.id_corporation = form.cleaned_data["id_corporation"]
             corporacion.name_corporation = form.cleaned_data["name_corporation"]
             corporacion.facultad = form.cleaned_data["facultad"]
+            corporacion.facultad = form.cleaned_data["sede"]
 
 
              #Actualiza la corporacion en la BD si hay excepcion
@@ -97,12 +98,15 @@ def editar_corporacion(request, id_corporation=None):
         else:
             form = FormularioEditarCorporacion()
 
-            form.initial = {'id_corporation': corporacion.id_corporation, 'name_corporation': corporacion.name_corporation, 'facultad': corporacion.facultad}
+            form.initial = {'id_corporation': corporacion.id_corporation, 'name_corporation': corporacion.name_corporation, 'facultad': corporacion.facultad,
+                            'sede': corporacion.sede}
 
             if corporacion.facultad is not None:
                 form.fields["facultad"].empty_label = None
+                form.fields["sede"].empty_label = None
             else:
                 form.fields['facultad'].widget.attrs['disabled'] = True
+                form.fields['sede'].widget.attrs['disabled'] = True
 
         return render(request, 'editar_corporacion.html', {'form': form})
 
@@ -126,11 +130,10 @@ def eliminar_corporacion(request, id_corporation=None):
 
             llamarMensaje = "exito_usuario"
             mensaje = "Se eliminó la corporacion " +  str(id_corporation) +" sactisfactoriamente"
-
-        try:
-            corporacion.save()
-        except Exception as e:
-            print(e)
+            try:
+                corporacion.save()
+            except Exception as e:
+                print(e)
 
     request.session['llamarMensaje'] = llamarMensaje
     request.session['mensaje'] = mensaje
@@ -141,6 +144,7 @@ def corporacion_create(corporacion, form):
     corporacion.id_corporation= form.cleaned_data["id_corporation"]
     corporacion.name_corporation= form.cleaned_data["name_corporation"]
     corporacion.facultad= form.cleaned_data["facultad"]
+    corporacion.facultad= form.cleaned_data["sede"]
     corporacion.is_active = True
 
     try:
