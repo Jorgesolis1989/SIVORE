@@ -144,7 +144,7 @@ def corporacion_create(corporacion, form):
     corporacion.id_corporation= form.cleaned_data["id_corporation"]
     corporacion.name_corporation= form.cleaned_data["name_corporation"]
     corporacion.facultad= form.cleaned_data["facultad"]
-    corporacion.facultad= form.cleaned_data["sede"]
+    corporacion.sede= form.cleaned_data["sede"]
     corporacion.is_active = True
 
     try:
