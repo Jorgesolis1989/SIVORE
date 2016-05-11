@@ -179,7 +179,7 @@ def editar_plancha(request, idcorporacion=None,numplancha=None):
 
             # Si la plancha ya existe en la BD
             else:
-                mensaje = "La plancha " + str(numeroplancha) + " de la corporacion "+plancha.corporacion.name_corporation+" ya existe en el sistema"
+                mensaje = "La plancha " + str(numeroplancha) + " de la corporacion "+plancha.jornada_corporacion.corporacion.name_corporation+" ya existe en el sistema"
                 llamarMensaje = "fracaso_usuario"
 
             request.session["llamarMensaje"] = llamarMensaje
