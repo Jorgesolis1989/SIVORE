@@ -20,16 +20,16 @@ def registro_corporacion(request):
         if form.is_valid():
             #Capture el id de corporacion
             id_corporation = form.cleaned_data["id_corporation"]
-
+            sede = form.cleaned_data["sede"]
             #Consultando la corporacion en la base de datos.
             try:
-                corporacion = Corporacion.objects.get(id_corporation=id_corporation)
+                corporacion = Corporacion.objects.get(id_corporation=id_corporation , sede=sede)
             except Corporacion.DoesNotExist:
                 corporacion = Corporacion()
                 corporacion_create(corporacion, form)
 
                 llamarMensaje = "exito_corporacion"
-                mensaje = "La corporación "+ str(id_corporation)  +" se guardo correctamente"
+                mensaje = "La corporación "+ str(id_corporation)  +" sede "+str(sede.nombre_sede)+" se guardo correctamente"
 
             else:
                 if not corporacion.is_active:
@@ -38,7 +38,7 @@ def registro_corporacion(request):
                     mensaje = "La corporación "+ str(id_corporation)  +" se guardo correctamente"
                 else:
                     llamarMensaje = "fracaso_corporacion"
-                    mensaje = "La corporación " + str(id_corporation)  + " ya esta registrada"
+                    mensaje = "La corporación " + str(id_corporation)  +" sede "+str(sede.nombre_sede)+" ya esta registrada"
 
             request.session['llamarMensaje'] = llamarMensaje
             request.session['mensaje'] = mensaje
