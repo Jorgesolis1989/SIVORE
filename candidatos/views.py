@@ -177,7 +177,9 @@ def editar_candidato(request, codigo=None):
 
             corporaciones_habilitadas = Jornada_Corporacion.objects.filter(jornada__is_active=True)
             corporacion_candidato = corporaciones_habilitadas.filter(Q(corporacion__id=votante.plan.id) |
-                                                       Q(corporacion__id=votante.plan.facultad.id))
+                                                       Q(corporacion__id=votante.plan.facultad.id)
+                                                        | Q(corporacion__id_corporation=1)
+                                                                     | Q(corporacion__id_corporation=2))
 
             form.fields["corporacion"].queryset = corporacion_candidato
 
