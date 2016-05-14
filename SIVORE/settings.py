@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import dj_database_url
+
+
+
 import os
 from django.core.urlresolvers import reverse_lazy
 
@@ -109,6 +113,7 @@ DATABASES = {
     'PASSWORD': 'sivorepass',
     'HOST': '127.0.0.1',
     'PORT': '5432',
+    'CONN_MAX_AGE': 500,
     }
 }
 
@@ -130,6 +135,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
+
 STATIC_URL = '/static/'
 
 
@@ -137,6 +143,7 @@ STATICFILES_DIRS = (
    os.path.join(BASE_DIR, "static"),
 )
 
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 LOGIN_URL = reverse_lazy('login')
 LOGIN_REDIRECT_URL = reverse_lazy('home')
