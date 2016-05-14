@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Jornada',
             fields=[
-                ('id', models.AutoField(auto_created=True, verbose_name='ID', serialize=False, primary_key=True)),
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('nombrejornada', models.CharField(max_length=255)),
                 ('fecha_inicio_jornada', models.DateTimeField()),
                 ('fecha_final_jornada', models.DateTimeField()),
@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Jornada_Corporacion',
             fields=[
-                ('id', models.AutoField(auto_created=True, verbose_name='ID', serialize=False, primary_key=True)),
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('is_active', models.BooleanField(default=True)),
                 ('cantidad_planchas', models.IntegerField(default=0)),
                 ('corporacion', models.ForeignKey(to='corporaciones.Corporacion')),

@@ -16,7 +16,7 @@ class Jornada(models.Model):
         return '%s -   %s ' % (self.nombrejornada, self.fecha_inicio_jornada.date())
 
     def corporation_names(self):
-        return ', '.join([a.name_corporation for a in self.corporaciones.all()])
+        return ',  '.join([(a.name_corporation + (" "if a.sede is None else  " Sede "+ a.sede.nombre_sede )) for a in self.corporaciones.all()])
     corporation_names.short_description = "Corporacion Names"
 
 
@@ -31,4 +31,4 @@ class Jornada_Corporacion(models.Model):
         db_table = 'jornada_corporacion'
 
     def __str__(self):
-        return '%s - %s el %s' % ( self.corporacion.name_corporation , self.jornada.nombrejornada , self.jornada.fecha_inicio_jornada.date())
+        return '%s - %s el %s' % ( self.corporacion , self.jornada.nombrejornada , self.jornada.fecha_inicio_jornada.date())

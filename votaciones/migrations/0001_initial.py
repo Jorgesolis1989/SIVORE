@@ -15,15 +15,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Votacion_Log',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', auto_created=True, serialize=False, primary_key=True)),
+                ('id', models.AutoField(primary_key=True, serialize=False, auto_created=True, verbose_name='ID')),
                 ('fecha_votacion', models.DateTimeField(auto_now_add=True)),
                 ('is_active', models.BooleanField(default=True)),
                 ('jornada_corporacion', models.ForeignKey(to='jornadas.Jornada_Corporacion')),
                 ('usuario', models.ForeignKey(to='usuarios.Usuario')),
             ],
             options={
-                'ordering': ['fecha_votacion'],
                 'db_table': 'votacion_log',
+                'ordering': ['fecha_votacion'],
             },
         ),
     ]

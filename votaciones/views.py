@@ -79,8 +79,8 @@ def mostrar_corporaciones(request, usuario, votantes_asociados, jornada):
         #Jornada Corporaciones que estan permitidas por el usuario
         corporaciones = []
         for votante in votantes_asociados:
-                corporaciones += (Corporacion.objects.filter(Q(id_corporation=votante.plan.facultad.id_corporation) |
-                                         Q(id_corporation=votante.plan.id_corporation)).values_list("id_corporation" , flat=True))
+                corporaciones += (Corporacion.objects.filter(Q(id=votante.plan.facultad.id) |
+                                         Q(id=votante.plan.id)).values_list("id" , flat=True))
 
 
         jornada_corporaciones_activas = jornada_corporaciones_activas.filter(
@@ -89,11 +89,11 @@ def mostrar_corporaciones(request, usuario, votantes_asociados, jornada):
                 # Consejo académico
                 Q(corporacion__id_corporation=2) |
                 # las que el puede
-                Q(corporacion__id_corporation__in=corporaciones)).order_by("corporacion__id_corporation")
+                Q(corporacion__id__in=corporaciones)).order_by("corporacion__id_corporation")
 
 
         corporaciones_ya_votadas = Votacion_Log.objects.filter(is_active=True,
-                                    usuario__cedula_usuario=request.user.username).values_list('jornada_corporacion__corporacion__id_corporation' , flat=True)
+                                    usuario__cedula_usuario=request.user.username).values_list('jornada_corporacion__corporacion__id' , flat=True)
 
         llamarMensaje = request.session.pop('llamarMensaje', None)
         mensaje = request.session.pop('mensaje', None)

@@ -80,9 +80,8 @@ def registro_candidato(request):
             votante = Votante.objects.get(codigo=request.POST['votante'])
             form = FormularioRegistroCandidato(request.POST)
 
-            corporaciones_habilitadas = Jornada_Corporacion.objects.filter(jornada__is_active=True)
-            corporacion_candidato = corporaciones_habilitadas.filter(Q(corporacion__id_corporation=votante.plan.id_corporation) |
-                                                                    Q(corporacion__id_corporation=votante.plan.facultad.id_corporation) |
+            corporacion_candidato = form.corporaciones_habilitadas.filter(Q(corporacion__id=votante.plan.id) |
+                                                                    Q(corporacion__id=votante.plan.facultad.id) |
                                                                     Q(corporacion__id_corporation=1) |
                                                                     Q(corporacion__id_corporation=2) )
 
@@ -95,7 +94,7 @@ def registro_candidato(request):
         llamarMensaje = request.session.pop('llamarMensaje', None)
         mensaje = request.session.pop('mensaje', None)
         print(form.corporaciones_que_se_eligiran)
-        print(form.votantes_que_pueden_ser_candidatos)
+        #print(form.votantes_que_pueden_ser_candidatos)
         if not form.corporaciones_que_se_eligiran:
             mensaje = "NO hay corporaciones habilitadas para votar Debe de CREAR JORNADA"
             llamarMensaje = "fracaso_usuario"
@@ -177,8 +176,10 @@ def editar_candidato(request, codigo=None):
                            'corporacion' : candidato.jornada_corporacion}
 
             corporaciones_habilitadas = Jornada_Corporacion.objects.filter(jornada__is_active=True)
-            corporacion_candidato = corporaciones_habilitadas.filter(Q(corporacion__id_corporation=votante.plan.id_corporation) |
-                                                       Q(corporacion__id_corporation=votante.plan.facultad.id_corporation))
+            corporacion_candidato = corporaciones_habilitadas.filter(Q(corporacion__id=votante.plan.id) |
+                                                       Q(corporacion__id=votante.plan.facultad.id)
+                                                        | Q(corporacion__id_corporation=1)
+                                                                     | Q(corporacion__id_corporation=2))
 
             form.fields["corporacion"].queryset = corporacion_candidato
 

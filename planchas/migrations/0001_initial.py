@@ -7,21 +7,21 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('jornadas', '0001_initial'),
         ('candidatos', '0001_initial'),
+        ('jornadas', '0001_initial'),
     ]
 
     operations = [
         migrations.CreateModel(
             name='Plancha',
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False, auto_created=True, verbose_name='ID')),
+                ('id', models.AutoField(verbose_name='ID', auto_created=True, primary_key=True, serialize=False)),
                 ('numeroplancha', models.IntegerField()),
                 ('is_active', models.BooleanField(default=True)),
                 ('url_propuesta', models.URLField(blank=True, null=True)),
-                ('num_votos', models.IntegerField(null=True, default=0)),
-                ('candidato_principal', models.ForeignKey(null=True, to='candidatos.Candidato', related_name='principal')),
-                ('candidato_suplente', models.ForeignKey(default=None, blank=True, null=True, to='candidatos.Candidato')),
+                ('num_votos', models.IntegerField(default=0, null=True)),
+                ('candidato_principal', models.ForeignKey(related_name='principal', null=True, to='candidatos.Candidato')),
+                ('candidato_suplente', models.ForeignKey(null=True, blank=True, default=None, to='candidatos.Candidato')),
                 ('jornada_corporacion', models.ForeignKey(to='jornadas.Jornada_Corporacion')),
             ],
             options={

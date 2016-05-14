@@ -7,22 +7,22 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('corporaciones', '0001_initial'),
         ('usuarios', '0001_initial'),
-        ('corporaciones', '__first__'),
     ]
 
     operations = [
         migrations.CreateModel(
             name='Votante',
             fields=[
-                ('codigo', models.BigIntegerField(unique=True, primary_key=True, serialize=False)),
+                ('codigo', models.BigIntegerField(primary_key=True, serialize=False, unique=True)),
                 ('is_active', models.BooleanField(default=True)),
                 ('plan', models.ForeignKey(to='corporaciones.Corporacion')),
                 ('usuario', models.ForeignKey(to='usuarios.Usuario')),
             ],
             options={
-                'db_table': 'votantes',
                 'ordering': ['codigo'],
+                'db_table': 'votantes',
             },
         ),
     ]

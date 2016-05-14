@@ -6,7 +6,7 @@
         {% csrf_token %}
         {% for jornada_corporacion_activa in jornada_corporaciones_activas %}
         <!--===================================================-->
-        {% if  jornada_corporacion_activa.corporacion.id_corporation  in corporaciones_ya_votadas%}
+        {% if  jornada_corporacion_activa.corporacion.id  in corporaciones_ya_votadas%}
         <div class="col-md-6 col-lg-4">
         <button disabled type="submit" name="btnCorporacion" class="btn btn-primary btn-block" value="{{ jornada_corporacion_activa.id }}">
             <a href="{% url 'mostrar_tarjeton' %}">
@@ -17,7 +17,7 @@
                         </span>
                     </div>
                     <div class="media-body">
-                        <p class="h4 media-heading text-bold">{{jornada_corporacion_activa.corporacion.name_corporation}}</p>
+                        <p class="h4 media-heading text-bold">{{jornada_corporacion_activa.corporacion}}</p>
                         <p class="text-semibold ">{{ jornada_corporacion_activa.cantidad_planchas }} Planchas</p>
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                         </span>
                     </div>
                     <div class="media-body">
-                        <p class="h4 media-heading text-bold">{{jornada_corporacion_activa.corporacion.name_corporation}}</p>
+                        <p class="h4 media-heading text-bold">{{jornada_corporacion_activa.corporacion}}</p>
                         <p class="text-semibold">{{ jornada_corporacion_activa.cantidad_planchas }} Planchas</p>
                     </div>
                 </div>

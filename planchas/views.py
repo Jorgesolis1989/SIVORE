@@ -179,7 +179,7 @@ def editar_plancha(request, idcorporacion=None,numplancha=None):
 
             # Si la plancha ya existe en la BD
             else:
-                mensaje = "La plancha " + str(numeroplancha) + " de la corporacion "+plancha.corporacion.name_corporation+" ya existe en el sistema"
+                mensaje = "La plancha " + str(numeroplancha) + " de la corporacion "+plancha.jornada_corporacion.corporacion.name_corporation+" ya existe en el sistema"
                 llamarMensaje = "fracaso_usuario"
 
             request.session["llamarMensaje"] = llamarMensaje
@@ -211,17 +211,17 @@ def editar_plancha(request, idcorporacion=None,numplancha=None):
 
             # Los candidatos a excluir son los suplentes que se hallan lanzado a esa corporacion y que esten en alguna plancha activa
             #sacando a el de la plancha actual
-            candidatos_a_excluir_suplentes = (Plancha.objects.filter(is_active=True, jornada_corporacion__corporacion__id_corporation=plancha.jornada_corporacion.corporacion.id_corporation)\
+            candidatos_a_excluir_suplentes = (Plancha.objects.filter(is_active=True, jornada_corporacion__corporacion__id=plancha.jornada_corporacion.corporacion.id)\
                                 .exclude( Q(Q(candidato_suplente=None))| Q(candidato_suplente__votante__codigo=plancha.candidato_suplente.votante.codigo))).values_list('candidato_suplente__votante__codigo')
 
         else:
             # Si la plancha no tiene candidato suplente a excluir serían los suplentes de las otras planchas
-            candidatos_a_excluir_suplentes = (Plancha.objects.filter(is_active=True , jornada_corporacion__corporacion__id_corporation=plancha.jornada_corporacion.corporacion.id_corporation).values_list('candidato_suplente__votante__codigo')).exclude(candidato_suplente__votante__codigo=None)
+            candidatos_a_excluir_suplentes = (Plancha.objects.filter(is_active=True , jornada_corporacion__corporacion__id=plancha.jornada_corporacion.corporacion.id).values_list('candidato_suplente__votante__codigo')).exclude(candidato_suplente__votante__codigo=None)
 
-        candidatosprin_sin_plancha = Candidato.objects.filter(Q(jornada_corporacion__corporacion__id_corporation=plancha.jornada_corporacion.corporacion.id_corporation) & Q(tipo_candidato="Principal") & Q(is_active=True))\
+        candidatosprin_sin_plancha = Candidato.objects.filter(Q(jornada_corporacion__corporacion__id=plancha.jornada_corporacion.corporacion.id) & Q(tipo_candidato="Principal") & Q(is_active=True))\
         .exclude(votante__codigo__in=candidatos_a_excluir_principales)
 
-        candidatossupl_sin_plancha = Candidato.objects.filter(Q(jornada_corporacion__corporacion__id_corporation=plancha.jornada_corporacion.corporacion.id_corporation) & Q(tipo_candidato="Suplente") & Q(is_active=True))\
+        candidatossupl_sin_plancha = Candidato.objects.filter(Q(jornada_corporacion__corporacion__id=plancha.jornada_corporacion.corporacion.id) & Q(tipo_candidato="Suplente") & Q(is_active=True))\
         .exclude(votante__codigo__in=candidatos_a_excluir_suplentes)
 
 
